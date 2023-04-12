@@ -1,0 +1,66 @@
+######## TOUCHES ########
+
+    ====== Déplacement du personnage principal ======
+
+        Z : avancer
+        Q : tourner à gauche
+        S : reculer
+        D : tourner à droite
+
+    ====== Déplacement de la caméra ======
+
+        Haut   : tourner dans le sens négatif selon x
+        Bas    : tourner dans le sens positif selon x
+        Gauche : tourner dans le sens positif selon y
+        Droite : tourner dans le sens négatif selon y
+
+        T : translation vers l'avant
+        F : translation vers la gauche
+        G : translation vers l'arrière
+        H : translation vers la droite
+
+        + : translation vers le haut
+        - : translation vers le bas
+
+    ====== Lumières ======
+
+        Espace : Allumer/Éteindre la lumière rouge situé dans la maison en (-13,4,-13)
+
+######## Personnages ########
+
+    Le personnage principal (au centre de l'univers) peut se déplacer, mais en restant dans une zone délimité par le sol. 
+    S'il atteint la limite de la zone un "mur invisible" l'empechera d'aller plus loin.
+    Lorsque le personnage avance ou recule, il a une animation de marche.
+
+    Sa tête à une matière plastique.
+
+    En (10, 0, 10) un autre personnage est animé : un bucheron qui coupe une buche avec une hache.
+    Le haut de la buche est texturé avec une texture de bois.
+
+######## Décor ########
+
+    Le sol a une texture de Lego blanc, couplé à une couleur verte claire pour modéliser un semblant d'herbe. Le motif est répété 3 fois par coté.
+    Pas trop vert pour pouvoir voir la lumière bleu.
+
+    Dans la maison dans le coin de la scène, il y a deux fenêtres transparentes.
+
+    J'ai essayé de garder une échelle de 8mm = 1 unité sous openGL. Ainsi, j'ai essayé de me rapprocher un maximum des vrai dimensions de la figurine LEGO.
+
+######## Lumières ########
+
+    Il y a 4 lumières au total :
+
+    - une lumière AMBIANTE générale d'une intensité de 0.1.
+
+    - une lumière DIRECTIONNELLE blanche qui vient de (0,10,0) et qui d'une intensité de 0.2.
+
+    - une lumière POSITIONNELLE rouge en (-13,4,-13) qui est dans la maison et que l'on peut éteindre/allumer en appuyant sur ESPACE. D'une intensité de 0.1 pour le rouge.
+
+    - une lumière POSITIONNELLE bleu en (13,4,13) qui est prêt du bucheron d'une intensité de 0.05.
+
+######## Compilation ########
+
+    gcc opmat.c init.c actions.c VM_init.c LEGO_personnage.c LEGO_brique.c LEGO_decor.c ppm.c -c
+    gcc main.c actions.o axes.o init.o lumiere.o switch_blend.o switch_light.o VM_init.o opmat.o LEGO_personnage.o LEGO_brique.o LEGO_decor.o ppm.o -lm -lGL -lGLU -lglut -o executable
+
+    ./executable
