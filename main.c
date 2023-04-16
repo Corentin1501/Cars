@@ -25,11 +25,15 @@ GLvoid Modelisation()
 
     glColor3f(255,144/255.0,144/255.0);
 
-    struct modele camion = creerModele("/home/etud/Documents/S6/STAGE/ProjetSI/modeles/Camion/Camion.obj");
+    struct modele voiture = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Voiture/voiture.obj");
 
-    afficherModele(camion);
+    float echelle = 20.0;
 
-    aiReleaseImport(camion.scene);
+    glScalef(echelle,echelle,echelle);
+    afficherModele(voiture);
+    glScalef(1/echelle,1/echelle,1/echelle);
+
+    aiReleaseImport(voiture.scene);
 
 
     axes();
