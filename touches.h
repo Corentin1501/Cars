@@ -10,7 +10,7 @@
 #define TOUCHE_MIN_L 108
 #define TOUCHE_MAJ_L 76
 
-// deplacement personnage
+// deplacement voiture
     #define TOUCHE_Z 122
     #define TOUCHE_Q 113    
     #define TOUCHE_S 115

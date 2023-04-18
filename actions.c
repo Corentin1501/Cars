@@ -13,6 +13,11 @@ extern float camera_x;
 extern float camera_y;               
 extern float camera_z;               
 
+// les coordonées de la voiture
+extern float voiture_x;              
+extern float voiture_y;               
+extern float voiture_z;               
+extern float voiture_orientation;               
 
 void touche_pressee(unsigned char key, int x, int y) 
 {
@@ -35,6 +40,24 @@ void touche_pressee(unsigned char key, int x, int y)
             light = switch_light(light);
             break;
 
+        //####### DEPLACEMENT VOITURE #######
+
+            case TOUCHE_Z:
+                voiture_x += 0.2 * sin((voiture_orientation * 3.141592) / 180);
+                voiture_z += 0.2 * cos((voiture_orientation * 3.141592) / 180);
+                break;
+
+            case TOUCHE_S:
+                voiture_x -= 0.2 * sin((voiture_orientation * 3.141592) / 180);
+                voiture_z -= 0.2 * cos((voiture_orientation * 3.141592) / 180);
+                break;
+
+            case TOUCHE_Q:
+                voiture_orientation += 10;
+                break;
+            case TOUCHE_D:
+                voiture_orientation -= 10;
+                break;
 
         //####### DEPLACEMENT CAMERA #######
             case TOUCHE_T:

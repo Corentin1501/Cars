@@ -9,8 +9,8 @@ float angley = 0.0f;
 
 // coordonnées de la caméra
 float camera_x = +0.0f;      
-float camera_y = -1.0f; 
-float camera_z = -5.0f;
+float camera_y = -1.5f; 
+float camera_z = -8.0f;
 
 void VM_init(){
 
