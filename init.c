@@ -1,8 +1,10 @@
 #include "init.h"
+#include "stdbool.h"
 
 GLuint blend = 0;
 GLuint light = 0;
 
+extern float start_time;
 
 GLvoid Redimensionne(GLsizei Width, GLsizei Height)
 {
@@ -34,6 +36,8 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
 
     glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
+
+    start_time = (float)glutGet(GLUT_ELAPSED_TIME); // pour le chronometre
 
     glutMainLoop();
     return 1;

@@ -20,10 +20,6 @@ extern float voiture_y;
 extern float voiture_z;               
 extern float voiture_orientation;       
 
-// chronomètre
-// extern bool isRunning;
-// extern clock_t startTime, currentTime;
-// extern int elapsedTime;
 
 void touche_pressee(unsigned char key, int x, int y) 
 {
@@ -45,21 +41,6 @@ void touche_pressee(unsigned char key, int x, int y)
         case TOUCHE_MAJ_L: 
             light = switch_light(light);
             break;
-
-        // case 'c':
-        //     if (!isRunning)
-        //     {
-        //         isRunning = true;
-        //         startTime = clock();
-        //     }
-        //     break;
-        // case 'v':
-        //     if (isRunning)
-        //     {
-        //         isRunning = false;
-        //         elapsedTime = 0;
-        //     }
-        //     break;
 
         //####### DEPLACEMENT VOITURE #######
 

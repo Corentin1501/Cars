@@ -22,7 +22,7 @@ void VM_init(){
     glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
     glEnable(GL_DEPTH_TEST);
-
+    
 
 
     //#####################################################

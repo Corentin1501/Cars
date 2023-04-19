@@ -20,7 +20,7 @@
 #include "ppm.h"
 
 #include "Modele.c"
-#include "Regles.c"
+#include "HUD.c"
 
 float voiture_x = 3;              
 float voiture_y = 0;               
@@ -29,50 +29,6 @@ float voiture_orientation = 180;
 
 bool gameFinished = false;
 
-float chronometre = 0.0f;
-void glutBitmapString(void *font, const unsigned char *string);
-
-            // dessin du HUD
-            // glColor3f(1,1,1);
-            // glRasterPos2f(10,10);
-            // char buffer[256];
-            // sprintf(buffer,"Tours : %d", Current_Lap);
-            // glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
-            // sprintf(buffer,"Chronomètre : %.2f s", chronometre);
-            // glRasterPos2f(10,30);
-            // glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
-
-void drawHUD()
-{
-    float windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
-    float windowWidth = glutGet(GLUT_WINDOW_WIDTH);
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    {
-        glLoadIdentity();
-        glOrtho(0, windowWidth, 0, windowHeight, -1, 1);
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        {
-            glLoadIdentity();
-
-            // dessin du HUD
-            glColor3f(1,1,1);
-            glRasterPos2f(10,10);
-            char buffer[256];
-            sprintf(buffer,"Tours : %d", Current_Lap);
-            glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
-            sprintf(buffer,"Chronometre : %.2f s", chronometre);
-            glRasterPos2f(10,30);
-            glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
-        }
-        glPopMatrix();
-        glMatrixMode(GL_PROJECTION);
-    }
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-}
 
 void faire_la_scene()
 {
@@ -134,6 +90,7 @@ GLvoid Modelisation()
     axes();
 
     drawHUD(); // Dessiner le HUD après la scène 3D
+
     
     glutSwapBuffers();
 }
