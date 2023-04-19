@@ -6,11 +6,11 @@ float voiture_x;
 float voiture_y;               
 float voiture_z;  
 
-const int NOMBRE_TOURS_POUR_GAGNER = 2;
-const int NOMBRE_CHECKPOINTS = 4;
+const int NOMBRE_TOURS_POUR_GAGNER = 5 ;
+const int NOMBRE_CHECKPOINTS       = 8 ;
 
-int  Current_Lap = 1;
-bool checkpoints[4] = {false, false, false, false};
+int Current_Lap = 1;
+bool liste_checkpoints[8] = {false, false, false, false, false, false, false, false};
 
 //#####################################################
 //#                    CHRONOMETRE                    #
@@ -32,12 +32,11 @@ bool checkpoints[4] = {false, false, false, false};
 //#                       TOURS                       #
 //#####################################################
 
-
     bool tourcompleted()
     {
         for (int i = 0; i < NOMBRE_CHECKPOINTS; i++) 
         {
-            if(!checkpoints[i]) return false;
+            if(!liste_checkpoints[i]) return false;
         }
         return true;
     }
@@ -58,12 +57,12 @@ bool checkpoints[4] = {false, false, false, false};
         if(num == 0) 
             return true;
         else 
-            return !checkpoints[num] && checkpoints[num-1];
+            return !liste_checkpoints[num] && liste_checkpoints[num-1];
     }
 
     void activateCheckPoints(int numeroCP)
     {
-        checkpoints[numeroCP] = true;
+        liste_checkpoints[numeroCP] = true;
 
         // verification si ça fait un tour
         if(tourcompleted())
@@ -71,7 +70,7 @@ bool checkpoints[4] = {false, false, false, false};
             ++Current_Lap;
             printf("tour complété ! tour n°%d\n", Current_Lap);
 
-            for (int i = 0; i < NOMBRE_CHECKPOINTS; i++) checkpoints[i] = false;
+            for (int i = 0; i < NOMBRE_CHECKPOINTS; i++) liste_checkpoints[i] = false;
         }
     }
 
@@ -81,19 +80,19 @@ bool checkpoints[4] = {false, false, false, false};
     bool CP4_passe(){ return (voiture_z <=0) && (voiture_x <=  4) && (voiture_x >=  2); }
 
     void verifier_checkpoints(){
-        if(CP1_passe() && checkpoint_dans_ordre(0) && !checkpoints[0]) 
+        if(CP1_passe() && checkpoint_dans_ordre(0) && !liste_checkpoints[0]) 
         {
             printf("checkpoint 1 passé !\n"); activateCheckPoints(0);
         }
-        else if(CP2_passe() && checkpoint_dans_ordre(1) && !checkpoints[1]) 
+        else if(CP2_passe() && checkpoint_dans_ordre(1) && !liste_checkpoints[1]) 
         {
             printf("checkpoint 2 passé !\n"); activateCheckPoints(1);
         }
-        else if(CP3_passe() && checkpoint_dans_ordre(2) && !checkpoints[2]) 
+        else if(CP3_passe() && checkpoint_dans_ordre(2) && !liste_checkpoints[2]) 
         {
             printf("checkpoint 3 passé !\n"); activateCheckPoints(2);
         }
-        else if(CP4_passe() && checkpoint_dans_ordre(3) && !checkpoints[3]) 
+        else if(CP4_passe() && checkpoint_dans_ordre(3) && !liste_checkpoints[3]) 
         {
             printf("checkpoint 4 passé !\n"); activateCheckPoints(3);
         }
