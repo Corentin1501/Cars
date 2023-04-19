@@ -1,4 +1,5 @@
 #include "init.h"
+#include "Regles.c"
 
 
 GLuint blend = 0;
@@ -23,7 +24,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
     glClear(GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-    glutInitWindowSize(992, 558);
+    glutInitWindowSize(900, 500);
     glutInitWindowPosition(0,0);
     glutCreateWindow("Cars");
     glutDisplayFunc(Modelisation);
@@ -35,6 +36,8 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
 
     glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
+
+    glutTimerFunc(1000, refresh, 0);  // Appelle la fonction refresh() toutes les 1000 ms (1 seconde)
 
     glutMainLoop();
     return 1;

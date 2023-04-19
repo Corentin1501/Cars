@@ -13,6 +13,50 @@ int  Current_Lap = 1;
 bool checkpoints[4] = {false, false, false, false};
 
 //#####################################################
+//#                    CHRONOMETRE                    #
+//#####################################################
+
+    #include <time.h>
+
+    bool isRunning = false;
+    clock_t startTime, currentTime;
+    int elapsedTime = 0;
+
+    // Fonction pour afficher le temps écoulé sur la fenêtre GLUT
+    void displayElapsedTime()
+    {
+        glClearColor(1.0, 1.0, 1.0, 1.0);  // Couleur de fond blanche
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glColor3f(0.0, 0.0, 0.0);  // Couleur du texte en noir
+
+        char elapsedTimeString[10];
+        sprintf(elapsedTimeString, "%d", elapsedTime);  // Conversion de l'entier en chaîne de caractères
+
+        // Affichage du temps écoulé en haut de la fenêtre
+        glRasterPos2f(-0.9, 0.9);
+        int len = strlen(elapsedTimeString);
+        for (int i = 0; i < len; i++)
+        {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, elapsedTimeString[i]);
+        }
+
+        glFlush();
+    }
+
+    // Fonction pour mettre à jour le temps écoulé
+    void updateElapsedTime()
+    {
+        if (isRunning)
+        {
+            currentTime = clock();
+            elapsedTime = (int)((currentTime - startTime) / CLOCKS_PER_SEC);
+        }
+    }
+
+
+
+//#####################################################
 //#                       TOURS                       #
 //#####################################################
 

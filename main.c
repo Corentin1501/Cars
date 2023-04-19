@@ -6,7 +6,9 @@
 
     OU 
 
-    gcc opmat.c actions.c VM_init.c ppm.c -c; gcc main.c actions.o axes.o init.o lumiere.o switch_blend.o switch_light.o VM_init.o opmat.o ppm.o -lm -lGL -lGLU -lglut -o executable -lassimp
+    gcc opmat.c actions.c VM_init.c init.c ppm.c Modele.c Regles.c -c; 
+    gcc main.c actions.o axes.o init.o lumiere.o switch_blend.o switch_light.o VM_init.o opmat.o ppm.o -lm -lGL -lGLU -lglut -o executable -lassimp
+
 */
 
 
@@ -24,6 +26,57 @@ float voiture_x = 3;
 float voiture_y = 0;               
 float voiture_z = 0;  
 float voiture_orientation = 180;  
+
+bool gameFinished = false;
+
+float chronometre = 0.0f;
+void glutBitmapString(void *font, const unsigned char *string);
+
+            // dessin du HUD
+            // glColor3f(1,1,1);
+            // glRasterPos2f(10,10);
+            // char buffer[256];
+            // sprintf(buffer,"Tours : %d", Current_Lap);
+            // glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
+            // sprintf(buffer,"Chronomètre : %.2f s", chronometre);
+            // glRasterPos2f(10,30);
+            // glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
+
+void drawHUD()
+{
+    float windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
+    float windowWidth = glutGet(GLUT_WINDOW_WIDTH);
+
+    // printf("height : %f width : %f\n", windowHeight, windowWidth);
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    {
+        glLoadIdentity();
+        glOrtho(0, windowWidth, 0, windowHeight, 0.1, 1.0);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        {
+            glLoadIdentity();
+
+            // Exemple : dessiner un carré rouge en haut à gauche de l'écran
+
+
+                glColor3f(1.0f, 0.0f, 0.0f); // Rouge
+                glBegin(GL_QUADS);
+                    glVertex2f(10, windowHeight-10); // Coin supérieur gauche
+                    glVertex2f(10, windowHeight - 110); // Coin inférieur gauche
+                    glVertex2f(110, windowHeight - 110); // Coin inférieur droit
+                    glVertex2f(110, windowHeight-10); // Coin supérieur droit
+                glEnd();
+        }
+        glPopMatrix();
+        glMatrixMode(GL_PROJECTION);
+    }
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+}
+
 
 
 GLvoid Modelisation()
@@ -56,7 +109,10 @@ GLvoid Modelisation()
         glColor3f(255,144/255.0,144/255.0);
         verifier_checkpoints();
 
-        if (verifVictoire()) printf("Course finie !");
+        if (verifVictoire() && !gameFinished){
+            gameFinished = true;
+            printf("Course finie !\n");
+        } 
         
 
         glTranslatef(voiture_x, voiture_y, voiture_z);
@@ -66,9 +122,15 @@ GLvoid Modelisation()
     }
     glPopMatrix();
     
-
     aiReleaseImport(voiture.scene);
+
+    // glutSolidCube(1)
+
     axes();
+
+    displayElapsedTime();
+    drawHUD(); // Appel de la fonction pour dessiner le HUD
+
     glutSwapBuffers();
 }
 

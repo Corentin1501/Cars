@@ -1,5 +1,6 @@
 #include "actions.h"
 #include "stdbool.h"    // pour utiliser les booléans
+#include <time.h>
 
 extern int blend;
 extern int light;
@@ -17,7 +18,11 @@ extern float camera_z;
 extern float voiture_x;              
 extern float voiture_y;               
 extern float voiture_z;               
-extern float voiture_orientation;               
+extern float voiture_orientation;       
+
+extern bool isRunning;
+extern clock_t startTime, currentTime;
+extern int elapsedTime = 0;
 
 void touche_pressee(unsigned char key, int x, int y) 
 {
@@ -38,6 +43,21 @@ void touche_pressee(unsigned char key, int x, int y)
         case TOUCHE_MIN_L: 
         case TOUCHE_MAJ_L: 
             light = switch_light(light);
+            break;
+
+        case 'c':
+            if (!isRunning)
+            {
+                isRunning = true;
+                startTime = clock();
+            }
+            break;
+        case 'v':
+            if (isRunning)
+            {
+                isRunning = false;
+                elapsedTime = 0;
+            }
             break;
 
         //####### DEPLACEMENT VOITURE #######
