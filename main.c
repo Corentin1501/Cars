@@ -51,25 +51,21 @@ void drawHUD()
     glPushMatrix();
     {
         glLoadIdentity();
-        glOrtho(0, windowWidth, 0, windowHeight, 0.1, 1.0);
+        glOrtho(0, windowWidth, 0, windowHeight, -1, 1);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         {
             glLoadIdentity();
 
-            // Dessiner un carré rouge en haut à gauche de l'écran
-            glColor3f(1.0f, 0.0f, 0.0f); // Rouge
-            glBegin(GL_QUADS);
-                glVertex2f(10, windowHeight-10); // Coin supérieur gauche
-                glVertex2f(10, windowHeight - 110); // Coin inférieur gauche
-                glVertex2f(110, windowHeight - 110); // Coin inférieur droit
-                glVertex2f(110, windowHeight-10); // Coin supérieur droit
-            glEnd();
-            GLenum error = glGetError();
-            if (error != GL_NO_ERROR) {
-                printf("Erreur OpenGL : %s\n", gluErrorString(error));
-            }
-
+            // dessin du HUD
+            glColor3f(1,1,1);
+            glRasterPos2f(10,10);
+            char buffer[256];
+            sprintf(buffer,"Tours : %d", Current_Lap);
+            glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
+            sprintf(buffer,"Chronometre : %.2f s", chronometre);
+            glRasterPos2f(10,30);
+            glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
         }
         glPopMatrix();
         glMatrixMode(GL_PROJECTION);
@@ -137,7 +133,7 @@ GLvoid Modelisation()
 
     axes();
 
-    // drawHUD(); // Dessiner le HUD après la scène 3D
+    drawHUD(); // Dessiner le HUD après la scène 3D
     
     glutSwapBuffers();
 }
