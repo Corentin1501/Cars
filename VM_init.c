@@ -53,7 +53,7 @@ void VM_init(){
             GLfloat light_0_specular[] = { 0.5,  0.5,  0.5,  1 }; // composante spéculaire
             GLfloat light_0_position[] = {   0,   10,    0,  0 }; // position de la lumière
 
-            glEnable(GL_LIGHT0);
+            // glEnable(GL_LIGHT0);
             glLightfv(GL_LIGHT0, GL_AMBIENT,  light_0_ambient); 
             glLightfv(GL_LIGHT0, GL_DIFFUSE,  light_0_diffuse); 
             glLightfv(GL_LIGHT0, GL_SPECULAR, light_0_specular); 
@@ -66,7 +66,7 @@ void VM_init(){
             GLfloat light_1_specular[] = {   1,   1,   1,  1 };
             GLfloat light_1_position[] = { -13,  10, -13,  1 };
 
-            glEnable(GL_LIGHT1);
+            // glEnable(GL_LIGHT1);
             glLightfv(GL_LIGHT1, GL_AMBIENT,  light_1_ambient);
             glLightfv(GL_LIGHT1, GL_DIFFUSE,  light_1_diffuse);
             glLightfv(GL_LIGHT1, GL_SPECULAR, light_1_specular);
@@ -77,7 +77,7 @@ void VM_init(){
             GLfloat light_2_ambient[]  = { 0.05, 0.05, 0.05,  1 };
             GLfloat light_2_diffuse[]  = {    0,    1,    0,  1 };
             GLfloat light_2_specular[] = {    1,    1,    1,  1 };
-            GLfloat light_2_position[] = {   13,    1,   13,  1 };
+            GLfloat light_2_position[] = {   0,    1,   0,  1 };
 
             glEnable(GL_LIGHT2);
             glLightfv(GL_LIGHT2, GL_AMBIENT,  light_2_ambient);

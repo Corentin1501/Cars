@@ -47,8 +47,6 @@ void drawHUD()
     float windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
     float windowWidth = glutGet(GLUT_WINDOW_WIDTH);
 
-    // printf("height : %f width : %f\n", windowHeight, windowWidth);
-
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     {
@@ -59,16 +57,19 @@ void drawHUD()
         {
             glLoadIdentity();
 
-            // Exemple : dessiner un carré rouge en haut à gauche de l'écran
+            // Dessiner un carré rouge en haut à gauche de l'écran
+            glColor3f(1.0f, 0.0f, 0.0f); // Rouge
+            glBegin(GL_QUADS);
+                glVertex2f(10, windowHeight-10); // Coin supérieur gauche
+                glVertex2f(10, windowHeight - 110); // Coin inférieur gauche
+                glVertex2f(110, windowHeight - 110); // Coin inférieur droit
+                glVertex2f(110, windowHeight-10); // Coin supérieur droit
+            glEnd();
+            GLenum error = glGetError();
+            if (error != GL_NO_ERROR) {
+                printf("Erreur OpenGL : %s\n", gluErrorString(error));
+            }
 
-
-                glColor3f(1.0f, 0.0f, 0.0f); // Rouge
-                glBegin(GL_QUADS);
-                    glVertex2f(10, windowHeight-10); // Coin supérieur gauche
-                    glVertex2f(10, windowHeight - 110); // Coin inférieur gauche
-                    glVertex2f(110, windowHeight - 110); // Coin inférieur droit
-                    glVertex2f(110, windowHeight-10); // Coin supérieur droit
-                glEnd();
         }
         glPopMatrix();
         glMatrixMode(GL_PROJECTION);
@@ -77,13 +78,10 @@ void drawHUD()
     glMatrixMode(GL_MODELVIEW);
 }
 
-
-
-GLvoid Modelisation()
+void faire_la_scene()
 {
-    VM_init();
-
     struct modele voiture = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Voiture/voiture.obj");
+    struct modele stade = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Stade_et_piste.obj");
 
 
     GLUquadric *quadric = gluNewQuadric();
@@ -92,18 +90,22 @@ GLvoid Modelisation()
 
     GLfloat cubeSize = 0.5;
 
-    glPushMatrix(); // sol
-    {
-        glColor3f(0,1,0);
-        glTranslatef(0, -0.1, 0);
-        glRotatef(-90,1,0,0);
-        gluDisk(quadric,innerradius,outerradius,30,30);
-        // glScalef(4,0.1,12);
-        // glutSolidCube(1);
-    }
-    glPopMatrix();
+    // glPushMatrix();
+    // {
+    //     glColor3f(0,0.5,0.5);
+    //     glTranslatef(0, -0.1, 0);
+    //     glRotatef(-90,1,0,0);
+    //     gluDisk(quadric,innerradius,outerradius,30,30);
+    //     // glScalef(4,0.1,12);
+    //     // glutSolidCube(1);
+    // }
+    // glPopMatrix();
 
-    glPushMatrix(); // voiture
+    glColor3f(1,1,0);
+
+    afficherModele(stade);
+
+    glPushMatrix();
     {
 
         glColor3f(255,144/255.0,144/255.0);
@@ -113,7 +115,7 @@ GLvoid Modelisation()
             gameFinished = true;
             printf("Course finie !\n");
         } 
-        
+
 
         glTranslatef(voiture_x, voiture_y, voiture_z);
         glRotatef(voiture_orientation,0,1,0);
@@ -121,18 +123,26 @@ GLvoid Modelisation()
         afficherModele(voiture);
     }
     glPopMatrix();
-    
-    aiReleaseImport(voiture.scene);
 
-    // glutSolidCube(1)
+    aiReleaseImport(voiture.scene);
+    aiReleaseImport(stade.scene);
+}
+
+
+GLvoid Modelisation()
+{
+    VM_init();
+
+    faire_la_scene();
 
     axes();
 
-    displayElapsedTime();
-    drawHUD(); // Appel de la fonction pour dessiner le HUD
-
+    // drawHUD(); // Dessiner le HUD après la scène 3D
+    
     glutSwapBuffers();
 }
+
+
 
 int main(int argc, char **argv) 
 {  
