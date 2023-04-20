@@ -31,21 +31,22 @@ bool gameFinished = false;
 void faire_la_scene()
 {
     struct modele voiture = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Voiture/voiture_sans_fenetres.obj");
-    struct modele stade = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Stade_et_pisteV3.obj");
-
-
-    GLUquadric *quadric = gluNewQuadric();
-    GLfloat outerradius = 4;
-    GLfloat innerradius = 2;
-
-    GLfloat cubeSize = 0.5;
+    struct modele stade = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Stade_et_pisteV4.obj");
 
 
     glColor3f(1,1,0);
 
-    afficherModele(stade);
+    float echelleStade = 3;
 
-    glPushMatrix(); // voiture
+    glPushMatrix(); // Stade
+    {
+        glTranslatef(0,-1,0);
+        glScalef(echelleStade,echelleStade,echelleStade);
+        afficherModele(stade);
+    }
+    glPopMatrix();
+
+    glPushMatrix(); // Voiture
     {
         glColor3f(255,144/255.0,144/255.0);
         verifier_checkpoints();
