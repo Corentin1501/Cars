@@ -8,9 +8,15 @@ float anglex = 0.0f;
 float angley = 0.0f;
 
 // coordonnées de la caméra
-float camera_x = +0.0f;      
-float camera_y = -1.5f; 
-float camera_z = -8.0f;
+float camera_x = 9.625;      
+float camera_y = 0.6; 
+float camera_z = 0;
+float camera_orientation_x = 0;
+float camera_orientation_z = -5;
+
+bool vue_FPS = true;
+bool vue_TPS = false;
+bool vue_ARR = false;
 
 void VM_init(){
 
@@ -29,9 +35,18 @@ void VM_init(){
     //#                      CAMERA                       #
     //#####################################################
 
-        glTranslatef(camera_x, camera_y, camera_z);
-        glRotatef(anglex, 1,0,0);
-        glRotatef(angley, 0,1,0);
+        // glTranslatef(camera_x, camera_y, camera_z);
+        // glRotatef(anglex, 1,0,0);
+        // glRotatef(angley, 0,1,0);
+
+        if (vue_FPS)
+        {
+            gluLookAt(  camera_x, camera_y, camera_z,
+                        camera_x + camera_orientation_x, camera_y, camera_z + camera_orientation_z,
+                        0, 1, 0);
+
+        }
+
 
     //#####################################################
     //#                     LUMIERES                      #

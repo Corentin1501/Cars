@@ -18,7 +18,11 @@ extern float camera_z;
 extern float voiture_x;              
 extern float voiture_y;               
 extern float voiture_z;               
-extern float voiture_orientation;       
+extern float voiture_orientation;   
+extern float camera_orientation_x;   
+extern float camera_orientation_z;   
+
+const float PI = 3.14159265359;
 
 
 void touche_pressee(unsigned char key, int x, int y) 
@@ -45,20 +49,41 @@ void touche_pressee(unsigned char key, int x, int y)
         //####### DEPLACEMENT VOITURE #######
 
             case TOUCHE_Z:
-                voiture_x += 0.6 * sin((voiture_orientation * 3.141592) / 180);
-                voiture_z += 0.6 * cos((voiture_orientation * 3.141592) / 180);
+                // Avancer la voiture dans la direction de l'orientation
+                voiture_x += 0.6 * sin((voiture_orientation * PI) / 180);
+                voiture_z += 0.6 * cos((voiture_orientation * PI) / 180);
+
+                // Déplacer la caméra avec la voiture
+                camera_x += 0.6 * sin((voiture_orientation * PI) / 180);
+                camera_z += 0.6 * cos((voiture_orientation * PI) / 180);
                 break;
 
             case TOUCHE_S:
-                voiture_x -= 0.3 * sin((voiture_orientation * 3.141592) / 180);
-                voiture_z -= 0.3 * cos((voiture_orientation * 3.141592) / 180);
+                // Reculer la voiture dans la direction opposée à l'orientation
+                voiture_x -= 0.3 * sin((voiture_orientation * PI) / 180);
+                voiture_z -= 0.3 * cos((voiture_orientation * PI) / 180);
+
+                // Déplacer la caméra avec la voiture
+                camera_x -= 0.3 * sin((voiture_orientation * PI) / 180);
+                camera_z -= 0.3 * cos((voiture_orientation * PI) / 180);
                 break;
 
             case TOUCHE_Q:
+                // Tourner la voiture vers la gauche
                 voiture_orientation += 10;
+
+                // Mettre à jour la direction de la caméra pour qu'elle regarde vers l'avant de la voiture
+                camera_orientation_x = sin((voiture_orientation * PI) / 180);
+                camera_orientation_z = cos((voiture_orientation * PI) / 180);
                 break;
+
             case TOUCHE_D:
+                // Tourner la voiture vers la droite
                 voiture_orientation -= 10;
+
+                // Mettre à jour la direction de la caméra pour qu'elle regarde vers l'avant de la voiture
+                camera_orientation_x = sin((voiture_orientation * PI) / 180);
+                camera_orientation_z = cos((voiture_orientation * PI) / 180);
                 break;
 
         //####### DEPLACEMENT CAMERA #######

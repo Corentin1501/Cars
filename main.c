@@ -30,7 +30,7 @@ bool gameFinished = false;
 
 void faire_la_scene()
 {
-    struct modele voiture = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Voiture/voiture.obj");
+    struct modele voiture = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Voiture/voiture_sans_fenetres.obj");
     struct modele stade = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Stade_et_pisteV3.obj");
 
 
