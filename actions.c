@@ -24,7 +24,7 @@ extern bool vue_FPS;
 extern bool vue_TPS;
 extern bool vue_ARR;
 
-// les coordonées de la voiture
+// les coordonnées de la voiture
     extern float voiture_x;              
     extern float voiture_y;               
     extern float voiture_z;               
@@ -105,7 +105,7 @@ void touche_relachee(unsigned char key, int x, int y)
 
 void touche_pressee(unsigned char key, int x, int y) 
 {
-    usleep(100);
+    // usleep(100);
 
     etatTouches[key] = true;
 
@@ -130,13 +130,14 @@ void touche_pressee(unsigned char key, int x, int y)
         tourner_voiture_gauche();
         reculer_voiture();
     } 
-    else 
+    else // si aucune touches n'est pressé en même temps, on regarde normalement les autres
     {
         switch (key)
         {    
             case ESCAPE: exit(1); break;                // la touche ECHAP quitte l'application
 
-            case ESPACE:     
+            case ESPACE:   
+                vue_ARR = !vue_ARR;
                 break;
 
             case TOUCHE_MIN_B: 
@@ -164,18 +165,10 @@ void touche_pressee(unsigned char key, int x, int y)
                 case TOUCHE_D: tourner_voiture_droite(); break;
 
             //####### DEPLACEMENT CAMERA #######
-                case TOUCHE_T:
-                    camera_FPS_z += 0.5;
-                    break;
-                case TOUCHE_G:
-                    camera_FPS_z -= 0.5;
-                    break;
-                case TOUCHE_F:
-                    camera_FPS_x += 0.5;
-                    break;
-                case TOUCHE_H:
-                    camera_FPS_x -= 0.5;
-                    break;
+                case TOUCHE_T: camera_FPS_z += 0.5; break;
+                case TOUCHE_G: camera_FPS_z -= 0.5; break;
+                case TOUCHE_F: camera_FPS_x += 0.5; break;
+                case TOUCHE_H: camera_FPS_x -= 0.5; break;
         }	
     }
 

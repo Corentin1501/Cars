@@ -20,7 +20,7 @@
 #include "Modele.c"
 #include "HUD.c"
 
-float voiture_x = 9.625;              
+float voiture_x = 0;  // 9.625            
 float voiture_y = 0;               
 float voiture_z = 0;  
 float voiture_orientation = 180;  

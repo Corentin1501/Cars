@@ -9,7 +9,7 @@ float angley = 0.0f;
 
 // coordonnées de la caméra
     // vue FPS
-        float camera_FPS_x = 9.625;      
+        float camera_FPS_x = 0;   // 9.625   
         float camera_FPS_y = 0.6; 
         float camera_FPS_z = 0;
 
@@ -21,8 +21,8 @@ float angley = 0.0f;
 float camera_orientation_x = 0;
 float camera_orientation_z = -5;
 
-bool vue_FPS = false;
-bool vue_TPS = true;
+bool vue_FPS = true;
+bool vue_TPS = false;
 bool vue_ARR = false;
 
 void VM_init(){
@@ -42,17 +42,26 @@ void VM_init(){
     //#                      CAMERA                       #
     //#####################################################
 
-        if (vue_FPS)
+        if (vue_ARR)
         {
-            gluLookAt(  camera_FPS_x, camera_FPS_y, camera_FPS_z,
-                        camera_FPS_x + camera_orientation_x, camera_FPS_y, camera_FPS_z + camera_orientation_z,
+            gluLookAt(  camera_FPS_x, camera_FPS_y, camera_FPS_z + 2,
+                        camera_TPS_x, camera_TPS_y, camera_TPS_z,
                         0, 1, 0);
-        } 
-        else if (vue_TPS)
+        }
+        else
         {
-            gluLookAt(  camera_TPS_x, camera_TPS_y, camera_TPS_z,
-                        camera_TPS_x + camera_orientation_x, camera_TPS_y, camera_TPS_z + camera_orientation_z,
-                        0, 1, 0);
+            if (vue_FPS)
+            {
+                gluLookAt(  camera_FPS_x, camera_FPS_y, camera_FPS_z,
+                            camera_FPS_x + camera_orientation_x, camera_FPS_y, camera_FPS_z + camera_orientation_z,
+                            0, 1, 0);
+            } 
+            else if (vue_TPS)
+            {
+                gluLookAt(  camera_TPS_x, camera_TPS_y, camera_TPS_z,
+                            camera_TPS_x + camera_orientation_x, camera_TPS_y, camera_TPS_z + camera_orientation_z,
+                            0, 1, 0);
+            }
         }
 
 

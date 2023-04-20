@@ -24,12 +24,12 @@
     #define TOUCHE_UP 43
     #define TOUCHE_DOWN 45
 
-// basculer vue FPS / TPS / Arriere
-    #define TOUCHE_W 119
+// basculer vue FPS / TPS / Arrière
+    #define TOUCHE_W 119    // FPS / TPS
+    #define ESPACE 32       // Arrière
 
     
 #define ESCAPE 27
-#define ESPACE 32
 
 #define RETURN 13
 #define DELETE 8
