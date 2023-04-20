@@ -13,6 +13,10 @@ float camera_y = 0.6;
 float camera_z = 0;
 float camera_orientation_x = 0;
 float camera_orientation_z = -5;
+    // vue TPS
+    float TPS_x = 0;
+    float TPS_y = 0.5;
+    float TPS_z = 4;
 
 bool vue_FPS = true;
 bool vue_TPS = false;
@@ -35,16 +39,17 @@ void VM_init(){
     //#                      CAMERA                       #
     //#####################################################
 
-        // glTranslatef(camera_x, camera_y, camera_z);
-        // glRotatef(anglex, 1,0,0);
-        // glRotatef(angley, 0,1,0);
-
         if (vue_FPS)
         {
             gluLookAt(  camera_x, camera_y, camera_z,
                         camera_x + camera_orientation_x, camera_y, camera_z + camera_orientation_z,
                         0, 1, 0);
-
+        } 
+        else if (vue_TPS)
+        {
+            gluLookAt(  camera_x + TPS_x, camera_y + TPS_y, camera_z + TPS_z,
+                        camera_x + camera_orientation_x, camera_y, camera_z + camera_orientation_z,
+                        0, 1, 0);
         }
 
 

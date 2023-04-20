@@ -5,14 +5,14 @@
 extern int blend;
 extern int light;
 
-// angle de la caméra
-extern float anglex;    
-extern float angley;    
-
 // les coordonées de la caméra 
 extern float camera_x;              
 extern float camera_y;               
-extern float camera_z;               
+extern float camera_z;      
+
+extern bool vue_FPS;
+extern bool vue_TPS;
+extern bool vue_ARR;
 
 // les coordonées de la voiture
 extern float voiture_x;              
@@ -45,6 +45,13 @@ void touche_pressee(unsigned char key, int x, int y)
         case TOUCHE_MAJ_L: 
             light = switch_light(light);
             break;
+
+        //####### VUE CAMERA #######
+
+            case TOUCHE_W:
+                vue_FPS = !vue_FPS;
+                vue_TPS = !vue_TPS;
+                break;
 
         //####### DEPLACEMENT VOITURE #######
 
@@ -110,19 +117,19 @@ void touche_pressee(unsigned char key, int x, int y)
 
 void touche(int touche, int x, int y)
 {
-    switch (touche) 
-    {
-        case GLUT_KEY_LEFT :
-			angley -= 10;
-			break;
-		case GLUT_KEY_RIGHT :
-			angley += 10;
-			break;
-		case GLUT_KEY_UP :
-            anglex -= 10;
-			break;
-		case GLUT_KEY_DOWN :
-			anglex += 10;
-			break;
-    }
+    // switch (touche) 
+    // {
+    //     case GLUT_KEY_LEFT :
+	// 		angley -= 10;
+	// 		break;
+	// 	case GLUT_KEY_RIGHT :
+	// 		angley += 10;
+	// 		break;
+	// 	case GLUT_KEY_UP :
+    //         anglex -= 10;
+	// 		break;
+	// 	case GLUT_KEY_DOWN :
+	// 		anglex += 10;
+	// 		break;
+    // }
 }

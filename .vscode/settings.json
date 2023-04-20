@@ -1,6 +1,12 @@
 {
     "files.associations": {
         "chrono": "c",
-        "ratio": "c"
+        "ratio": "c",
+        "stdbool.h": "c",
+        "actions.h": "c",
+        "touches.h": "c",
+        "glut.h": "c",
+        "switch_light.h": "c",
+        "switch_blend.h": "c"
     }
 }
