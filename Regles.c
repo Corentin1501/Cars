@@ -2,9 +2,10 @@
 #include "VM_init.h"
 #include "stdbool.h"
 
+// Coordonnées de la voiture
 float voiture_x;              
 float voiture_y;               
-float voiture_z;  
+float voiture_z; 
 
 const int NOMBRE_TOURS_POUR_GAGNER = 5 ;
 const int NOMBRE_CHECKPOINTS       = 8 ;
@@ -22,6 +23,9 @@ bool liste_checkpoints[8] = {false, false, false, false, false, false, false, fa
     float start_time = 0;
     float chronometre;
 
+    /*
+        Met à jour le chronomètre et le met en secondes
+    */
     void updateChrono() 
     {
         chronometre = glutGet(GLUT_ELAPSED_TIME) - start_time;  // temps en millisecondes
@@ -32,6 +36,10 @@ bool liste_checkpoints[8] = {false, false, false, false, false, false, false, fa
 //#                       TOURS                       #
 //#####################################################
 
+    /*
+        Vérifie si un tour a été fait (si tous les Checkpoints sont validés)
+        @return vrai ou faux
+    */
     bool tourcompleted()
     {
         for (int i = 0; i < NOMBRE_CHECKPOINTS; i++) 
@@ -41,6 +49,10 @@ bool liste_checkpoints[8] = {false, false, false, false, false, false, false, fa
         return true;
     }
 
+    /*
+        Vérifie si le nombre de tours nécessaire pour gagner a été atteint
+        @return vrai ou faux
+    */
     bool verifVictoire()
     {
         return Current_Lap > NOMBRE_TOURS_POUR_GAGNER;
@@ -50,16 +62,23 @@ bool liste_checkpoints[8] = {false, false, false, false, false, false, false, fa
 //#                    CHECKPOINTS                    #
 //#####################################################
 
-
-
-    bool checkpoint_dans_ordre(int num)
+    /*
+        Vérifie quand un Checkpoint est passé si le Checkpoint précédent a aussi été passé
+        @param numeroCP Numéro du Checkpoint passé
+        @return vrai ou faux
+    */
+    bool checkpoint_dans_ordre(int numeroCP)
     {
-        if(num == 0) 
+        if(numeroCP == 0) 
             return true;
         else 
-            return !liste_checkpoints[num] && liste_checkpoints[num-1];
+            return !liste_checkpoints[numeroCP] && liste_checkpoints[numeroCP-1];
     }
 
+    /*
+        Active un certain Checkpoint et augmente le nombre de tours complété si tous les checkpoints ont été passés
+        @param numeroCP Numéro du Checkpoint qu'on active
+    */
     void activateCheckPoints(int numeroCP)
     {
         liste_checkpoints[numeroCP] = true;
@@ -74,26 +93,39 @@ bool liste_checkpoints[8] = {false, false, false, false, false, false, false, fa
         }
     }
 
-    bool CP1_passe(){ return (voiture_x <=0) && (voiture_z >= -4) && (voiture_z <= -2); }
-    bool CP2_passe(){ return (voiture_z >=0) && (voiture_x >= -4) && (voiture_x <= -2); }
-    bool CP3_passe(){ return (voiture_x >=0) && (voiture_z <=  4) && (voiture_z >=  2); }
-    bool CP4_passe(){ return (voiture_z <=0) && (voiture_x <=  4) && (voiture_x >=  2); }
+    /*
+        Verifie si les coordonnées de la voiture ont passées un checkpoint
+        @param numeroCP Numéro du Checkpoint qu'on vérifie
+        @return vrai ou faux
+    */
+    bool CP_passe(int numeroCP)
+    {
+        switch (numeroCP)
+        {
+            case 0: return ((0 <= voiture_x)        && (voiture_x <= 7.5)       && (voiture_z <= -16.5));    break;
+            case 1: return ((voiture_x <= 0)        && (-24.05 <= voiture_z)      && (voiture_z <= -16.5));   break;
+            case 2: return ((-7.5 <= voiture_x)     && (voiture_x <= 0)         && (-16.5 <= voiture_z));    break;
+            case 3: return ((-13.375 <= voiture_x)  && (voiture_x <= -5.875)    && (0 <= voiture_z));       break;
+            case 4: return ((-7.5 <= voiture_x)     && (voiture_x <= 0)         && (16.5 <= voiture_z));   break;
+            case 5: return ((0 <= voiture_x)        && (16.55 <= voiture_z)    && (voiture_z <= 24.05));  break;
+            case 6: return ((0 <= voiture_x)        && (voiture_x <= 7.5)       && (voiture_z <= 16.5));   break;
+            case 7: return ((5.875 <= voiture_x)    && (voiture_x <= 13.375)    && (voiture_z <= 0));       break;
+            
+            default:    return false;   break;
+        }
+    }
 
-    void verifier_checkpoints(){
-        if(CP1_passe() && checkpoint_dans_ordre(0) && !liste_checkpoints[0]) 
-        {
-            printf("checkpoint 1 passé !\n"); activateCheckPoints(0);
-        }
-        else if(CP2_passe() && checkpoint_dans_ordre(1) && !liste_checkpoints[1]) 
-        {
-            printf("checkpoint 2 passé !\n"); activateCheckPoints(1);
-        }
-        else if(CP3_passe() && checkpoint_dans_ordre(2) && !liste_checkpoints[2]) 
-        {
-            printf("checkpoint 3 passé !\n"); activateCheckPoints(2);
-        }
-        else if(CP4_passe() && checkpoint_dans_ordre(3) && !liste_checkpoints[3]) 
-        {
-            printf("checkpoint 4 passé !\n"); activateCheckPoints(3);
+    /*
+        Effectue une vérification complète des Checkpoints
+        - Si un Checkpoint est passé
+        - S'il est passé dans l'ordre
+        - S'il n'était pas déjà activé
+    */
+    void verifier_checkpoints()
+    {
+        for (int i = 0; i < NOMBRE_CHECKPOINTS; i++){
+            if(CP_passe(i) && checkpoint_dans_ordre(i) && !liste_checkpoints[i]){
+                printf("checkpoint %d passé !\n", i); activateCheckPoints(i);
+            }
         }
     }

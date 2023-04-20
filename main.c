@@ -20,7 +20,7 @@
 #include "Modele.c"
 #include "HUD.c"
 
-float voiture_x = 3;              
+float voiture_x = 9.625;              
 float voiture_y = 0;               
 float voiture_z = 0;  
 float voiture_orientation = 180;  
@@ -45,9 +45,8 @@ void faire_la_scene()
 
     afficherModele(stade);
 
-    glPushMatrix();
+    glPushMatrix(); // voiture
     {
-
         glColor3f(255,144/255.0,144/255.0);
         verifier_checkpoints();
 
@@ -55,7 +54,6 @@ void faire_la_scene()
             gameFinished = true;
             printf("Course finie !\n");
         } 
-
 
         glTranslatef(voiture_x, voiture_y, voiture_z);
         glRotatef(voiture_orientation,0,1,0);
