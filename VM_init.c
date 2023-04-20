@@ -9,7 +9,7 @@ float angley = 0.0f;
 
 // coordonnées de la caméra
     // vue FPS
-        float camera_FPS_x = 0;   // 9.625   
+        float camera_FPS_x = 9.625;
         float camera_FPS_y = 0.6; 
         float camera_FPS_z = 0;
 
