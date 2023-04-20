@@ -8,18 +8,21 @@ float anglex = 0.0f;
 float angley = 0.0f;
 
 // coordonnées de la caméra
-float camera_x = 9.625;      
-float camera_y = 0.6; 
-float camera_z = 0;
+    // vue FPS
+        float camera_FPS_x = 9.625;      
+        float camera_FPS_y = 0.6; 
+        float camera_FPS_z = 0;
+
+    // vue TPS
+        float camera_TPS_x = 9.625;
+        float camera_TPS_y = 1;
+        float camera_TPS_z = 4.8;
+
 float camera_orientation_x = 0;
 float camera_orientation_z = -5;
-    // vue TPS
-    float TPS_x = 0;
-    float TPS_y = 0.5;
-    float TPS_z = 4;
 
-bool vue_FPS = true;
-bool vue_TPS = false;
+bool vue_FPS = false;
+bool vue_TPS = true;
 bool vue_ARR = false;
 
 void VM_init(){
@@ -41,14 +44,14 @@ void VM_init(){
 
         if (vue_FPS)
         {
-            gluLookAt(  camera_x, camera_y, camera_z,
-                        camera_x + camera_orientation_x, camera_y, camera_z + camera_orientation_z,
+            gluLookAt(  camera_FPS_x, camera_FPS_y, camera_FPS_z,
+                        camera_FPS_x + camera_orientation_x, camera_FPS_y, camera_FPS_z + camera_orientation_z,
                         0, 1, 0);
         } 
         else if (vue_TPS)
         {
-            gluLookAt(  camera_x + TPS_x, camera_y + TPS_y, camera_z + TPS_z,
-                        camera_x + camera_orientation_x, camera_y, camera_z + camera_orientation_z,
+            gluLookAt(  camera_TPS_x, camera_TPS_y, camera_TPS_z,
+                        camera_TPS_x + camera_orientation_x, camera_TPS_y, camera_TPS_z + camera_orientation_z,
                         0, 1, 0);
         }
 

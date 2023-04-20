@@ -6,9 +6,13 @@ extern int blend;
 extern int light;
 
 // les coordonées de la caméra 
-extern float camera_x;              
-extern float camera_y;               
-extern float camera_z;      
+    // vue FPS
+        extern float camera_FPS_x;              
+        extern float camera_FPS_z;      
+    // vue TPS
+        extern float camera_TPS_x;              
+        extern float camera_TPS_y;      
+        extern float camera_TPS_z;      
 
 extern bool vue_FPS;
 extern bool vue_TPS;
@@ -24,6 +28,13 @@ extern float camera_orientation_z;
 
 const float PI = 3.14159265359;
 
+int TPS_en_arriere = 8; // nombre de blocs derriere la voiture où est la caméra TPS
+int TPS_au_dessus = 1.5; // nombre de blocs derriere la voiture où est la caméra TPS
+
+float avancer_voiture_x(){ return 0.6 * sin((voiture_orientation * PI) / 180); }
+float avancer_voiture_z(){ return 0.6 * cos((voiture_orientation * PI) / 180); }
+float reculer_voiture_x(){ return 0.3 * sin((voiture_orientation * PI) / 180); }
+float reculer_voiture_z(){ return 0.3 * cos((voiture_orientation * PI) / 180); }
 
 void touche_pressee(unsigned char key, int x, int y) 
 {
@@ -57,22 +68,34 @@ void touche_pressee(unsigned char key, int x, int y)
 
             case TOUCHE_Z:
                 // Avancer la voiture dans la direction de l'orientation
-                voiture_x += 0.6 * sin((voiture_orientation * PI) / 180);
-                voiture_z += 0.6 * cos((voiture_orientation * PI) / 180);
+                voiture_x += avancer_voiture_x();
+                voiture_z += avancer_voiture_z();
 
-                // Déplacer la caméra avec la voiture
-                camera_x += 0.6 * sin((voiture_orientation * PI) / 180);
-                camera_z += 0.6 * cos((voiture_orientation * PI) / 180);
+                // Calcul des coordonnées de la caméra FPS
+                camera_FPS_x += avancer_voiture_x();
+                camera_FPS_z += avancer_voiture_z();
+
+                // Calcul des coordonnées de la caméra TPS
+                camera_TPS_x = voiture_x - (TPS_en_arriere * avancer_voiture_x());
+                camera_TPS_y = voiture_y + TPS_au_dessus;
+                camera_TPS_z = voiture_z - (TPS_en_arriere * avancer_voiture_z());
+
                 break;
 
             case TOUCHE_S:
                 // Reculer la voiture dans la direction opposée à l'orientation
-                voiture_x -= 0.3 * sin((voiture_orientation * PI) / 180);
-                voiture_z -= 0.3 * cos((voiture_orientation * PI) / 180);
+                voiture_x -= reculer_voiture_x();
+                voiture_z -= reculer_voiture_z();
 
-                // Déplacer la caméra avec la voiture
-                camera_x -= 0.3 * sin((voiture_orientation * PI) / 180);
-                camera_z -= 0.3 * cos((voiture_orientation * PI) / 180);
+                // Calcul des coordonnées de la caméra FPS
+                camera_FPS_x -= reculer_voiture_x();
+                camera_FPS_z -= reculer_voiture_z();
+
+                // Calcul des coordonnées de la caméra TPS
+                camera_TPS_x = voiture_x - (TPS_en_arriere * avancer_voiture_x());
+                camera_TPS_y = voiture_y + TPS_au_dessus;
+                camera_TPS_z = voiture_z - (TPS_en_arriere * avancer_voiture_z());
+
                 break;
 
             case TOUCHE_Q:
@@ -82,6 +105,12 @@ void touche_pressee(unsigned char key, int x, int y)
                 // Mettre à jour la direction de la caméra pour qu'elle regarde vers l'avant de la voiture
                 camera_orientation_x = sin((voiture_orientation * PI) / 180);
                 camera_orientation_z = cos((voiture_orientation * PI) / 180);
+
+                // Calcul des coordonnées de la caméra TPS
+                camera_TPS_x = voiture_x - (TPS_en_arriere * avancer_voiture_x());
+                camera_TPS_y = voiture_y + TPS_au_dessus;
+                camera_TPS_z = voiture_z - (TPS_en_arriere * avancer_voiture_z());
+
                 break;
 
             case TOUCHE_D:
@@ -91,26 +120,27 @@ void touche_pressee(unsigned char key, int x, int y)
                 // Mettre à jour la direction de la caméra pour qu'elle regarde vers l'avant de la voiture
                 camera_orientation_x = sin((voiture_orientation * PI) / 180);
                 camera_orientation_z = cos((voiture_orientation * PI) / 180);
+
+                // Calcul des coordonnées de la caméra TPS
+                camera_TPS_x = voiture_x - (TPS_en_arriere * avancer_voiture_x());
+                camera_TPS_y = voiture_y + TPS_au_dessus;
+                camera_TPS_z = voiture_z - (TPS_en_arriere * avancer_voiture_z());
+
                 break;
+
 
         //####### DEPLACEMENT CAMERA #######
             case TOUCHE_T:
-                camera_z += 0.5;
+                camera_FPS_z += 0.5;
                 break;
             case TOUCHE_G:
-                camera_z -= 0.5;
+                camera_FPS_z -= 0.5;
                 break;
             case TOUCHE_F:
-                camera_x += 0.5;
+                camera_FPS_x += 0.5;
                 break;
             case TOUCHE_H:
-                camera_x -= 0.5;
-                break;
-            case TOUCHE_UP:
-                camera_y -= 0.5;
-                break;
-            case TOUCHE_DOWN:
-                camera_y += 0.5;
+                camera_FPS_x -= 0.5;
                 break;
     }	
 }
