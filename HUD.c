@@ -21,7 +21,7 @@ void drawHUD()
             glLoadIdentity();
 
             // dessin du HUD
-            glColor3f(1,1,0);
+            glColor3f(1,1,1);
             char buffer[256];
 
             //####### Nombre de tours #######
@@ -34,8 +34,25 @@ void drawHUD()
                 updateChrono();
 
                 glRasterPos2f(10,windowHeight-50);
-                sprintf(buffer,"Chronometre : %.2f s", chronometre);
+                sprintf(buffer,"Chronometre : %.3f s", chronometre);
                 glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
+            
+            //####### Checkpoints #######
+                glRasterPos2f(10,windowHeight-80);
+                sprintf(buffer,"Checkpoint actuel : %d", (Current_CP % NOMBRE_CHECKPOINTS));
+                glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
+
+            //####### Victoire #######
+
+                float win_message_width = windowWidth/4.0;
+
+                if (victoire){
+                    glRasterPos2f((windowWidth/2.0 - win_message_width/2.0) , (windowHeight/2.0));
+                    sprintf(buffer,"Victoire ! Temps : %.3f", victory_time);
+                    glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
+                }
+            
+
         }
         glPopMatrix();
         glMatrixMode(GL_PROJECTION);

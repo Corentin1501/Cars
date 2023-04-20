@@ -11,17 +11,19 @@ const int NOMBRE_TOURS_POUR_GAGNER = 5 ;
 const int NOMBRE_CHECKPOINTS       = 8 ;
 
 int Current_Lap = 1;
+int Current_CP = 0;
 bool liste_checkpoints[8] = {false, false, false, false, false, false, false, false};
+
+float start_time = 0;
+float victory_time = 0;
+bool victory_time_calculated = false;
+float chronometre;
+
+bool victoire = false;
 
 //#####################################################
 //#                    CHRONOMETRE                    #
 //#####################################################
-
-    #include <time.h>
-    #include <string.h>
-
-    float start_time = 0;
-    float chronometre;
 
     /*
         Met à jour le chronomètre et le met en secondes
@@ -55,7 +57,14 @@ bool liste_checkpoints[8] = {false, false, false, false, false, false, false, fa
     */
     bool verifVictoire()
     {
-        return Current_Lap > NOMBRE_TOURS_POUR_GAGNER;
+        victoire = Current_Lap > NOMBRE_TOURS_POUR_GAGNER;
+
+        if(victoire && !victory_time_calculated){
+            victory_time = chronometre;
+            victory_time_calculated = true;         // booléen necessaire sinon le temps de victoire afficher simplement le chrono qui tourne
+        } 
+
+        return victoire;
     }
 
 //#####################################################
@@ -82,13 +91,12 @@ bool liste_checkpoints[8] = {false, false, false, false, false, false, false, fa
     void activateCheckPoints(int numeroCP)
     {
         liste_checkpoints[numeroCP] = true;
+        ++Current_CP;
 
         // verification si ça fait un tour
         if(tourcompleted())
         {
             ++Current_Lap;
-            printf("tour complété ! tour n°%d\n", Current_Lap);
-
             for (int i = 0; i < NOMBRE_CHECKPOINTS; i++) liste_checkpoints[i] = false;
         }
     }
@@ -125,7 +133,7 @@ bool liste_checkpoints[8] = {false, false, false, false, false, false, false, fa
     {
         for (int i = 0; i < NOMBRE_CHECKPOINTS; i++){
             if(CP_passe(i) && checkpoint_dans_ordre(i) && !liste_checkpoints[i]){
-                printf("checkpoint %d passé !\n", i); activateCheckPoints(i);
+                activateCheckPoints(i);
             }
         }
     }

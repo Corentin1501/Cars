@@ -45,13 +45,13 @@ void touche_pressee(unsigned char key, int x, int y)
         //####### DEPLACEMENT VOITURE #######
 
             case TOUCHE_Z:
-                voiture_x += 0.2 * sin((voiture_orientation * 3.141592) / 180);
-                voiture_z += 0.2 * cos((voiture_orientation * 3.141592) / 180);
+                voiture_x += 0.6 * sin((voiture_orientation * 3.141592) / 180);
+                voiture_z += 0.6 * cos((voiture_orientation * 3.141592) / 180);
                 break;
 
             case TOUCHE_S:
-                voiture_x -= 0.2 * sin((voiture_orientation * 3.141592) / 180);
-                voiture_z -= 0.2 * cos((voiture_orientation * 3.141592) / 180);
+                voiture_x -= 0.3 * sin((voiture_orientation * 3.141592) / 180);
+                voiture_z -= 0.3 * cos((voiture_orientation * 3.141592) / 180);
                 break;
 
             case TOUCHE_Q:
