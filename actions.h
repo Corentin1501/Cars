@@ -12,6 +12,7 @@
 
 #include <GL/glut.h>    
 
+void touche_relachee(unsigned char key, int x, int y);
 
 void touche_pressee(unsigned char key, int x, int y);
 
