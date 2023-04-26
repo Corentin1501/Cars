@@ -1,7 +1,7 @@
 #include "actions.h"
 #include "stdbool.h"    // pour utiliser les booléans
 #include <time.h>
-#include "physique.c"
+#include "../Modele/physique.c"
 
 extern int blend;
 extern int light;

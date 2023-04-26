@@ -7,9 +7,9 @@
 #include <unistd.h>
 #include <stdio.h> 
 #include <stdlib.h> 
-#include "Controlleur/touches.h"
+#include "../Controlleur/touches.h"
 #include "lumiere.h"
-#include "Controlleur/actions.h"
+#include "../Controlleur/actions.h"
 
 
 

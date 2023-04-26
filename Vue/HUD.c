@@ -1,6 +1,6 @@
 #include "stdbool.h"
 
-#include "Regles.c" // pour le nombre de tours
+#include "../Modele/Regles.c" // pour le nombre de tours
 
 
 void glutBitmapString(void *font, const unsigned char *string);

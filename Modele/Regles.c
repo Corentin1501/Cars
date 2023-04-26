@@ -1,5 +1,5 @@
-#include "init.h"
-#include "Vue/VM_init.h"
+#include "../Vue/init.h"
+#include "../Vue/VM_init.h"
 #include "stdbool.h"
 
 // Coordonnées de la voiture

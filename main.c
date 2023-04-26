@@ -6,18 +6,25 @@
 
     OU 
 
-    gcc opmat.c actions.c VM_init.c init.c ppm.c Modele.c Regles.c HUD.c physique.c -c; gcc main.c actions.o axes.o init.o lumiere.o switch_blend.o switch_light.o VM_init.o opmat.o ppm.o -lm -lGL -lGLU -lglut -o executable -lassimp
+gcc Modele/opmat.c Controlleur/actions.c Vue/VM_init.c Vue/init.c Vue/ppm.c Modele/Regles.c Vue/HUD.c Modele/physique.c -c; gcc main.c Controlleur/actions.o Vue/axes.o Vue/init.o Vue/switch_blend.o Vue/switch_light.o Vue/VM_init.o Vue/ppm.o Modele/opmat.o -lm -lGL -lGLU -lglut -o test -lassimp
+
+move_object_files:
+	mv *.o Objet/
+
+    	$(CC) Modele/opmat.c Controlleur/actions.c Vue/VM_init.c Vue/init.c Vue/ppm.c Modele/Regles.c Vue/HUD.c Modele/physique.c -c;$(CC) main.c Objet/actions.o Objet/axes.o Objet/init.o Objet/switch_blend.o Objet/switch_light.o Objet/VM_init.o Objet/ppm.o Objet/opmat.o $(GL) -o $@ $(ASS)
+
+
 */
 
 
 #include "Vue/init.h"
-#include "axes.h"
+#include "Vue/axes.h"
 #include "Vue/VM_init.h"
 #include "Modele/opmat.h"
 #include "stdbool.h"
 #include "Vue/ppm.h"
 
-#include "Modele.c"
+#include "Vue/Modele.c"
 #include "Vue/HUD.c"
 
 float voiture_x = 9.625;  
