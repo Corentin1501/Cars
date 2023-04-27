@@ -33,7 +33,7 @@ bool gameFinished = false;
 void faire_la_scene()
 {
     struct modele voiture = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Voiture/voiture_sans_fenetres.obj");
-    struct modele stade = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Stade_et_pisteV4.obj");
+    struct modele stade = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Stade_et_pisteV5.obj");
 
 
 
@@ -66,6 +66,8 @@ void faire_la_scene()
             gameFinished = true;
             printf("Course finie !\n");
         } 
+
+        // verif_dehors();
 
         glTranslatef(voiture_x, voiture_y, voiture_z);
         // printf("(%f,%f,%f)\n",voiture_x, voiture_y, voiture_z);

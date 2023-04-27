@@ -18,4 +18,6 @@ void touche_pressee(unsigned char key, int x, int y);
 
 void touche(int touche, int x, int y);
 
+void verif_dehors();
+
 #endif

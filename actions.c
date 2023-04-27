@@ -31,9 +31,12 @@ extern bool vue_ARR;
     extern float voiture_orientation;   
 
 const float PI = 3.14159265359;
+const int ECHELLE_STADE_OUT = 3;
 
 int TPS_en_arriere = 8; // nombre de blocs derriere la voiture où est la caméra TPS
 int TPS_au_dessus = 1.5; // nombre de blocs derriere la voiture où est la caméra TPS
+
+
 
 float avancer_voiture_x(){ return 0.6 * sin((voiture_orientation * PI) / 180); }
 float avancer_voiture_z(){ return 0.6 * cos((voiture_orientation * PI) / 180); }
@@ -159,10 +162,10 @@ void touche_pressee(unsigned char key, int x, int y)
 
             //####### DEPLACEMENT VOITURE #######
 
-                case TOUCHE_Z: avancer_voiture(); break;
-                case TOUCHE_S: reculer_voiture(); break;
-                case TOUCHE_Q: tourner_voiture_gauche(); break;
-                case TOUCHE_D: tourner_voiture_droite(); break;
+                case TOUCHE_Z: verif_dehors(); avancer_voiture(); break;
+                case TOUCHE_S: verif_dehors(); reculer_voiture(); break;
+                case TOUCHE_Q: verif_dehors(); tourner_voiture_gauche(); break;
+                case TOUCHE_D: verif_dehors(); tourner_voiture_droite(); break;
 
             //####### DEPLACEMENT CAMERA #######
                 case TOUCHE_T: camera_FPS_z += 0.5; break;
@@ -192,3 +195,23 @@ void touche(int touche, int x, int y)
 	// 		break;
     // }
 }
+
+//#####################################################
+//#                 SORTIES DE PISTE                  #
+//#####################################################
+
+    void verif_dehors()
+    {
+        if (voiture_x > 7 * ECHELLE_STADE_OUT) voiture_x =  7 * ECHELLE_STADE_OUT;
+        else if (voiture_x < - 7 * ECHELLE_STADE_OUT) voiture_x =  - 7 * ECHELLE_STADE_OUT;
+
+        updateCameraTPS();
+    }
+
+
+
+
+
+
+
+
