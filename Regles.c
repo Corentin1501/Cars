@@ -9,6 +9,7 @@ float voiture_z;
 
 const int NOMBRE_TOURS_POUR_GAGNER = 5 ;
 const int NOMBRE_CHECKPOINTS       = 8 ;
+const float ECHELLE_STADE_CP = 3;
 
 int Current_Lap = 1;
 int Current_CP = 0;
@@ -20,6 +21,7 @@ bool victory_time_calculated = false;
 float chronometre;
 
 bool victoire = false;
+
 
 //#####################################################
 //#                    CHRONOMETRE                    #
@@ -110,14 +112,14 @@ bool victoire = false;
     {
         switch (numeroCP)
         {
-            case 0: return ((0 <= voiture_x)        && (voiture_x <= 7.5)       && (voiture_z <= -16.5));    break;
-            case 1: return ((voiture_x <= 0)        && (-24.05 <= voiture_z)      && (voiture_z <= -16.5));   break;
-            case 2: return ((-7.5 <= voiture_x)     && (voiture_x <= 0)         && (-16.5 <= voiture_z));    break;
-            case 3: return ((-13.375 <= voiture_x)  && (voiture_x <= -5.875)    && (0 <= voiture_z));       break;
-            case 4: return ((-7.5 <= voiture_x)     && (voiture_x <= 0)         && (16.5 <= voiture_z));   break;
-            case 5: return ((0 <= voiture_x)        && (16.55 <= voiture_z)    && (voiture_z <= 24.05));  break;
-            case 6: return ((0 <= voiture_x)        && (voiture_x <= 7.5)       && (voiture_z <= 16.5));   break;
-            case 7: return ((5.875 <= voiture_x)    && (voiture_x <= 13.375)    && (voiture_z <= 0));       break;
+            case 0: return ((0 <= voiture_x)        && (voiture_x <= 5.5*ECHELLE_STADE_CP)       && (voiture_z <= -7.5*ECHELLE_STADE_CP));    break;
+            case 1: return ((voiture_x <= 0)        && (-12.5*ECHELLE_STADE_CP <= voiture_z)     && (voiture_z <= -7.5*ECHELLE_STADE_CP));    break;
+            case 2: return ((-5.5*ECHELLE_STADE_CP <= voiture_x)     && (voiture_x <= 0)         && (-7.5*ECHELLE_STADE_CP <= voiture_z));    break;
+            case 3: return ((-7.25*ECHELLE_STADE_CP <= voiture_x)    && (voiture_x <= -3.25*ECHELLE_STADE_CP)     && (0 <= voiture_z));       break;
+            case 4: return ((-5.5*ECHELLE_STADE_CP <= voiture_x)     && (voiture_x <= 0)         && (7.5*ECHELLE_STADE_CP <= voiture_z));     break;
+            case 5: return ((0 <= voiture_x)        && (7.5*ECHELLE_STADE_CP <= voiture_z)       && (voiture_z <= 12.5*ECHELLE_STADE_CP));    break;
+            case 6: return ((0 <= voiture_x)        && (voiture_x <= 5.5*ECHELLE_STADE_CP)       && (voiture_z <= 7.5*ECHELLE_STADE_CP));     break;
+            case 7: return ((3*ECHELLE_STADE_CP <= voiture_x)        && (voiture_x <= 7.25*ECHELLE_STADE_CP)      && (voiture_z <= 0));       break;
             
             default:    return false;   break;
         }

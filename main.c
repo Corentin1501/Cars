@@ -20,7 +20,9 @@
 #include "Modele.c"
 #include "HUD.c"
 
-float voiture_x = 9.625;  
+const float ECHELLE_STADE = 3;
+
+float voiture_x = 9.625 * 1.5;  
 float voiture_y = 0;               
 float voiture_z = 0;  
 float voiture_orientation = 180;  
@@ -34,21 +36,30 @@ void faire_la_scene()
     struct modele stade = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Stade_et_pisteV4.obj");
 
 
-    glColor3f(1,1,0);
 
-    float echelleStade = 3;
 
     glPushMatrix(); // Stade
     {
+        glColor3f(1,1,1); // couleur du stade
         glTranslatef(0,-1,0);
-        glScalef(echelleStade,echelleStade,echelleStade);
+        glScalef(ECHELLE_STADE,ECHELLE_STADE,ECHELLE_STADE);
         afficherModele(stade);
     }
     glPopMatrix();
+    // glPushMatrix(); // Sol plat
+    // {
+    //     glColor3f(1,1,1);
+    //     glTranslatef(0,-1,0);
+    //     glScalef(60,0.1,60);
+    //     glutSolidCube(1);
+    // }
+    // glPopMatrix();
+    
 
     glPushMatrix(); // Voiture
     {
-        glColor3f(255,144/255.0,144/255.0);
+        // glColor3f(255,144/255.0,144/255.0); // couleur de la voiture
+        glColor3f(1,1,1); // couleur de la voiture
         verifier_checkpoints();
 
         if (verifVictoire() && !gameFinished){
@@ -57,6 +68,7 @@ void faire_la_scene()
         } 
 
         glTranslatef(voiture_x, voiture_y, voiture_z);
+        // printf("(%f,%f,%f)\n",voiture_x, voiture_y, voiture_z);
         glRotatef(voiture_orientation,0,1,0);
 
         afficherModele(voiture);

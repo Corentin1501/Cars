@@ -3,27 +3,29 @@
 #include "stdbool.h"
 #include "opmat.h"
 
-// angles de la caméra
-float anglex = 0.0f;
-float angley = 0.0f;
+//########## CAMERA ##########
 
-// coordonnées de la caméra
-    // vue FPS
-        float camera_FPS_x = 9.625;
-        float camera_FPS_y = 0.6; 
-        float camera_FPS_z = 0;
+    // angles de la caméra
+    float anglex = 0.0f;
+    float angley = 0.0f;
 
-    // vue TPS
-        float camera_TPS_x = 9.625;
-        float camera_TPS_y = 1;
-        float camera_TPS_z = 4.8;
+    // coordonnées de la caméra
+        // vue FPS
+            float camera_FPS_x = 9.625*1.5;
+            float camera_FPS_y = 0.6*1.5; 
+            float camera_FPS_z = 0;
 
-float camera_orientation_x = 0;
-float camera_orientation_z = -5;
+        // vue TPS
+            float camera_TPS_x = 9.625*1.5;
+            float camera_TPS_y = 1*1.5;
+            float camera_TPS_z = 4.8*1.5;
 
-bool vue_FPS = true;
-bool vue_TPS = false;
-bool vue_ARR = false;
+    float camera_orientation_x = 0;
+    float camera_orientation_z = -5;
+
+    bool vue_FPS = true;
+    bool vue_TPS = false;
+    bool vue_ARR = false;
 
 void VM_init(){
 
@@ -98,49 +100,6 @@ void VM_init(){
         //     glLightfv(GL_LIGHT0, GL_SPECULAR, light_0_specular); 
         //     glLightfv(GL_LIGHT0, GL_POSITION, light_0_position); 
 
-        //######### LAMPADAIRE 1 (POSITIONNELLE) ######### rouge x
-
-            GLfloat light_1_diffuse[]  = {   1,   0,   0,  1 };
-            GLfloat light_1_position[] = { (14.5*echelleStade),  hauteurLampadaire,   0,  1 };
-
-            glEnable(GL_LIGHT1);
-            glLightfv(GL_LIGHT1, GL_AMBIENT,  light_ambient);
-            glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular);
-            glLightfv(GL_LIGHT1, GL_DIFFUSE,  light_1_diffuse);
-            glLightfv(GL_LIGHT1, GL_POSITION, light_1_position);
-
-        //######### LAMPADAIRE 2 (POSITIONNELLE) ######### orange x
-
-            GLfloat light_2_diffuse[]  = { 1, 0.5, 0, 1 };
-            GLfloat light_2_position[] = { (11*echelleStade), hauteurLampadaire, (-15*echelleStade), 1 };
-
-            glEnable(GL_LIGHT2);
-            glLightfv(GL_LIGHT2, GL_AMBIENT,  light_ambient);
-            glLightfv(GL_LIGHT2, GL_SPECULAR, light_specular);
-            glLightfv(GL_LIGHT2, GL_DIFFUSE,  light_2_diffuse);
-            glLightfv(GL_LIGHT2, GL_POSITION, light_2_position);
-
-        //######### LAMPADAIRE 3 (POSITIONNELLE) ######### jaune x
-
-            GLfloat light_3_diffuse[]  = { 1, 1, 0, 1 };
-            GLfloat light_3_position[] = { 0, hauteurLampadaire, (-25*echelleStade), 1 };
-
-            glEnable(GL_LIGHT3);
-            glLightfv(GL_LIGHT3, GL_AMBIENT,  light_ambient);
-            glLightfv(GL_LIGHT3, GL_SPECULAR, light_specular);
-            glLightfv(GL_LIGHT3, GL_DIFFUSE,  light_3_diffuse);
-            glLightfv(GL_LIGHT3, GL_POSITION, light_3_position);
-
-        //######### LAMPADAIRE 4 (POSITIONNELLE) ######### vert x
-
-            GLfloat light_4_diffuse[]  = { 0, 1, 0, 1 };
-            GLfloat light_4_position[] = { (-11*echelleStade), hauteurLampadaire, (-15*echelleStade), 1 };
-
-            glEnable(GL_LIGHT4);
-            glLightfv(GL_LIGHT4, GL_AMBIENT,  light_ambient);
-            glLightfv(GL_LIGHT4, GL_SPECULAR, light_specular);
-            glLightfv(GL_LIGHT4, GL_DIFFUSE,  light_4_diffuse);
-            glLightfv(GL_LIGHT4, GL_POSITION, light_4_position);
 
         //######### LAMPADAIRE 5 (POSITIONNELLE) ######### cyan x
 
@@ -153,37 +112,5 @@ void VM_init(){
             glLightfv(GL_LIGHT5, GL_DIFFUSE,  light_5_diffuse);
             glLightfv(GL_LIGHT5, GL_POSITION, light_5_position);
 
-        //######### LAMPADAIRE 6 (POSITIONNELLE) ######### bleu x
-
-            GLfloat light_6_diffuse[]  = { 0, 0, 1, 1 };
-            GLfloat light_6_position[] = { (-11*echelleStade), hauteurLampadaire, (15*echelleStade), 1 };
-
-            glEnable(GL_LIGHT6);
-            glLightfv(GL_LIGHT6, GL_AMBIENT,  light_ambient);
-            glLightfv(GL_LIGHT6, GL_SPECULAR, light_specular);
-            glLightfv(GL_LIGHT6, GL_DIFFUSE,  light_6_diffuse);
-            glLightfv(GL_LIGHT6, GL_POSITION, light_6_position);
-
-        //######### LAMPADAIRE 7 (POSITIONNELLE) ######### violet x
-
-            GLfloat light_7_diffuse[]  = { 0.5, 0, 1, 1 };
-            GLfloat light_7_position[] = { 0, hauteurLampadaire, (25*echelleStade), 1 };
-
-            glEnable(GL_LIGHT7);
-            glLightfv(GL_LIGHT7, GL_AMBIENT,  light_ambient);
-            glLightfv(GL_LIGHT7, GL_SPECULAR, light_specular);
-            glLightfv(GL_LIGHT7, GL_DIFFUSE,  light_7_diffuse);
-            glLightfv(GL_LIGHT7, GL_POSITION, light_7_position);
-
-        //######### LAMPADAIRE 8 (POSITIONNELLE) ######### rose
-
-            GLfloat light_8_diffuse[]  = { 1, 0, 1, 1 };
-            GLfloat light_8_position[] = { (11*echelleStade), hauteurLampadaire, (15*echelleStade), 1 };
-
-            glEnable(GL_LIGHT0);    // pas assez de lumiere donc la 8 est la 0
-            glLightfv(GL_LIGHT0, GL_AMBIENT,  light_ambient);
-            glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-            glLightfv(GL_LIGHT0, GL_DIFFUSE,  light_8_diffuse);
-            glLightfv(GL_LIGHT0, GL_POSITION, light_8_position);
 
 }
