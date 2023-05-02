@@ -4,12 +4,12 @@
 /* ascii codes for various special keys */
 
 #include "touches.h"
-#include "switch_blend.h"
-#include "switch_light.h"
+
+#include "../Vue/switch_blend.h"
+#include "../Vue/switch_light.h"
+#include "../Modele/opmat.h"
+
 #include <stdlib.h>
-#include "opmat.h"
-
-
 #include <GL/glut.h>    
 
 void touche_relachee(unsigned char key, int x, int y);

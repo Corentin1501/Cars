@@ -10,15 +10,16 @@
 */
 
 
-#include "init.h"
-#include "axes.h"
-#include "VM_init.h"
-#include "opmat.h"
-#include "stdbool.h"
-#include "ppm.h"
+#include "Modele/opmat.h"
+#include "Modele/Modele.c"
 
-#include "Modele.c"
-#include "HUD.c"
+#include "Vue/init.h"
+#include "Vue/axes.h"
+#include "Vue/VM_init.h"
+#include "Vue/HUD.c"
+#include "Vue/ppm.h"
+
+#include "stdbool.h"
 
 const float ECHELLE_STADE = 3;
 

@@ -1,7 +1,7 @@
 #include "VM_init.h"
 #include <stdio.h>
 #include "stdbool.h"
-#include "opmat.h"
+#include "../Modele/opmat.h"
 
 //########## CAMERA ##########
 
