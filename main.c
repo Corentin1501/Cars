@@ -28,53 +28,58 @@ float voiture_orientation = 180;
 
 bool gameFinished = false;
 
+GLuint liste_affichage_voiture; // Créer la liste d'affichage pour la voiture
+GLuint liste_affichage_stade; // Créer la liste d'affichage pour le stade
 
-void faire_la_scene()
+
+
+void créer_la_scene()
 {
-    struct modele voiture = creerModele("/home/etud/Documents/S6/STAGE/Cars/Vue/modeles-blender/Voiture/voiture_sans_fenetres.obj");
-    struct modele stade = creerModele("/home/etud/Documents/S6/STAGE/Cars/Vue/modeles-blender/Stade/Stade_et_piste_version_finale.obj");
+
+    //##################################################
+    //             LISTE AFFICHAGE VOITURE            //
+    //##################################################
+
+        liste_affichage_voiture = glGenLists(1); // Créer la liste d'affichage pour la voiture
+        glNewList(liste_affichage_voiture, GL_COMPILE); // Début de l'enregistrement de la liste
+            struct modele voiture = creerModele("/home/etud/Documents/S6/STAGE/Cars/Vue/modeles-blender/Voiture/voiture_sans_fenetres.obj");
+            glPushMatrix(); // Voiture
+            {
+                glColor3f(1,1,1); // couleur de la voiture
+                verifier_checkpoints();
+
+                if (verifVictoire() && !gameFinished){
+                    gameFinished = true;
+                    printf("Course finie !\n");
+                } 
+                // verif_dehors();
+
+                glTranslatef(voiture_x, voiture_y, voiture_z);
+                glRotatef(voiture_orientation,0,1,0);
+
+                afficherModele(voiture);
+            }
+            glPopMatrix();
+        glEndList(); // Fin de l'enregistrement de la liste
+
+    //##################################################
+    //              LISTE AFFICHAGE STADE             //
+    //##################################################
+
+        liste_affichage_stade = glGenLists(1); // Créer une nouvelle liste d'affichage
+        glNewList(liste_affichage_stade, GL_COMPILE); // Début de l'enregistrement de la liste
+            struct modele stade = creerModele("/home/etud/Documents/S6/STAGE/Cars/Vue/modeles-blender/Stade/Stade_et_piste_version_finale.obj");
+            glPushMatrix(); // Stade
+        {
+            glColor3f(1,1,1); // couleur du stade
+            glTranslatef(0,-1,0);
+            glScalef(ECHELLE_STADE,ECHELLE_STADE,ECHELLE_STADE);
+            afficherModele(stade);
+        }
+        glPopMatrix();
+        glEndList(); // Fin de l'enregistrement de la liste
 
 
-
-
-    glPushMatrix(); // Stade
-    {
-        glColor3f(1,1,1); // couleur du stade
-        glTranslatef(0,-1,0);
-        glScalef(ECHELLE_STADE,ECHELLE_STADE,ECHELLE_STADE);
-        afficherModele(stade);
-    }
-    glPopMatrix();
-    // glPushMatrix(); // Sol plat
-    // {
-    //     glColor3f(1,1,1);
-    //     glTranslatef(0,-1,0);
-    //     glScalef(60,0.1,60);
-    //     glutSolidCube(1);
-    // }
-    // glPopMatrix();
-    
-
-    glPushMatrix(); // Voiture
-    {
-        // glColor3f(255,144/255.0,144/255.0); // couleur de la voiture
-        glColor3f(1,1,1); // couleur de la voiture
-        verifier_checkpoints();
-
-        if (verifVictoire() && !gameFinished){
-            gameFinished = true;
-            printf("Course finie !\n");
-        } 
-
-        // verif_dehors();
-
-        glTranslatef(voiture_x, voiture_y, voiture_z);
-        // printf("(%f,%f,%f)\n",voiture_x, voiture_y, voiture_z);
-        glRotatef(voiture_orientation,0,1,0);
-
-        afficherModele(voiture);
-    }
-    glPopMatrix();
 
     aiReleaseImport(voiture.scene);
     aiReleaseImport(stade.scene);
@@ -85,7 +90,14 @@ GLvoid Modelisation()
 {
     VM_init();
 
-    faire_la_scene();
+    créer_la_scene();
+
+    //------ Affichage de la scène ------
+
+        glCallList(liste_affichage_stade); // Afficher le stade
+        glCallList(liste_affichage_voiture); // Afficher la voiture
+        
+    //-----------------------------------
 
     axes();
 
