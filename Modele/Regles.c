@@ -1,25 +1,22 @@
+#include "Regles.h"
+
 #include "../Vue/init.h"
 #include "../Vue/VM_init.h"
 
 #include "stdbool.h"
 
-// Coordonnées de la voiture
-float voiture_x;              
-float voiture_y;               
-float voiture_z; 
-
 const int NOMBRE_TOURS_POUR_GAGNER = 5 ;
 const int NOMBRE_CHECKPOINTS       = 8 ;
-const float ECHELLE_STADE_CP = 3;
+const float ECHELLE_STADE = 3;
 
 int Current_Lap = 1;
 int Current_CP = 0;
 bool liste_checkpoints[8] = {false, false, false, false, false, false, false, false};
 
+float chronometre;
 float start_time = 0;
 float victory_time = 0;
 bool victory_time_calculated = false;
-float chronometre;
 
 bool victoire = false;
 
@@ -113,14 +110,14 @@ bool victoire = false;
     {
         switch (numeroCP)
         {
-            case 0: return ((0 <= voiture_x)        && (voiture_x <= 5.5*ECHELLE_STADE_CP)       && (voiture_z <= -7.5*ECHELLE_STADE_CP));    break;
-            case 1: return ((voiture_x <= 0)        && (-12.5*ECHELLE_STADE_CP <= voiture_z)     && (voiture_z <= -7.5*ECHELLE_STADE_CP));    break;
-            case 2: return ((-5.5*ECHELLE_STADE_CP <= voiture_x)     && (voiture_x <= 0)         && (-7.5*ECHELLE_STADE_CP <= voiture_z));    break;
-            case 3: return ((-7.25*ECHELLE_STADE_CP <= voiture_x)    && (voiture_x <= -3.25*ECHELLE_STADE_CP)     && (0 <= voiture_z));       break;
-            case 4: return ((-5.5*ECHELLE_STADE_CP <= voiture_x)     && (voiture_x <= 0)         && (7.5*ECHELLE_STADE_CP <= voiture_z));     break;
-            case 5: return ((0 <= voiture_x)        && (7.5*ECHELLE_STADE_CP <= voiture_z)       && (voiture_z <= 12.5*ECHELLE_STADE_CP));    break;
-            case 6: return ((0 <= voiture_x)        && (voiture_x <= 5.5*ECHELLE_STADE_CP)       && (voiture_z <= 7.5*ECHELLE_STADE_CP));     break;
-            case 7: return ((3*ECHELLE_STADE_CP <= voiture_x)        && (voiture_x <= 7.25*ECHELLE_STADE_CP)      && (voiture_z <= 0));       break;
+            case 0: return ((0 <= voiture_x)        && (voiture_x <= 5.5*ECHELLE_STADE)       && (voiture_z <= -7.5*ECHELLE_STADE));    break;
+            case 1: return ((voiture_x <= 0)        && (-12.5*ECHELLE_STADE <= voiture_z)     && (voiture_z <= -7.5*ECHELLE_STADE));    break;
+            case 2: return ((-5.5*ECHELLE_STADE <= voiture_x)     && (voiture_x <= 0)         && (-7.5*ECHELLE_STADE <= voiture_z));    break;
+            case 3: return ((-7.25*ECHELLE_STADE <= voiture_x)    && (voiture_x <= -3.25*ECHELLE_STADE)     && (0 <= voiture_z));       break;
+            case 4: return ((-5.5*ECHELLE_STADE <= voiture_x)     && (voiture_x <= 0)         && (7.5*ECHELLE_STADE <= voiture_z));     break;
+            case 5: return ((0 <= voiture_x)        && (7.5*ECHELLE_STADE <= voiture_z)       && (voiture_z <= 12.5*ECHELLE_STADE));    break;
+            case 6: return ((0 <= voiture_x)        && (voiture_x <= 5.5*ECHELLE_STADE)       && (voiture_z <= 7.5*ECHELLE_STADE));     break;
+            case 7: return ((3*ECHELLE_STADE <= voiture_x)        && (voiture_x <= 7.25*ECHELLE_STADE)      && (voiture_z <= 0));       break;
             
             default:    return false;   break;
         }

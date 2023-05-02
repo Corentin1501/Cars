@@ -21,8 +21,6 @@
 
 #include "stdbool.h"
 
-const float ECHELLE_STADE = 3;
-
 float voiture_x = 9.625 * 1.5;  
 float voiture_y = 0;               
 float voiture_z = 0;  
@@ -33,8 +31,8 @@ bool gameFinished = false;
 
 void faire_la_scene()
 {
-    struct modele voiture = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Voiture/voiture_sans_fenetres.obj");
-    struct modele stade = creerModele("/home/etud/Documents/S6/STAGE/Cars/modeles/Stade_et_pisteV5.obj");
+    struct modele voiture = creerModele("/home/etud/Documents/S6/STAGE/Cars/Vue/modeles-blender/Voiture/voiture_sans_fenetres.obj");
+    struct modele stade = creerModele("/home/etud/Documents/S6/STAGE/Cars/Vue/modeles-blender/Stade/Stade_et_piste_version_finale.obj");
 
 
 
