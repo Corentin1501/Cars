@@ -1,9 +1,16 @@
 #include "actions.h"
 #include "stdbool.h"    // pour utiliser les booléans
 #include <time.h>
+#include "../Modele/physique.c"
 
 extern int blend;
 extern int light;
+
+//vitesse et time step
+extern float acceleration;
+extern float vitesse;
+extern float time_step;
+
 
 // tableau des touches (pour appuyer sur plusieurs touches en même temps)
     bool etatTouches[256];
@@ -36,10 +43,16 @@ const int ECHELLE_STADE_OUT = 3;
 int TPS_en_arriere = 8; // nombre de blocs derriere la voiture où est la caméra TPS
 int TPS_au_dessus = 1.5; // nombre de blocs derriere la voiture où est la caméra TPS
 
-
-
-float avancer_voiture_x(){ return 0.6 * sin((voiture_orientation * PI) / 180); }
-float avancer_voiture_z(){ return 0.6 * cos((voiture_orientation * PI) / 180); }
+float avancer_voiture_x(){ 
+    accelerate();
+    update_vitesse();
+    return (vitesse*time_step) * sin((voiture_orientation * PI) / 180);
+     }
+float avancer_voiture_z(){ 
+    accelerate();
+    update_vitesse();
+    return (vitesse*time_step) * cos((voiture_orientation * PI) / 180); 
+}
 float reculer_voiture_x(){ return 0.3 * sin((voiture_orientation * PI) / 180); }
 float reculer_voiture_z(){ return 0.3 * cos((voiture_orientation * PI) / 180); }
 
