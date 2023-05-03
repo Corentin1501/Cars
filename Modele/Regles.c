@@ -7,7 +7,7 @@
 
 const int NOMBRE_TOURS_POUR_GAGNER = 5 ;
 const int NOMBRE_CHECKPOINTS       = 8 ;
-const float ECHELLE_STADE = 3;
+const float ECHELLE_STADE = 6;
 
 int Current_Lap = 1;
 int Current_CP = 0;

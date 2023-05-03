@@ -1,0 +1,13 @@
+# Blender 3.5.0 MTL File: 'Piste_seul.blend'
+# www.blender.org
+
+newmtl Matériau.001
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd /home/etud/Documents/S6/STAGE/asphalt 2/textures/brushed_concrete_diff_4k.jpg
+map_Ns /home/etud/Documents/S6/STAGE/asphalt 2/textures/brushed_concrete_rough_4k.exr
+map_Bump -bm 6.300000 /home/etud/Documents/S6/STAGE/asphalt 2/textures/brushed_concrete_nor_gl_4k.exr

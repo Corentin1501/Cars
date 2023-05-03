@@ -30,7 +30,9 @@ bool gameFinished = false;
 
 GLuint liste_affichage_voiture; // Créer la liste d'affichage pour la voiture
 GLuint liste_affichage_stade; // Créer la liste d'affichage pour le stade
+GLuint liste_affichage_piste; // Créer la liste d'affichage pour la piste avec les textures
 
+GLuint textures[10];
 
 void créer_la_scene()
 {
@@ -72,8 +74,8 @@ void créer_la_scene()
 
         glNewList(liste_affichage_stade, GL_COMPILE); // Début de l'enregistrement de la liste
 
-            struct modele stade = creerModele("./Vue/modeles-blender/Stade/Stade_et_piste_avec_texture.obj");
-            chargerTextures(&stade);
+            struct modele stade = creerModele("./Vue/modeles-blender/Stade/Stade_plat.obj");
+            // chargerTextures(&stade);
             glPushMatrix(); // Stade
             {
                 glColor3f(1,1,1); // couleur du stade
@@ -86,10 +88,30 @@ void créer_la_scene()
 
         glEndList(); // Fin de l'enregistrement de la liste
 
+    //##################################################
+    //              LISTE AFFICHAGE PISTE             //
+    //##################################################
+
+        liste_affichage_piste = glGenLists(1); // Créer une nouvelle liste d'affichage
+
+        glNewList(liste_affichage_piste, GL_COMPILE); // Début de l'enregistrement de la liste
+
+            struct modele piste = creerModele("./Vue/modeles-blender/Stade/Piste/Piste_seul.obj");
+            glPushMatrix(); // Piste
+            {
+                glColor3f(1,1,1); // couleur de la piste
+                glTranslatef(0,-2,0);
+                glScalef(ECHELLE_STADE,ECHELLE_STADE,ECHELLE_STADE);
+                afficherModeleAvecTextures(piste);
+            }
+            glPopMatrix();
+
+        glEndList(); // Fin de l'enregistrement de la liste
 
 
     aiReleaseImport(voiture.scene);
     aiReleaseImport(stade.scene);
+    aiReleaseImport(piste.scene);
 }
 
 
@@ -103,10 +125,9 @@ GLvoid Modelisation()
 
         glCallList(liste_affichage_stade); // Afficher le stade
         glCallList(liste_affichage_voiture); // Afficher la voiture
+        // glCallList(liste_affichage_piste); // Afficher la piste
 
     //-----------------------------------
-
-
 
     axes();
 

@@ -38,14 +38,14 @@ struct modele creerModele(const char* fichier){
 }
 
 // variables globales
-GLuint* textures;
+GLuint* textures_soil;
 int num_textures;
 
-// fonction pour charger les textures
+// fonction pour charger les textures_soil
 void chargerTextures(struct modele* modele) {
     // allouer de la mémoire pour les identifiants de texture
     num_textures = modele->scene->mNumMaterials;
-    textures = (GLuint*)malloc(sizeof(GLuint) * num_textures);
+    textures_soil = (GLuint*)malloc(sizeof(GLuint) * num_textures);
 
     for (unsigned int i = 0; i < modele->scene->mNumMaterials; ++i) {
         // charger l'image de texture
@@ -55,14 +55,14 @@ void chargerTextures(struct modele* modele) {
 
         if (id_texture == 0) {  // si la texture n'a pas été chargée correctement
             printf("Erreur lors du chargement de la texture : %s\n", SOIL_last_result());
-            textures[i] = 0;
+            textures_soil[i] = 0;
         } else {
             // configurer la texture
             glBindTexture(GL_TEXTURE_2D, id_texture);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-            textures[i] = id_texture;
+            textures_soil[i] = id_texture;
         }
     }
 }
@@ -122,7 +122,8 @@ void afficherModeleAvecTextures(struct modele modele){
 
     if (modele.scene)   // Vérifier que la structure de scène est valide
     { 
-        // Activer l'utilisation des textures
+        // Activer l'utilisation des textures_soil
+        // glBindTexture(GL_TEXTURE_2D,textures_soil[0]);
         glEnable(GL_TEXTURE_2D);
 
         for (unsigned int i = 0; i < modele.scene->mNumMeshes; ++i)
