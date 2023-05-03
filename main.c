@@ -23,6 +23,8 @@ move_object_files:
 #include "Vue/HUD.c"
 #include "Vue/ppm.h"
 
+#include "Modele/Modele.c"
+
 #include "stdbool.h"
 
 float voiture_x = 9.625 * 1.5;  

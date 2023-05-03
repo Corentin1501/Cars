@@ -50,9 +50,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
 
         glGenTextures(1,textures);
         TEXTURE_STRUCT * bitume = readPpm("./Vue/textures/bitume.ppm");
-        printf("test 1\n");
         glBindTexture(GL_TEXTURE_2D,textures[0]);
-        printf("test 2\n");
 
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
