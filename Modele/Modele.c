@@ -10,6 +10,8 @@
 
 #include <stdio.h>
 
+GLuint textures[10];
+
 struct modele {
     const struct aiScene* scene;  // Structure contenant la scène chargée
 };
@@ -36,38 +38,6 @@ struct modele creerModele(const char* fichier){
 
     return un_modele;  // Retourner l'objet modèle créé
 }
-
-// variables globales
-GLuint* textures_soil;
-int num_textures;
-
-// fonction pour charger les textures_soil
-void chargerTextures(struct modele* modele) {
-    // allouer de la mémoire pour les identifiants de texture
-    num_textures = modele->scene->mNumMaterials;
-    textures_soil = (GLuint*)malloc(sizeof(GLuint) * num_textures);
-
-    for (unsigned int i = 0; i < modele->scene->mNumMaterials; ++i) {
-        // charger l'image de texture
-        struct aiString chemin_texture;
-        aiGetMaterialString(modele->scene->mMaterials[i], AI_MATKEY_TEXTURE_DIFFUSE(0), &chemin_texture);
-        GLuint id_texture = SOIL_load_OGL_texture(chemin_texture.data, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-
-        if (id_texture == 0) {  // si la texture n'a pas été chargée correctement
-            printf("Erreur lors du chargement de la texture : %s\n", SOIL_last_result());
-            textures_soil[i] = 0;
-        } else {
-            // configurer la texture
-            glBindTexture(GL_TEXTURE_2D, id_texture);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-            textures_soil[i] = id_texture;
-        }
-    }
-}
-
-
 
 
 
@@ -118,12 +88,12 @@ void afficherModele(struct modele modele){
     }
 }
 
-void afficherModeleAvecTextures(struct modele modele){
+void afficherModeleAvecTextures(struct modele modele, int numero_texture){
 
     if (modele.scene)   // Vérifier que la structure de scène est valide
     { 
         // Activer l'utilisation des textures_soil
-        // glBindTexture(GL_TEXTURE_2D,textures_soil[0]);
+        glBindTexture(GL_TEXTURE_2D,textures[numero_texture]);
         glEnable(GL_TEXTURE_2D);
 
         for (unsigned int i = 0; i < modele.scene->mNumMeshes; ++i)
