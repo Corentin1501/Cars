@@ -11,6 +11,7 @@
 
 #include <stdlib.h>
 #include <GL/glut.h>    
+#include "stdbool.h"
 
 void touche_relachee(unsigned char key, int x, int y);
 
@@ -18,6 +19,6 @@ void touche_pressee(unsigned char key, int x, int y);
 
 void touche(int touche, int x, int y);
 
-void verif_dehors();
+bool verif_dehors(bool en_avancant);
 
 #endif

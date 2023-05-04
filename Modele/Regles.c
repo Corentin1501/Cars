@@ -7,7 +7,6 @@
 
 const int NOMBRE_TOURS_POUR_GAGNER = 5 ;
 const int NOMBRE_CHECKPOINTS       = 8 ;
-const float ECHELLE_STADE = 6;
 
 int Current_Lap = 1;
 int Current_CP = 0;
@@ -17,7 +16,6 @@ float chronometre;
 float start_time = 0;
 float victory_time = 0;
 bool victory_time_calculated = false;
-
 bool victoire = false;
 
 
@@ -32,6 +30,8 @@ bool victoire = false;
     {
         chronometre = glutGet(GLUT_ELAPSED_TIME) - start_time;  // temps en millisecondes
         chronometre = chronometre / 1000.0;                     // temps en secondes
+
+        // printf("ECHELLE_STADE dans Regles.c : %.1f\n", ECHELLE_STADE);
     }
 
 //#####################################################
@@ -110,14 +110,14 @@ bool victoire = false;
     {
         switch (numeroCP)
         {
-            case 0: return ((0 <= voiture_x)        && (voiture_x <= 5.5*ECHELLE_STADE)       && (voiture_z <= -7.5*ECHELLE_STADE));    break;
-            case 1: return ((voiture_x <= 0)        && (-12.5*ECHELLE_STADE <= voiture_z)     && (voiture_z <= -7.5*ECHELLE_STADE));    break;
-            case 2: return ((-5.5*ECHELLE_STADE <= voiture_x)     && (voiture_x <= 0)         && (-7.5*ECHELLE_STADE <= voiture_z));    break;
-            case 3: return ((-7.25*ECHELLE_STADE <= voiture_x)    && (voiture_x <= -3.25*ECHELLE_STADE)     && (0 <= voiture_z));       break;
-            case 4: return ((-5.5*ECHELLE_STADE <= voiture_x)     && (voiture_x <= 0)         && (7.5*ECHELLE_STADE <= voiture_z));     break;
-            case 5: return ((0 <= voiture_x)        && (7.5*ECHELLE_STADE <= voiture_z)       && (voiture_z <= 12.5*ECHELLE_STADE));    break;
-            case 6: return ((0 <= voiture_x)        && (voiture_x <= 5.5*ECHELLE_STADE)       && (voiture_z <= 7.5*ECHELLE_STADE));     break;
-            case 7: return ((3*ECHELLE_STADE <= voiture_x)        && (voiture_x <= 7.25*ECHELLE_STADE)      && (voiture_z <= 0));       break;
+            case 0: return ((10 <= voiture_x)   && (voiture_x <= 60)    && (voiture_z <= -70)); break;
+            case 1: return ((voiture_x <= 0)    && (-120 <= voiture_z)  && (voiture_z <= -80)); break;
+            case 2: return ((-60 <= voiture_x)  && (voiture_x <= -10)   && (-70 <= voiture_z)); break;
+            case 3: return ((-70 <= voiture_x)  && (voiture_x <= -30)   && (0 <= voiture_z));   break;
+            case 4: return ((-60 <= voiture_x)  && (voiture_x <= -10)   && (70 <= voiture_z));  break;
+            case 5: return ((0 <= voiture_x)    && (80 <= voiture_z)    && (voiture_z <= 120)); break;
+            case 6: return ((10 <= voiture_x)   && (voiture_x <= 60)    && (voiture_z <= 70));  break;
+            case 7: return ((30 <= voiture_x)   && (voiture_x <= 70)    && (voiture_z <= 0));   break;
             
             default:    return false;   break;
         }

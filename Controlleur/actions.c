@@ -38,21 +38,13 @@ extern bool vue_ARR;
     extern float voiture_orientation;   
 
 const float PI = 3.14159265359;
-const int ECHELLE_STADE_OUT = 3;
+const int ECHELLE_STADE_OUT = 6;
 
 int TPS_en_arriere = 8; // nombre de blocs derriere la voiture où est la caméra TPS
 int TPS_au_dessus = 1.5; // nombre de blocs derriere la voiture où est la caméra TPS
 
-float avancer_voiture_x(){ 
-    accelerate();
-    update_vitesse();
-    return (vitesse*time_step) * sin((voiture_orientation * PI) / 180);
-     }
-float avancer_voiture_z(){ 
-    accelerate();
-    update_vitesse();
-    return (vitesse*time_step) * cos((voiture_orientation * PI) / 180); 
-}
+float avancer_voiture_x(){ return 0.6 * sin((voiture_orientation * PI) / 180); }
+float avancer_voiture_z(){ return 0.6 * cos((voiture_orientation * PI) / 180); }
 float reculer_voiture_x(){ return 0.3 * sin((voiture_orientation * PI) / 180); }
 float reculer_voiture_z(){ return 0.3 * cos((voiture_orientation * PI) / 180); }
 
@@ -68,6 +60,8 @@ void avancer_voiture()
     // Avancer la voiture dans la direction de l'orientation
     voiture_x += avancer_voiture_x();
     voiture_z += avancer_voiture_z();
+
+    // printf("x : %.2f z : %.2f\n", voiture_x, voiture_z);
 
     // Calcul des coordonnées de la caméra FPS
     camera_FPS_x += avancer_voiture_x();
@@ -175,10 +169,10 @@ void touche_pressee(unsigned char key, int x, int y)
 
             //####### DEPLACEMENT VOITURE #######
 
-                case TOUCHE_Z: verif_dehors(); avancer_voiture(); break;
-                case TOUCHE_S: verif_dehors(); reculer_voiture(); break;
-                case TOUCHE_Q: verif_dehors(); tourner_voiture_gauche(); break;
-                case TOUCHE_D: verif_dehors(); tourner_voiture_droite(); break;
+                case TOUCHE_Z: if(verif_dehors(true)) avancer_voiture(); break;
+                case TOUCHE_S: if(verif_dehors(false)) reculer_voiture(); break;
+                case TOUCHE_Q: tourner_voiture_gauche(); break;
+                case TOUCHE_D: tourner_voiture_droite(); break;
 
             //####### DEPLACEMENT CAMERA #######
                 case TOUCHE_T: camera_FPS_z += 0.5; break;
@@ -213,12 +207,37 @@ void touche(int touche, int x, int y)
 //#                 SORTIES DE PISTE                  #
 //#####################################################
 
-    void verif_dehors()
-    {
-        if (voiture_x > 7 * ECHELLE_STADE_OUT) voiture_x =  7 * ECHELLE_STADE_OUT;
-        else if (voiture_x < - 7 * ECHELLE_STADE_OUT) voiture_x =  - 7 * ECHELLE_STADE_OUT;
+    /*
+        Equation de l'ellipse du tour de stade :
+            (x / 70)² + (y / 120)² = 1
+        Equation de l'ellipse de la barrière au centre du stade :
+            (x / 30)² + (y / 80)² = 1
+    */
 
-        updateCameraTPS();
+    bool verif_dehors(bool en_avancant)
+    {
+        // printf("x : %.1f z : %.1f\n", voiture_x, voiture_z);
+        float voiture_x_futur, voiture_z_futur;
+
+        if (en_avancant)    // on verifie si en avançant elle ne sort pas du circuit
+        {
+            voiture_x_futur = voiture_x + avancer_voiture_x();
+            voiture_z_futur = voiture_z + avancer_voiture_z();
+        }
+        else    // si c'est pas en avançant c'est en reculant
+        {
+            voiture_x_futur = voiture_x - avancer_voiture_x();
+            voiture_z_futur = voiture_z - avancer_voiture_z();
+        }
+
+        float Ellipse_exterieure = pow(voiture_x_futur / 70, 2) + pow(voiture_z_futur / 120, 2);
+        float Ellipse_interieure = pow(voiture_x_futur / 30, 2) + pow(voiture_z_futur / 80, 2);
+
+        // printf("xf : %.1f zf : %.1f\n", voiture_x_futur, voiture_x_futur);
+        // printf("dans Ellipse_exterieure : %f\n", Ellipse_exterieure);
+        // printf("dans Ellipse_interieure : %f\n", Ellipse_interieure);
+
+        return (Ellipse_exterieure <= 1 && Ellipse_interieure >= 1);    // retourne si la voiture est entre les deux ellipses du circuit
     }
 
 

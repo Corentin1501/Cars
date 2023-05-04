@@ -11,14 +11,14 @@
 
     // coordonnées de la caméra
         // vue FPS
-            float camera_FPS_x = 9.625 * 1.5;
+            float camera_FPS_x = 50;
             float camera_FPS_y = 0.65; 
             float camera_FPS_z = 0;
 
         // vue TPS
-            float camera_TPS_x = 9.625*1.5;
-            float camera_TPS_y = 1*1.5;
-            float camera_TPS_z = 4.8*1.5;
+            float camera_TPS_x = 50;
+            float camera_TPS_y = 1.5;
+            float camera_TPS_z = 7.2;
 
     float camera_orientation_x = 0;
     float camera_orientation_z = -5;
@@ -26,8 +26,6 @@
     bool vue_FPS = true;
     bool vue_TPS = false;
     bool vue_ARR = false;
-
-
 
 void lumieres()
 {
@@ -47,16 +45,15 @@ void lumieres()
     //#                       SPOTS                       #
     //#####################################################
 
-        float echelleStade = 3;
-        float spot_hauteur = 3.3 * echelleStade;
+        float spot_hauteur = 19;
 
 
-        GLfloat spot_0_position[] =   {  6.2 * echelleStade,    spot_hauteur, - 5.4 * echelleStade, 1 };
-        GLfloat spot_1_position[] =   {  0   * echelleStade,    spot_hauteur, -12.5 * echelleStade, 1 };
-        GLfloat spot_2_position[] =   { -6.2 * echelleStade,    spot_hauteur, - 5.4 * echelleStade, 1 };
-        GLfloat spot_3_position[] =   { -6.2 * echelleStade,    spot_hauteur,   5.4 * echelleStade, 1 };
-        GLfloat spot_4_position[] =   {  0   * echelleStade,    spot_hauteur,  12.5 * echelleStade, 1 };
-        GLfloat spot_5_position[] =   {  6.2 * echelleStade,    spot_hauteur,   5.4 * echelleStade, 1 };
+        GLfloat spot_0_position[] =   {  70,    spot_hauteur,  -45, 1 };
+        GLfloat spot_1_position[] =   {   0,    spot_hauteur, -125, 1 };
+        GLfloat spot_2_position[] =   { -70,    spot_hauteur,  -45, 1 };
+        GLfloat spot_3_position[] =   { -70,    spot_hauteur,   45, 1 };
+        GLfloat spot_4_position[] =   {   0,    spot_hauteur,  125, 1 };
+        GLfloat spot_5_position[] =   {  70,    spot_hauteur,   45, 1 };
 
         GLfloat spot_0_direction[] = {-0.5, -1, 0};     // direction du spot
         GLfloat spot_1_direction[] = {0, -1, 0.5};

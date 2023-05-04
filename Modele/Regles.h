@@ -9,7 +9,6 @@ extern float voiture_z;
 
 extern const int NOMBRE_TOURS_POUR_GAGNER;
 extern const int NOMBRE_CHECKPOINTS;
-extern const float ECHELLE_STADE_CP;
 
 extern int Current_Lap;
 extern int Current_CP;

@@ -20,7 +20,7 @@
 
 #include "stdbool.h"
 
-float voiture_x = 9.625 * 1.5;  
+float voiture_x = 50;  
 float voiture_y = 0;               
 float voiture_z = 0;  
 float voiture_orientation = 180;  
@@ -29,21 +29,13 @@ GLuint liste_affichage_voiture;
 GLuint liste_affichage_stade;
 GLuint liste_affichage_piste;
 
-const float ECHELLE_STADE;
-
 GLvoid Modelisation()
 {
     VM_init();
 
     //------ Affichage de la scène ------
 
-        glPushMatrix();
-        {
-            glTranslatef(0,-1,0);
-            glScalef(ECHELLE_STADE,ECHELLE_STADE,ECHELLE_STADE);
-            glCallList(liste_affichage_stade); // Afficher le stade
-        }
-        glPopMatrix();
+        glCallList(liste_affichage_stade); // Afficher le stade
 
         glPushMatrix();
         {

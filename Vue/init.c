@@ -8,19 +8,17 @@ GLuint blend = 0;
 GLuint light = 0;
 
 extern float start_time;
-
 extern bool gameFinished;
-extern const float ECHELLE_STADE;
 
 extern GLuint textures[10];
 
 GLvoid Redimensionne(GLsizei Width, GLsizei Height)
 {
-        glViewport(0,0,Width, Height);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        gluPerspective(45, (float)16/(float)9, 0.1, 500);
-        glMatrixMode(GL_MODELVIEW);
+    glViewport(0,0,Width, Height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45, (float)16/(float)9, 0.1, 500);
+    glMatrixMode(GL_MODELVIEW);
 }
 
 int window = 1;
@@ -49,13 +47,12 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
     //-------------- Détermination des variables globales --------------
 
         bool gameFinished = false;
-        const float ECHELLE_STADE = 6;
 
     //-------------- Création de la scène --------------
 
-        struct modele voiture = creerModele("./Vue/modeles-blender/Voiture/voiture_sans_fenetres.obj");
-        struct modele stade = creerModele("./Vue/modeles-blender/Stade/Stade_plat.obj");
-        struct modele piste = creerModele("./Vue/modeles-blender/Stade/Piste/Piste_seul.obj");
+        struct modele voiture = creerModele("./Vue/modeles-blender/fichiers-objets/voiture_sans_fenetres.obj");
+        struct modele stade = creerModele("./Vue/modeles-blender/fichiers-objets/decors.obj");
+        // struct modele piste = creerModele("./Vue/modeles-blender/Stade/Piste/Piste_seul.obj");
 
         //=================== VOITURE ===================
 
@@ -83,19 +80,19 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
 
         //=================== PISTE ===================
 
-            liste_affichage_piste = glGenLists(1); // Créer une nouvelle liste d'affichage
-            glNewList(liste_affichage_piste, GL_COMPILE); // Début de l'enregistrement de la liste
-                glPushMatrix(); // Piste
-                {
-                    glColor3f(1,1,1); // couleur de la piste
-                    afficherModeleAvecTextures(piste,1);
-                }
-                glPopMatrix();
-            glEndList(); // Fin de l'enregistrement de la liste
+            // liste_affichage_piste = glGenLists(1); // Créer une nouvelle liste d'affichage
+            // glNewList(liste_affichage_piste, GL_COMPILE); // Début de l'enregistrement de la liste
+            //     glPushMatrix(); // Piste
+            //     {
+            //         glColor3f(1,1,1); // couleur de la piste
+            //         afficherModeleAvecTextures(piste,1);
+            //     }
+            //     glPopMatrix();
+            // glEndList(); // Fin de l'enregistrement de la liste
 
         aiReleaseImport(voiture.scene);
         aiReleaseImport(stade.scene);
-        aiReleaseImport(piste.scene);
+        // aiReleaseImport(piste.scene);
 
     //------------------ Chronomètre ------------------
 
