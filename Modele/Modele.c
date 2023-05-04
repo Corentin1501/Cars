@@ -88,11 +88,13 @@ void afficherModele(struct modele modele){
     }
 }
 
-void afficherModeleAvecTextures(struct modele modele, int numero_texture){
+void afficherModeleAvecTextures(struct modele modele, int numero_texture)
+{
+    float scale_texture = 15;   // pour baisser / augmenter la répétition des textures
 
     if (modele.scene)   // Vérifier que la structure de scène est valide
     { 
-        // Activer l'utilisation des textures_soil
+        // Activer l'utilisation des textures
         glBindTexture(GL_TEXTURE_2D,textures[numero_texture]);
         glEnable(GL_TEXTURE_2D);
 
@@ -135,15 +137,15 @@ void afficherModeleAvecTextures(struct modele modele, int numero_texture){
 
                             // Spécifier les vecteurs normaux, les coordonnées de texture et les coordonnées des vertices pour chaque triangle
                             glNormal3f(mesh->mNormals[index0].x, mesh->mNormals[index0].y, mesh->mNormals[index0].z);
-                            glTexCoord2f(texCoord0.x, texCoord0.y);
+                            glTexCoord2f(-(70.0/scale_texture), (240.0/scale_texture));
                             glVertex3f(vertex0.x, vertex0.y, vertex0.z);
 
                             glNormal3f(mesh->mNormals[index1].x, mesh->mNormals[index1].y, mesh->mNormals[index1].z);
-                            glTexCoord2f(texCoord1.x, texCoord1.y);
+                            glTexCoord2f((140.0/scale_texture), (240.0/scale_texture));
                             glVertex3f(vertex1.x, vertex1.y, vertex1.z);
 
                             glNormal3f(mesh->mNormals[index2].x, mesh->mNormals[index2].y, mesh->mNormals[index2].z);
-                            glTexCoord2f(texCoord2.x, texCoord2.y);
+                            glTexCoord2f((140.0/scale_texture), -(120.0/scale_texture));
                             glVertex3f(vertex2.x, vertex2.y, vertex2.z);
 
                         glEnd();                    // fin du rendu des triangles

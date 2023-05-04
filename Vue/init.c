@@ -51,8 +51,8 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
     //-------------- Création de la scène --------------
 
         struct modele voiture = creerModele("./Vue/modeles-blender/fichiers-objets/voiture_sans_fenetres.obj");
-        struct modele stade = creerModele("./Vue/modeles-blender/fichiers-objets/decors.obj");
-        // struct modele piste = creerModele("./Vue/modeles-blender/Stade/Piste/Piste_seul.obj");
+        struct modele stade   = creerModele("./Vue/modeles-blender/fichiers-objets/decors_sans_piste.obj");
+        struct modele piste   = creerModele("./Vue/modeles-blender/fichiers-objets/piste.obj");
 
         //=================== VOITURE ===================
 
@@ -80,19 +80,19 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
 
         //=================== PISTE ===================
 
-            // liste_affichage_piste = glGenLists(1); // Créer une nouvelle liste d'affichage
-            // glNewList(liste_affichage_piste, GL_COMPILE); // Début de l'enregistrement de la liste
-            //     glPushMatrix(); // Piste
-            //     {
-            //         glColor3f(1,1,1); // couleur de la piste
-            //         afficherModeleAvecTextures(piste,1);
-            //     }
-            //     glPopMatrix();
-            // glEndList(); // Fin de l'enregistrement de la liste
+            liste_affichage_piste = glGenLists(1); // Créer une nouvelle liste d'affichage
+            glNewList(liste_affichage_piste, GL_COMPILE); // Début de l'enregistrement de la liste
+                glPushMatrix(); // Piste
+                {
+                    glColor3f(1,1,1); // couleur de la piste
+                    afficherModeleAvecTextures(piste,1);
+                }
+                glPopMatrix();
+            glEndList(); // Fin de l'enregistrement de la liste
 
         aiReleaseImport(voiture.scene);
         aiReleaseImport(stade.scene);
-        // aiReleaseImport(piste.scene);
+        aiReleaseImport(piste.scene);
 
     //------------------ Chronomètre ------------------
 
@@ -107,7 +107,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
         */
 
         glGenTextures(1,textures);
-        TEXTURE_STRUCT * bitume = readPpm("./Vue/textures/bitume.ppm");
+        TEXTURE_STRUCT * bitume = readPpm("./Vue/textures/asphalt/asphalt.ppm");
         glBindTexture(GL_TEXTURE_2D,textures[1]);
 
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
