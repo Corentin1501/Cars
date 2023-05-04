@@ -39,6 +39,9 @@ GLvoid Modelisation()
 
         glPushMatrix();
         {
+            verifier_checkpoints();
+            verifVictoire();
+            
             glTranslatef(voiture_x, voiture_y, voiture_z);
             glRotatef(voiture_orientation,0,1,0);
             glCallList(liste_affichage_voiture); // Afficher la voiture

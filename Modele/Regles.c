@@ -5,7 +5,7 @@
 
 #include "stdbool.h"
 
-const int NOMBRE_TOURS_POUR_GAGNER = 5 ;
+const int NOMBRE_TOURS_POUR_GAGNER = 2 ;
 const int NOMBRE_CHECKPOINTS       = 8 ;
 
 int Current_Lap = 1;
