@@ -109,22 +109,12 @@ void tourner_voiture_droite()
 
 void mettre_a_jour_position_voiture(int tempsEcoule)
 {
-    if (etatTouches[TOUCHE_Z])
-    {   
-        if(verif_dehors(true)) avancer_voiture();
-    } 
-    if (etatTouches[TOUCHE_S])
-    {
-        if(verif_dehors(false)) reculer_voiture();
-    } 
-    if (etatTouches[TOUCHE_Q])
-    {
-        tourner_voiture_gauche();
-    } 
-    if (etatTouches[TOUCHE_D])
-    {
-        tourner_voiture_droite();
-    } 
+    if (etatTouches[TOUCHE_Z]){ avancer_voiture();          } 
+    if (etatTouches[TOUCHE_S]){ reculer_voiture();          } 
+    if (etatTouches[TOUCHE_Q]){ tourner_voiture_gauche();   } 
+    if (etatTouches[TOUCHE_D]){ tourner_voiture_droite();   } 
+
+    verif_dehors();
 
     glutPostRedisplay();
     glutTimerFunc(10, mettre_a_jour_position_voiture, 10);
@@ -202,30 +192,32 @@ void touche(int touche, int x, int y)
             (x / 30)² + (y / 80)² = 1
     */
 
-    bool verif_dehors(bool en_avancant)
+    void verif_dehors()
     {
-        // printf("x : %.1f z : %.1f\n", voiture_x, voiture_z);
-        float voiture_x_futur, voiture_z_futur;
+        float Ellipse_exterieure = pow(voiture_x / 70, 2) + pow(voiture_z / 120, 2);
+        float Ellipse_interieure = pow(voiture_x / 30, 2) + pow(voiture_z / 80, 2);
 
-        if (en_avancant)    // on verifie si en avançant elle ne sort pas du circuit
-        {
-            voiture_x_futur = voiture_x + avancer_voiture_x();
-            voiture_z_futur = voiture_z + avancer_voiture_z();
+        if ((Ellipse_exterieure > 1) || (Ellipse_interieure < 1)) {
+            // La voiture est en dehors de la zone délimitée par les ellipses, on doit la replacer au point le plus proche
+            float projection_x, projection_z;
+            float dist_exterieure = fabs(pow(voiture_x / 70, 2) + pow(voiture_z / 120, 2) - 1);
+            float dist_interieure = fabs(1 - pow(voiture_x / 30, 2) - pow(voiture_z / 80, 2));
+
+            if (dist_exterieure < dist_interieure) {
+                // La voiture est plus proche de l'ellipse exterieure, on la projette sur cette ellipse
+                projection_x = voiture_x * 70 / sqrt(pow(voiture_x, 2) + pow(voiture_z, 2));
+                projection_z = voiture_z * 120 / sqrt(pow(voiture_x, 2) + pow(voiture_z, 2));
+            } else {
+                // La voiture est plus proche de l'ellipse interieure, on la projette sur cette ellipse
+                projection_x = voiture_x * 30 / sqrt(pow(voiture_x, 2) + pow(voiture_z, 2));
+                projection_z = voiture_z * 80 / sqrt(pow(voiture_x, 2) + pow(voiture_z, 2));
+            }
+
+            voiture_x = projection_x;
+            voiture_z = projection_z;
+
+            updateCameraTPS();
         }
-        else    // si c'est pas en avançant c'est en reculant
-        {
-            voiture_x_futur = voiture_x - avancer_voiture_x();
-            voiture_z_futur = voiture_z - avancer_voiture_z();
-        }
-
-        float Ellipse_exterieure = pow(voiture_x_futur / 70, 2) + pow(voiture_z_futur / 120, 2);
-        float Ellipse_interieure = pow(voiture_x_futur / 30, 2) + pow(voiture_z_futur / 80, 2);
-
-        // printf("xf : %.1f zf : %.1f\n", voiture_x_futur, voiture_x_futur);
-        // printf("dans Ellipse_exterieure : %f\n", Ellipse_exterieure);
-        // printf("dans Ellipse_interieure : %f\n", Ellipse_interieure);
-
-        return (Ellipse_exterieure <= 1 && Ellipse_interieure >= 1);    // retourne si la voiture est entre les deux ellipses du circuit
     }
 
 
