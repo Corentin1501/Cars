@@ -86,7 +86,7 @@ void reculer_voiture()
 void tourner_voiture_gauche()
 {
     // Tourner la voiture vers la gauche
-    voiture_orientation += 10;
+    voiture_orientation += 5;
 
     // Mettre à jour la direction de la caméra pour qu'elle regarde vers l'avant de la voiture
     camera_orientation_x = sin((voiture_orientation * PI) / 180);
@@ -98,7 +98,7 @@ void tourner_voiture_gauche()
 void tourner_voiture_droite()
 {
     // Tourner la voiture vers la gauche
-    voiture_orientation -= 10;
+    voiture_orientation -= 5;
 
     // Mettre à jour la direction de la caméra pour qu'elle regarde vers l'avant de la voiture
     camera_orientation_x = sin((voiture_orientation * PI) / 180);
@@ -107,6 +107,28 @@ void tourner_voiture_droite()
     updateCameraTPS();
 }
 
+void mettre_a_jour_position_voiture(int tempsEcoule)
+{
+    if (etatTouches[TOUCHE_Z])
+    {   
+        if(verif_dehors(true)) avancer_voiture();
+    } 
+    if (etatTouches[TOUCHE_S])
+    {
+        if(verif_dehors(false)) reculer_voiture();
+    } 
+    if (etatTouches[TOUCHE_Q])
+    {
+        tourner_voiture_gauche();
+    } 
+    if (etatTouches[TOUCHE_D])
+    {
+        tourner_voiture_droite();
+    } 
+
+    glutPostRedisplay();
+    glutTimerFunc(10, mettre_a_jour_position_voiture, 10);
+}
 
 void touche_relachee(unsigned char key, int x, int y)
 {
@@ -115,73 +137,39 @@ void touche_relachee(unsigned char key, int x, int y)
 
 void touche_pressee(unsigned char key, int x, int y) 
 {
-    // usleep(100);
-
     etatTouches[key] = true;
 
-    // si plusieurs touches de deplacement sont pressées en même temps
-    if (etatTouches[TOUCHE_Z] && etatTouches[TOUCHE_D]) 
-    {
-        tourner_voiture_droite();
-        avancer_voiture();
-    } 
-    else if (etatTouches[TOUCHE_Z] && etatTouches[TOUCHE_G])
-    {
-        tourner_voiture_gauche();
-        avancer_voiture();
-    } 
-    else if (etatTouches[TOUCHE_S] && etatTouches[TOUCHE_G])
-    {
-        tourner_voiture_gauche();
-        reculer_voiture();
-    } 
-    else if (etatTouches[TOUCHE_S] && etatTouches[TOUCHE_G])
-    {
-        tourner_voiture_gauche();
-        reculer_voiture();
-    } 
-    else // si aucune touches n'est pressé en même temps, on regarde normalement les autres
-    {
-        switch (key)
-        {    
-            case ESCAPE: exit(1); break;                // la touche ECHAP quitte l'application
+    switch (key)
+    {    
+        case ESCAPE: exit(1); break;                // la touche ECHAP quitte l'application
 
-            case ESPACE:   
-                vue_ARR = !vue_ARR;
+        case ESPACE:   
+            vue_ARR = !vue_ARR;
+            break;
+
+        case TOUCHE_MIN_B: 
+        case TOUCHE_MAJ_B: 
+            blend =  switch_blend(blend);
+            break;
+
+        case TOUCHE_MIN_L: 
+        case TOUCHE_MAJ_L: 
+            light = switch_light(light);
+            break;
+
+        //####### VUE CAMERA #######
+
+            case TOUCHE_W:
+                vue_FPS = !vue_FPS;
+                vue_TPS = !vue_TPS;
                 break;
 
-            case TOUCHE_MIN_B: 
-            case TOUCHE_MAJ_B: 
-                blend =  switch_blend(blend);
-                break;
-
-            case TOUCHE_MIN_L: 
-            case TOUCHE_MAJ_L: 
-                light = switch_light(light);
-                break;
-
-            //####### VUE CAMERA #######
-
-                case TOUCHE_W:
-                    vue_FPS = !vue_FPS;
-                    vue_TPS = !vue_TPS;
-                    break;
-
-            //####### DEPLACEMENT VOITURE #######
-
-                case TOUCHE_Z: if(verif_dehors(true)) avancer_voiture(); break;
-                case TOUCHE_S: if(verif_dehors(false)) reculer_voiture(); break;
-                case TOUCHE_Q: tourner_voiture_gauche(); break;
-                case TOUCHE_D: tourner_voiture_droite(); break;
-
-            //####### DEPLACEMENT CAMERA #######
-                case TOUCHE_T: camera_FPS_z += 0.5; break;
-                case TOUCHE_G: camera_FPS_z -= 0.5; break;
-                case TOUCHE_F: camera_FPS_x += 0.5; break;
-                case TOUCHE_H: camera_FPS_x -= 0.5; break;
-        }	
-    }
-
+        //####### DEPLACEMENT CAMERA #######
+            case TOUCHE_T: camera_FPS_z += 0.5; break;
+            case TOUCHE_G: camera_FPS_z -= 0.5; break;
+            case TOUCHE_F: camera_FPS_x += 0.5; break;
+            case TOUCHE_H: camera_FPS_x -= 0.5; break;
+    }	
 }
 
 void touche(int touche, int x, int y)

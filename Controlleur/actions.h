@@ -13,6 +13,8 @@
 #include <GL/glut.h>    
 #include "stdbool.h"
 
+void mettre_a_jour_position_voiture(int tempsEcoule);
+
 void touche_relachee(unsigned char key, int x, int y);
 
 void touche_pressee(unsigned char key, int x, int y);

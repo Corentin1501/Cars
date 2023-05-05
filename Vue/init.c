@@ -119,6 +119,10 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
         free(bitume);
         glEnable(GL_TEXTURE_2D);
 
+    //------------------- Position Voiture -------------------
+
+        glutTimerFunc(10, mettre_a_jour_position_voiture, 10); // commencer les maj de la position de la voiture
+
     //------------------------------------------------
 
     glutMainLoop();
