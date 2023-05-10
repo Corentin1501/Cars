@@ -3,6 +3,8 @@
 #include <time.h>
 #include "../Vue/init.h"
 
+#define M_PI 3.14159265358979323846
+
 extern int blend;
 extern int light;
 
@@ -202,20 +204,35 @@ void touche(int touche, int x, int y)
         float Ellipse_exterieure = pow(les_voitures[numero_voiture].position_x / 70, 2) + pow(les_voitures[numero_voiture].position_z / 120, 2);
         float Ellipse_interieure = pow(les_voitures[numero_voiture].position_x / 30, 2) + pow(les_voitures[numero_voiture].position_z / 80, 2);
 
-        if ((Ellipse_exterieure > 1) || (Ellipse_interieure < 1)) {
-            // La voiture est en dehors de la zone délimitée par les ellipses, on doit la replacer au point le plus proche
+        if (Ellipse_exterieure > 1 || Ellipse_interieure < 1) {
             float projection_x, projection_z;
-            float dist_exterieure = fabs(pow(les_voitures[numero_voiture].position_x / 70, 2) + pow(les_voitures[numero_voiture].position_z / 120, 2) - 1);
-            float dist_interieure = fabs(1 - pow(les_voitures[numero_voiture].position_x / 30, 2) - pow(les_voitures[numero_voiture].position_z / 80, 2));
+            float min_distance_exterieure = 1000000000;
+            float min_distance_interieure = 1000000000;
 
-            if (dist_exterieure < dist_interieure) {
-                // La voiture est plus proche de l'ellipse exterieure, on la projette sur cette ellipse
-                projection_x = les_voitures[numero_voiture].position_x * 70 / sqrt(pow(les_voitures[numero_voiture].position_x, 2) + pow(les_voitures[numero_voiture].position_z, 2));
-                projection_z = les_voitures[numero_voiture].position_z * 120 / sqrt(pow(les_voitures[numero_voiture].position_x, 2) + pow(les_voitures[numero_voiture].position_z, 2));
-            } else {
-                // La voiture est plus proche de l'ellipse interieure, on la projette sur cette ellipse
-                projection_x = les_voitures[numero_voiture].position_x * 30 / sqrt(pow(les_voitures[numero_voiture].position_x, 2) + pow(les_voitures[numero_voiture].position_z, 2));
-                projection_z = les_voitures[numero_voiture].position_z * 80 / sqrt(pow(les_voitures[numero_voiture].position_x, 2) + pow(les_voitures[numero_voiture].position_z, 2));
+            if (Ellipse_exterieure > 1) {
+                for (float angle = 0; angle <= 2 * M_PI; angle += 0.01) {
+                    float x = cos(angle) * 70;
+                    float z = sin(angle) * 120;
+                    float distance = sqrt(pow(les_voitures[numero_voiture].position_x - x, 2) + pow(les_voitures[numero_voiture].position_z - z, 2));
+                    if (distance < min_distance_exterieure) {
+                        min_distance_exterieure = distance;
+                        projection_x = x;
+                        projection_z = z;
+                    }
+                }
+            }
+
+            if (Ellipse_interieure < 1) {
+                for (float angle = 0; angle <= 2 * M_PI; angle += 0.01) {
+                    float x = cos(angle) * 30;
+                    float z = sin(angle) * 80;
+                    float distance = sqrt(pow(les_voitures[numero_voiture].position_x - x, 2) + pow(les_voitures[numero_voiture].position_z - z, 2));
+                    if (distance < min_distance_interieure) {
+                        min_distance_interieure = distance;
+                        projection_x = x;
+                        projection_z = z;
+                    }
+                }
             }
 
             les_voitures[numero_voiture].position_x = projection_x;
@@ -224,6 +241,7 @@ void touche(int touche, int x, int y)
             if (numero_voiture == 0) updateCameras();
         }
     }
+
 
 
 
