@@ -48,6 +48,8 @@ GLvoid Modelisation()
         }
         glPopMatrix();
 
+        
+
         glCallList(liste_affichage_piste); // Afficher la piste
 
     //-----------------------------------
