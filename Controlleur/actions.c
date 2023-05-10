@@ -65,8 +65,8 @@ void updateCameras()
 void avancer_voiture(int numero_voiture)
 {
     // Avancer la voiture dans la direction de l'orientation
-    les_voitures[0].position_x += avancer_voiture_x(numero_voiture);
-    les_voitures[0].position_z += avancer_voiture_z(numero_voiture);
+    les_voitures[numero_voiture].position_x += avancer_voiture_x(numero_voiture);
+    les_voitures[numero_voiture].position_z += avancer_voiture_z(numero_voiture);
 
     // printf("x : %.2f z : %.2f\n", les_voitures[0].position_x, les_voitures[0].position_z);
 
@@ -133,7 +133,7 @@ void mettre_a_jour_position_voiture(int tempsEcoule)
     if (etatTouches[TOUCHE_Q]){ tourner_voiture_gauche(0);   } 
     if (etatTouches[TOUCHE_D]){ tourner_voiture_droite(0);   } 
 
-    verif_dehors();
+    verif_dehors(0);
 
     glutPostRedisplay();
     glutTimerFunc(10, mettre_a_jour_position_voiture, 10);
@@ -197,31 +197,31 @@ void touche(int touche, int x, int y)
             (x / 30)² + (y / 80)² = 1
     */
 
-    void verif_dehors()
+    void verif_dehors(int numero_voiture)
     {
-        float Ellipse_exterieure = pow(les_voitures[0].position_x / 70, 2) + pow(les_voitures[0].position_z / 120, 2);
-        float Ellipse_interieure = pow(les_voitures[0].position_x / 30, 2) + pow(les_voitures[0].position_z / 80, 2);
+        float Ellipse_exterieure = pow(les_voitures[numero_voiture].position_x / 70, 2) + pow(les_voitures[numero_voiture].position_z / 120, 2);
+        float Ellipse_interieure = pow(les_voitures[numero_voiture].position_x / 30, 2) + pow(les_voitures[numero_voiture].position_z / 80, 2);
 
         if ((Ellipse_exterieure > 1) || (Ellipse_interieure < 1)) {
             // La voiture est en dehors de la zone délimitée par les ellipses, on doit la replacer au point le plus proche
             float projection_x, projection_z;
-            float dist_exterieure = fabs(pow(les_voitures[0].position_x / 70, 2) + pow(les_voitures[0].position_z / 120, 2) - 1);
-            float dist_interieure = fabs(1 - pow(les_voitures[0].position_x / 30, 2) - pow(les_voitures[0].position_z / 80, 2));
+            float dist_exterieure = fabs(pow(les_voitures[numero_voiture].position_x / 70, 2) + pow(les_voitures[numero_voiture].position_z / 120, 2) - 1);
+            float dist_interieure = fabs(1 - pow(les_voitures[numero_voiture].position_x / 30, 2) - pow(les_voitures[numero_voiture].position_z / 80, 2));
 
             if (dist_exterieure < dist_interieure) {
                 // La voiture est plus proche de l'ellipse exterieure, on la projette sur cette ellipse
-                projection_x = les_voitures[0].position_x * 70 / sqrt(pow(les_voitures[0].position_x, 2) + pow(les_voitures[0].position_z, 2));
-                projection_z = les_voitures[0].position_z * 120 / sqrt(pow(les_voitures[0].position_x, 2) + pow(les_voitures[0].position_z, 2));
+                projection_x = les_voitures[numero_voiture].position_x * 70 / sqrt(pow(les_voitures[numero_voiture].position_x, 2) + pow(les_voitures[numero_voiture].position_z, 2));
+                projection_z = les_voitures[numero_voiture].position_z * 120 / sqrt(pow(les_voitures[numero_voiture].position_x, 2) + pow(les_voitures[numero_voiture].position_z, 2));
             } else {
                 // La voiture est plus proche de l'ellipse interieure, on la projette sur cette ellipse
-                projection_x = les_voitures[0].position_x * 30 / sqrt(pow(les_voitures[0].position_x, 2) + pow(les_voitures[0].position_z, 2));
-                projection_z = les_voitures[0].position_z * 80 / sqrt(pow(les_voitures[0].position_x, 2) + pow(les_voitures[0].position_z, 2));
+                projection_x = les_voitures[numero_voiture].position_x * 30 / sqrt(pow(les_voitures[numero_voiture].position_x, 2) + pow(les_voitures[numero_voiture].position_z, 2));
+                projection_z = les_voitures[numero_voiture].position_z * 80 / sqrt(pow(les_voitures[numero_voiture].position_x, 2) + pow(les_voitures[numero_voiture].position_z, 2));
             }
 
-            les_voitures[0].position_x = projection_x;
-            les_voitures[0].position_z = projection_z;
+            les_voitures[numero_voiture].position_x = projection_x;
+            les_voitures[numero_voiture].position_z = projection_z;
 
-            updateCameras();
+            if (numero_voiture == 0) updateCameras();
         }
     }
 

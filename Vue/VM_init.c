@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include "stdbool.h"
 #include "../Modele/opmat.h"
+#include "../Modele/Regles.h"
+#include "../Controlleur/actions.h"
+#include "init.h"
 
 //########## CAMERA ##########
 
@@ -26,6 +29,9 @@
     bool vue_FPS = true;
     bool vue_TPS = false;
     bool vue_ARR = false;
+
+int sequence_mouvements_IA[5];
+int mouvement_actuel = 1;
 
 void lumieres()
 {
@@ -148,6 +154,52 @@ void lumieres()
 
 }
 
+void mettre_a_jour_IA(int tempsEcoule)
+{
+    switch (mouvement_actuel){
+        case 1 :
+            if (les_voitures[1].position_z >= -90)  avancer_voiture(1);
+            else 
+            {
+                les_voitures[1].orientation += 90; 
+                mouvement_actuel++;
+            }
+            break;
+        case 2 :
+            if (les_voitures[1].position_x >= -38)  avancer_voiture(1);
+            else 
+            {
+                les_voitures[1].orientation += 90; 
+                mouvement_actuel++;
+            }
+            break;
+        case 3 :
+            if (les_voitures[1].position_z <= 90)  avancer_voiture(1);
+            else 
+            {
+                les_voitures[1].orientation += 90; 
+                mouvement_actuel++;
+            }
+            break;
+        case 4 :
+            if (les_voitures[1].position_x <= 38)  avancer_voiture(1);
+            else 
+            {
+                les_voitures[1].orientation += 90; 
+                mouvement_actuel++;
+            }
+            break;
+        case 5 :
+            if (les_voitures[1].position_z >= -90)  avancer_voiture(1);
+            else 
+            {
+                les_voitures[1].orientation += 90; 
+                mouvement_actuel = 2;
+            }
+            break;
+    }
+}
+
 void VM_init(){
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -190,4 +242,11 @@ void VM_init(){
     //#####################################################
 
         lumieres();
+
+    //#####################################################
+    //#                    IA SCRIPTÉE                    #
+    //#####################################################
+
+        glutTimerFunc(500, mettre_a_jour_IA, 500); // commencer les maj de la position des IA
+
 }
