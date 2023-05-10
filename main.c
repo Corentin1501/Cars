@@ -36,25 +36,21 @@ GLvoid Modelisation()
 
         glCallList(liste_affichage_stade); // Afficher le stade
 
-        glPushMatrix();
+        for (int num = 0; num < 10; num++)
         {
-            verifier_checkpoints();
-            verifVictoire();
-            
-            glTranslatef(les_voitures[0].position_x, les_voitures[0].position_y, les_voitures[0].position_z);
-            glRotatef(les_voitures[0].orientation ,0,1,0);
-            glCallList(liste_affichage_voiture); // Afficher la voiture
+            glPushMatrix();
+            {
+                if (num == 0)
+                {
+                    verifier_checkpoints();
+                    verifVictoire();
+                }
+                glTranslatef(les_voitures[num].position_x, les_voitures[num].position_y, les_voitures[num].position_z);
+                glRotatef(les_voitures[num].orientation ,0,1,0);
+                glCallList(liste_affichage_voiture); // Afficher la voiture
+            }
+            glPopMatrix();
         }
-        glPopMatrix();
-        glPushMatrix();
-        {
-            glTranslatef(les_voitures[1].position_x, les_voitures[1].position_y, les_voitures[1].position_z);
-            glRotatef(les_voitures[1].orientation ,0,1,0);
-            glCallList(liste_affichage_voiture); // Afficher la voiture
-        }
-        glPopMatrix();
-
-        
 
         glCallList(liste_affichage_piste); // Afficher la piste
 
