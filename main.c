@@ -18,16 +18,15 @@
 #include "Vue/HUD.c"
 #include "Vue/ppm.h"
 
-#include "stdbool.h"
+#include "Modele/Car.h"
 
-float voiture_x = 50;  
-float voiture_y = 0;               
-float voiture_z = 0;  
-float voiture_orientation = 180;  
+#include "stdbool.h"
 
 GLuint liste_affichage_voiture;
 GLuint liste_affichage_stade;
 GLuint liste_affichage_piste;
+
+// struct car les_voitures[10];
 
 GLvoid Modelisation()
 {
@@ -42,8 +41,15 @@ GLvoid Modelisation()
             verifier_checkpoints();
             verifVictoire();
             
-            glTranslatef(voiture_x, voiture_y, voiture_z);
-            glRotatef(voiture_orientation,0,1,0);
+            glTranslatef(les_voitures[0].position_x, les_voitures[0].position_y, les_voitures[0].position_z);
+            glRotatef(les_voitures[0].orientation ,0,1,0);
+            glCallList(liste_affichage_voiture); // Afficher la voiture
+        }
+        glPopMatrix();
+        glPushMatrix();
+        {
+            glTranslatef(les_voitures[1].position_x, les_voitures[1].position_y, les_voitures[1].position_z);
+            glRotatef(les_voitures[1].orientation ,0,1,0);
             glCallList(liste_affichage_voiture); // Afficher la voiture
         }
         glPopMatrix();

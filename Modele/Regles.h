@@ -3,10 +3,6 @@
 
 #include <stdbool.h>
 
-extern float voiture_x;
-extern float voiture_y;
-extern float voiture_z;
-
 extern const int NOMBRE_TOURS_POUR_GAGNER;
 extern const int NOMBRE_CHECKPOINTS;
 

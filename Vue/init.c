@@ -12,6 +12,14 @@ extern bool gameFinished;
 
 extern GLuint textures[10];
 
+void creer_toutes_les_voitures()
+{
+    for (int i = 0; i < 10; i++)
+    {
+        les_voitures[i] = initialiser_voiture(i);
+    }
+}
+
 GLvoid Redimensionne(GLsizei Width, GLsizei Height)
 {
     glViewport(0,0,Width, Height);
@@ -56,6 +64,8 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
 
         //=================== VOITURE ===================
 
+            creer_toutes_les_voitures();
+
             liste_affichage_voiture = glGenLists(1); // Créer la liste d'affichage pour la voiture
             glNewList(liste_affichage_voiture, GL_COMPILE); // Début de l'enregistrement de la liste
                 glPushMatrix();
@@ -65,6 +75,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
                 }
                 glPopMatrix();
             glEndList(); // Fin de l'enregistrement de la liste
+
 
         //=================== STADE ===================
 

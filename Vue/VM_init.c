@@ -11,12 +11,12 @@
 
     // coordonnées de la caméra
         // vue FPS
-            float camera_FPS_x = 50;
+            float camera_FPS_x = 35;
             float camera_FPS_y = 0.65; 
             float camera_FPS_z = 0;
 
         // vue TPS
-            float camera_TPS_x = 50;
+            float camera_TPS_x = 35;
             float camera_TPS_y = 1.5;
             float camera_TPS_z = 7.2;
 
