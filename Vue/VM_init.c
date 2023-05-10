@@ -30,8 +30,8 @@
     bool vue_TPS = false;
     bool vue_ARR = false;
 
-int sequence_mouvements_IA[5];
-int mouvement_actuel = 1;
+int mouvement_actuel_IA_carre = 1;
+float pas_IA_ellipse = 0;
 
 void lumieres()
 {
@@ -154,50 +154,63 @@ void lumieres()
 
 }
 
-void mettre_a_jour_IA(int tempsEcoule)
+void mettre_a_jour_IA_carre(int tempsEcoule)
 {
-    switch (mouvement_actuel){
+    switch (mouvement_actuel_IA_carre){
         case 1 :
             if (les_voitures[1].position_z >= -90)  avancer_voiture(1);
-            else 
-            {
+            else {
                 les_voitures[1].orientation += 90; 
-                mouvement_actuel++;
+                mouvement_actuel_IA_carre++;
             }
             break;
         case 2 :
             if (les_voitures[1].position_x >= -38)  avancer_voiture(1);
-            else 
-            {
+            else {
                 les_voitures[1].orientation += 90; 
-                mouvement_actuel++;
+                mouvement_actuel_IA_carre++;
             }
             break;
         case 3 :
             if (les_voitures[1].position_z <= 90)  avancer_voiture(1);
-            else 
-            {
+            else {
                 les_voitures[1].orientation += 90; 
-                mouvement_actuel++;
+                mouvement_actuel_IA_carre++;
             }
             break;
         case 4 :
             if (les_voitures[1].position_x <= 38)  avancer_voiture(1);
-            else 
-            {
+            else {
                 les_voitures[1].orientation += 90; 
-                mouvement_actuel++;
+                mouvement_actuel_IA_carre++;
             }
             break;
         case 5 :
             if (les_voitures[1].position_z >= -90)  avancer_voiture(1);
-            else 
-            {
+            else {
                 les_voitures[1].orientation += 90; 
-                mouvement_actuel = 2;
+                mouvement_actuel_IA_carre = 2;
             }
             break;
     }
+}
+
+void mettre_a_jour_IA_ellipse(int tempsEcoule)
+{
+    // Calcul des coordonnées de l'ellipse
+    float x = 41 * cos(-pas_IA_ellipse);
+    float y = 85 * sin(-pas_IA_ellipse);
+
+    // Déplacement de la voiture aux coordonnées de l'ellipse
+    les_voitures[2].position_x = x;
+    les_voitures[2].position_z = y;
+
+    // Calcul de l'orientation de la voiture
+    float dx = -41 * sin(-pas_IA_ellipse);  // Dérivée de x par rapport à t
+    float dy = 85 * cos(-pas_IA_ellipse);   // Dérivée de y par rapport à t
+    les_voitures[2].orientation = atan2(dx, dy) * 180 / 3.14159265359 + 180;
+
+    pas_IA_ellipse += 0.005;
 }
 
 void VM_init(){
@@ -238,15 +251,25 @@ void VM_init(){
         }
 
     //#####################################################
-    //#                     LUMIERES                      #
+    //#                      LUMIERES                     #
     //#####################################################
 
         lumieres();
 
     //#####################################################
-    //#                    IA SCRIPTÉE                    #
+    //#                        IAs                        #
     //#####################################################
 
-        glutTimerFunc(500, mettre_a_jour_IA, 500); // commencer les maj de la position des IA
+        //********** IA Scriptées **********
+
+            // Trajectoire en carré
+
+                glutTimerFunc(500, mettre_a_jour_IA_carre, 500); // commencer les maj de la position des IA
+
+            // Trajectoire en ellipse
+
+                glutTimerFunc(500, mettre_a_jour_IA_ellipse, 500); // commencer les maj de la position des IA
+            
+
 
 }
