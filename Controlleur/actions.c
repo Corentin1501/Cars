@@ -7,9 +7,9 @@ extern int blend;
 extern int light;
 
 //vitesse et time step
-extern float acceleration;
+extern const float acceleration;
 extern float vitesse;
-extern float time_step;
+extern const float TIME_STEP;
 
 
 // tableau des touches (pour appuyer sur plusieurs touches en même temps)
@@ -43,8 +43,17 @@ const int ECHELLE_STADE_OUT = 6;
 int TPS_en_arriere = 8; // nombre de blocs derriere la voiture où est la caméra TPS
 int TPS_au_dessus = 1.5; // nombre de blocs derriere la voiture où est la caméra TPS
 
-float avancer_voiture_x(){ return 0.6 * sin((voiture_orientation * PI) / 180); }
-float avancer_voiture_z(){ return 0.6 * cos((voiture_orientation * PI) / 180); }
+// float avancer_voiture_x(){ return 0.6 * sin((voiture_orientation * PI) / 180); }
+// float avancer_voiture_z(){ return 0.6 * cos((voiture_orientation * PI) / 180); }
+// float reculer_voiture_x(){ return 0.3 * sin((voiture_orientation * PI) / 180); }
+// float reculer_voiture_z(){ return 0.3 * cos((voiture_orientation * PI) / 180); }
+
+float avancer_voiture_x(){ 
+    return vitesse*TIME_STEP * sin((voiture_orientation * PI) / 180);
+     }
+float avancer_voiture_z(){   
+    return vitesse*TIME_STEP * cos((voiture_orientation * PI) / 180); 
+}
 float reculer_voiture_x(){ return 0.3 * sin((voiture_orientation * PI) / 180); }
 float reculer_voiture_z(){ return 0.3 * cos((voiture_orientation * PI) / 180); }
 
@@ -57,11 +66,14 @@ void updateCameraTPS()
 
 void avancer_voiture()
 {
-    // Avancer la voiture dans la direction de l'orientation
-    voiture_x += avancer_voiture_x();
-    voiture_z += avancer_voiture_z();
+    // tour_par_minute+=0.3;
+    // acceleration();
+    update_vitesse();
 
-    // printf("x : %.2f z : %.2f\n", voiture_x, voiture_z);
+
+    // Avancer la voiture dans la direction de l'orientation
+   voiture_x += avancer_voiture_x();
+   voiture_z += avancer_voiture_z();
 
     // Calcul des coordonnées de la caméra FPS
     camera_FPS_x += avancer_voiture_x();
@@ -86,7 +98,7 @@ void reculer_voiture()
 void tourner_voiture_gauche()
 {
     // Tourner la voiture vers la gauche
-    voiture_orientation += 5;
+    voiture_orientation += 10;
 
     // Mettre à jour la direction de la caméra pour qu'elle regarde vers l'avant de la voiture
     camera_orientation_x = sin((voiture_orientation * PI) / 180);
@@ -98,7 +110,7 @@ void tourner_voiture_gauche()
 void tourner_voiture_droite()
 {
     // Tourner la voiture vers la gauche
-    voiture_orientation -= 5;
+    voiture_orientation -= 10;
 
     // Mettre à jour la direction de la caméra pour qu'elle regarde vers l'avant de la voiture
     camera_orientation_x = sin((voiture_orientation * PI) / 180);
@@ -115,7 +127,6 @@ void mettre_a_jour_position_voiture(int tempsEcoule)
     if (etatTouches[TOUCHE_D]){ tourner_voiture_droite();   } 
 
     verif_dehors();
-
     glutPostRedisplay();
     glutTimerFunc(10, mettre_a_jour_position_voiture, 10);
 }

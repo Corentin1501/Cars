@@ -5,10 +5,10 @@ float gravity=9.81;
 float friction_coef=0.9;
 float masse=1000;
 
-float acceleration=0.0;
+const float ACCELERATION=2.0;
+const float VITESSE_MAX=25.0;
+const float TIME_STEP = 0.1;
 float vitesse=0.0;
-
-float time_step=0.1;
 
 extern float voiture_x;
 extern float voiture_y;
@@ -49,9 +49,9 @@ float F_total(){
 ####                   #### 
 */
 
-void accelerate(){
-    acceleration = F_total()/masse;
-}
+// void accelerate(){
+//     acceleration = F_total()/masse;
+// }
 
 /*
 ####                          #### 
@@ -61,7 +61,13 @@ void accelerate(){
 
 
 void update_vitesse(){
-    vitesse+=acceleration*time_step;
+
+    if(vitesse+ACCELERATION*TIME_STEP<VITESSE_MAX){
+        vitesse+=ACCELERATION*TIME_STEP;
+    }
+    else vitesse=VITESSE_MAX;
+    
+    // vitesse += ACCELERATION * TIME_STEP;
 }
 
 
