@@ -39,10 +39,10 @@ float FPS_au_dessus = 0.65; // nombre de blocs au dessus de la voiture où est l
 struct car les_voitures[10];
 
 
-float avancer_voiture_x(int numero_voiture){ return 0.6 * sin((les_voitures[numero_voiture].orientation * PI) / 180); }
-float avancer_voiture_z(int numero_voiture){ return 0.6 * cos((les_voitures[numero_voiture].orientation * PI) / 180); }
-float reculer_voiture_x(int numero_voiture){ return 0.3 * sin((les_voitures[numero_voiture].orientation * PI) / 180); }
-float reculer_voiture_z(int numero_voiture){ return 0.3 * cos((les_voitures[numero_voiture].orientation * PI) / 180); }
+float avancer_voiture_x(int numero_voiture){ return les_voitures[numero_voiture].vitesse * TIME_STEP * sin((les_voitures[numero_voiture].orientation * PI) / 180); }
+float avancer_voiture_z(int numero_voiture){ return les_voitures[numero_voiture].vitesse*TIME_STEP * cos((les_voitures[numero_voiture].orientation * PI) / 180); }
+float reculer_voiture_x(int numero_voiture){ return (les_voitures[numero_voiture].vitesse*TIME_STEP)/2.0 * sin((les_voitures[numero_voiture].orientation * PI) / 180); }
+float reculer_voiture_z(int numero_voiture){ return (les_voitures[numero_voiture].vitesse*TIME_STEP)/2.0 * cos((les_voitures[numero_voiture].orientation * PI) / 180); }
 
 void updateCameraTPS()
 {
@@ -131,7 +131,9 @@ void tourner_voiture_droite(int numero_voiture)
 void mettre_a_jour_position_voiture(int tempsEcoule)
 {
     if (etatTouches[TOUCHE_Z]){ avancer_voiture(0);          } 
+    if (etatTouches[TOUCHE_Z]==false){deceleration(0);       }
     if (etatTouches[TOUCHE_S]){ reculer_voiture(0);          } 
+    if (etatTouches[ESPACE])  {freinage(0);                  }
     if (etatTouches[TOUCHE_Q]){ tourner_voiture_gauche(0);   } 
     if (etatTouches[TOUCHE_D]){ tourner_voiture_droite(0);   } 
 
@@ -141,10 +143,59 @@ void mettre_a_jour_position_voiture(int tempsEcoule)
     glutTimerFunc(10, mettre_a_jour_position_voiture, 10);
 }
 
+
+
+
+void deceleration(int numero_voiture)
+{
+    if (les_voitures[numero_voiture].vitesse - 0.1 > 0.0)
+    {
+        les_voitures[numero_voiture].vitesse -= 0.08;
+        // Avancer la voiture dans la direction de l'orientation
+            les_voitures[numero_voiture].position_x += avancer_voiture_x(0);
+            les_voitures[numero_voiture].position_z += avancer_voiture_z(0);
+
+        // Calcul des coordonnées de la caméra FPS
+            camera_FPS_x += avancer_voiture_x(0);
+            camera_FPS_z += avancer_voiture_z(0);
+
+        if (numero_voiture == 0)
+        {
+            updateCameraTPS();
+        }
+    }
+    else les_voitures[numero_voiture].vitesse = 0;
+}
+    
+   
+void freinage(int numero_voiture)
+{
+    if (les_voitures[numero_voiture].vitesse-1.0>0.0)
+    {
+        les_voitures[numero_voiture].vitesse-=1.0;
+        // Avancer la voiture dans la direction de l'orientation
+            les_voitures[numero_voiture].position_x += avancer_voiture_x(numero_voiture);
+            les_voitures[numero_voiture].position_z += avancer_voiture_z(numero_voiture);
+
+        // Calcul des coordonnées de la caméra FPS
+            camera_FPS_x += avancer_voiture_x(numero_voiture);
+            camera_FPS_z += avancer_voiture_z(numero_voiture);
+
+        if (numero_voiture == 0)
+        {
+            updateCameraTPS();
+        }
+    }
+    else les_voitures[numero_voiture].vitesse = 0;
+    
+
+}
+
 void touche_relachee(unsigned char key, int x, int y)
 {
-    etatTouches[key] = false;
+    etatTouches[key] = false;   
 }
+
 
 void touche_pressee(unsigned char key, int x, int y) 
 {
@@ -154,7 +205,7 @@ void touche_pressee(unsigned char key, int x, int y)
     {    
         case ESCAPE: exit(1); break;                // la touche ECHAP quitte l'application
 
-        case ESPACE:   
+        case TAB:   
             vue_ARR = !vue_ARR;
             break;
 
@@ -174,12 +225,6 @@ void touche_pressee(unsigned char key, int x, int y)
                 vue_FPS = !vue_FPS;
                 vue_TPS = !vue_TPS;
                 break;
-
-        //####### DEPLACEMENT CAMERA #######
-            case TOUCHE_T: camera_FPS_z += 0.5; break;
-            case TOUCHE_G: camera_FPS_z -= 0.5; break;
-            case TOUCHE_F: camera_FPS_x += 0.5; break;
-            case TOUCHE_H: camera_FPS_x -= 0.5; break;
     }	
 }
 

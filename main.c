@@ -26,6 +26,9 @@ GLuint liste_affichage_voiture;
 GLuint liste_affichage_stade;
 GLuint liste_affichage_piste;
 
+
+extern float vitesse;
+
 GLvoid Modelisation()
 {
     VM_init();
@@ -58,7 +61,6 @@ GLvoid Modelisation()
 
     drawHUD(); // Dessiner le HUD après la scène 3D
 
-    
     glutSwapBuffers();
 }
 

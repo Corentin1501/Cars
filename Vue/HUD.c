@@ -2,6 +2,7 @@
 
 #include "../Modele/Regles.c" // pour le nombre de tours
 
+extern float vitesse;
 
 void glutBitmapString(void *font, const unsigned char *string);
 
@@ -51,8 +52,13 @@ void drawHUD()
                     sprintf(buffer,"Victoire ! Temps : %.3f", victory_time);
                     glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
                 }
-            
 
+            //####### Vitesse #######
+
+                glRasterPos2f(10,windowHeight-110);
+                sprintf(buffer,"Vitesse : %f", vitesse);
+                glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
+            
         }
         glPopMatrix();
         glMatrixMode(GL_PROJECTION);
