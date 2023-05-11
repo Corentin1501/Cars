@@ -111,13 +111,13 @@ bool victoire = false;
         switch (numeroCP)
         {
             case 0: return ((10 <= les_voitures[0].position_x)   && (les_voitures[0].position_x <= 60)    && (les_voitures[0].position_z <= -70)); break;
-            case 1: return ((les_voitures[0].position_x <= 0)    && (-120 <= les_voitures[0].position_z)  && (les_voitures[0].position_z <= -80)); break;
+            case 1: return ((les_voitures[0].position_x <= 0)    && (-125 <= les_voitures[0].position_z)  && (les_voitures[0].position_z <= -75)); break;
             case 2: return ((-60 <= les_voitures[0].position_x)  && (les_voitures[0].position_x <= -10)   && (-70 <= les_voitures[0].position_z)); break;
-            case 3: return ((-70 <= les_voitures[0].position_x)  && (les_voitures[0].position_x <= -30)   && (0 <= les_voitures[0].position_z));   break;
+            case 3: return ((-75 <= les_voitures[0].position_x)  && (les_voitures[0].position_x <= -25)   && (0 <= les_voitures[0].position_z));   break;
             case 4: return ((-60 <= les_voitures[0].position_x)  && (les_voitures[0].position_x <= -10)   && (70 <= les_voitures[0].position_z));  break;
-            case 5: return ((0 <= les_voitures[0].position_x)    && (80 <= les_voitures[0].position_z)    && (les_voitures[0].position_z <= 120)); break;
+            case 5: return ((0 <= les_voitures[0].position_x)    && (75 <= les_voitures[0].position_z)    && (les_voitures[0].position_z <= 125)); break;
             case 6: return ((10 <= les_voitures[0].position_x)   && (les_voitures[0].position_x <= 60)    && (les_voitures[0].position_z <= 70));  break;
-            case 7: return ((30 <= les_voitures[0].position_x)   && (les_voitures[0].position_x <= 70)    && (les_voitures[0].position_z <= 0));   break;
+            case 7: return ((25 <= les_voitures[0].position_x)   && (les_voitures[0].position_x <= 75)    && (les_voitures[0].position_z <= 0));   break;
             
             default:    return false;   break;
         }
