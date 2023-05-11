@@ -59,7 +59,6 @@ GLvoid Modelisation()
 
     drawHUD(); // Dessiner le HUD après la scène 3D
 
-    printf("vitesse: %f",vitesse);
     glutSwapBuffers();
 }
 

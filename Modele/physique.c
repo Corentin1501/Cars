@@ -1,5 +1,7 @@
-
 #include <math.h>
+
+#define COEF_RESISTANCE_ROULEMENT 0.013 //POUR CALCULER LA FORCE DE DECELERATION DE LA VOITURE SANS FREINAGE
+
 
 float gravity=9.81;
 float friction_coef=0.9;
@@ -71,4 +73,16 @@ void update_vitesse(){
 }
 
 
+void deceleration_sans_freinage(){
 
+//force de résistance au roulement
+
+float frr=COEF_RESISTANCE_ROULEMENT*masse*gravity;
+
+//acceleration
+
+float a=(frr+F_gravity())/masse;
+//ajout de l'acceleration negative
+if ((vitesse-a*TIME_STEP>0)) vitesse-=a*TIME_STEP;
+else vitesse=0;
+}

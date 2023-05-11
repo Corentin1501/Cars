@@ -6,10 +6,7 @@
 extern int blend;
 extern int light;
 
-//vitesse et time step
-extern const float acceleration;
-extern float vitesse;
-extern const float TIME_STEP;
+
 
 
 // tableau des touches (pour appuyer sur plusieurs touches en même temps)
@@ -66,8 +63,7 @@ void updateCameraTPS()
 
 void avancer_voiture()
 {
-    // tour_par_minute+=0.3;
-    // acceleration();
+    
     update_vitesse();
 
 
@@ -122,7 +118,7 @@ void tourner_voiture_droite()
 void mettre_a_jour_position_voiture(int tempsEcoule)
 {
     if (etatTouches[TOUCHE_Z]){ avancer_voiture();          } 
-        else deceleration();
+    if(etatTouches[TOUCHE_Z]==false){deceleration();}
     if (etatTouches[TOUCHE_S]){ reculer_voiture(); }
     if (etatTouches[ESPACE]){freinage();}
     if (etatTouches[TOUCHE_Q]){ tourner_voiture_gauche();   } 
@@ -135,26 +131,59 @@ void mettre_a_jour_position_voiture(int tempsEcoule)
 
 
 
+
 void deceleration(){
 
-     if (!etatTouches[ESPACE]){
-        if (vitesse-0.2 >=0){
-            vitesse-=0.2;
-            avancer_voiture();
-        } 
-        else vitesse=0;
-    }
-}
+    
+       if (vitesse-0.1>0.0){
+        vitesse-=0.08;
+    // Avancer la voiture dans la direction de l'orientation
+        voiture_x += avancer_voiture_x();
+        voiture_z += avancer_voiture_z();
+
+    // Calcul des coordonnées de la caméra FPS
+         camera_FPS_x += avancer_voiture_x();
+        camera_FPS_z += avancer_voiture_z();
+
+        updateCameraTPS();
+        
+       }
+       else vitesse=0;
+     }
+    
+   
+
+
+
+// void deceleration(){
+
+//     if(!etatTouches[TOUCHE_Z]){
+//        deceleration_sans_freinage();
+//         avancer_voiture();
+//      }
+    
+//     }
+     
+
 
 void freinage(){
 
- if (etatTouches[ESPACE]){
-        if (vitesse-0.5 >=0){
-            vitesse-=1.5;
-            avancer_voiture();
-        } 
-        else vitesse=0;
-    }
+
+      if (vitesse-1.0>0.0){
+        vitesse-=1.0;
+    // Avancer la voiture dans la direction de l'orientation
+        voiture_x += avancer_voiture_x();
+        voiture_z += avancer_voiture_z();
+
+    // Calcul des coordonnées de la caméra FPS
+         camera_FPS_x += avancer_voiture_x();
+        camera_FPS_z += avancer_voiture_z();
+
+        updateCameraTPS();
+        
+       }
+       else vitesse=0;
+    
 
 }
 
