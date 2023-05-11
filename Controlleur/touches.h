@@ -26,7 +26,8 @@
 
 // basculer vue FPS / TPS / Arrière
     #define TOUCHE_W 119    // FPS / TPS
-    #define ESPACE 32       // Arrière
+    #define ESPACE 32   
+    #define TAB 9    // Arrière
 
     
 #define ESCAPE 27

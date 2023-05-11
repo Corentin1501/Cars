@@ -1,5 +1,5 @@
 CC = gcc
-GL = -lm -lGL -lGLU -lglut -lSOIL
+GL = -lm -lGL -lGLU -lglut 
 ASS= -lassimp
 
 %.o: %.c

@@ -122,7 +122,9 @@ void tourner_voiture_droite()
 void mettre_a_jour_position_voiture(int tempsEcoule)
 {
     if (etatTouches[TOUCHE_Z]){ avancer_voiture();          } 
-    if (etatTouches[TOUCHE_S]){ reculer_voiture();          } 
+        else deceleration();
+    if (etatTouches[TOUCHE_S]){ reculer_voiture(); }
+    if (etatTouches[ESPACE]){freinage();}
     if (etatTouches[TOUCHE_Q]){ tourner_voiture_gauche();   } 
     if (etatTouches[TOUCHE_D]){ tourner_voiture_droite();   } 
 
@@ -131,10 +133,39 @@ void mettre_a_jour_position_voiture(int tempsEcoule)
     glutTimerFunc(10, mettre_a_jour_position_voiture, 10);
 }
 
+
+
+void deceleration(){
+
+     if (!etatTouches[ESPACE]){
+        if (vitesse-0.2 >=0){
+            vitesse-=0.2;
+            avancer_voiture();
+        } 
+        else vitesse=0;
+    }
+}
+
+void freinage(){
+
+ if (etatTouches[ESPACE]){
+        if (vitesse-0.5 >=0){
+            vitesse-=1.5;
+            avancer_voiture();
+        } 
+        else vitesse=0;
+    }
+
+}
+
 void touche_relachee(unsigned char key, int x, int y)
 {
     etatTouches[key] = false;
+
+
+   
 }
+
 
 void touche_pressee(unsigned char key, int x, int y) 
 {
@@ -144,7 +175,7 @@ void touche_pressee(unsigned char key, int x, int y)
     {    
         case ESCAPE: exit(1); break;                // la touche ECHAP quitte l'application
 
-        case ESPACE:   
+        case TAB:   
             vue_ARR = !vue_ARR;
             break;
 

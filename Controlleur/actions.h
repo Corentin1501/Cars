@@ -23,4 +23,8 @@ void touche(int touche, int x, int y);
 
 void verif_dehors();
 
+void deceleration();
+
+void freinage();
+
 #endif

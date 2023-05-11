@@ -2,7 +2,6 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "SOIL/SOIL.h"
 
 #include <GL/gl.h>
 #include <GL/glu.h>
