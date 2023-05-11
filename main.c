@@ -26,8 +26,6 @@ GLuint liste_affichage_voiture;
 GLuint liste_affichage_stade;
 GLuint liste_affichage_piste;
 
-// struct car les_voitures[10];
-
 GLvoid Modelisation()
 {
     VM_init();
