@@ -11,18 +11,20 @@ struct car initialiser_voiture(int numero_voiture)
     {
         une_voiture.position_x = 35;
         une_voiture.IsVoitureDuJoueur = true;
+        une_voiture.vitesse = 0;
     }
-    else
+    else 
     {
         une_voiture.position_x = 35 + (numero_voiture * 3);
         une_voiture.IsVoitureDuJoueur = false;
+        une_voiture.vitesse = 5;
     } 
 
     une_voiture.position_y = 0.0;
     une_voiture.position_z = 0.0;
 
     une_voiture.orientation = 180;
-    une_voiture.vitesse     = 0.0;
+    
 
     return une_voiture;
 }

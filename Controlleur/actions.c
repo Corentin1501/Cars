@@ -111,9 +111,9 @@ const int VOITURE_DU_JOUEUR = 0;
 
     void updateCameraTPS()
     {
-        camera_TPS_x = les_voitures[VOITURE_DU_JOUEUR].position_x - (TPS_en_arriere * avancer_voiture_x(VOITURE_DU_JOUEUR));
+        camera_TPS_x = les_voitures[VOITURE_DU_JOUEUR].position_x - (TPS_en_arriere * (sin((les_voitures[VOITURE_DU_JOUEUR].orientation * M_PI) / 180)));
         camera_TPS_y = les_voitures[VOITURE_DU_JOUEUR].position_y + TPS_au_dessus;
-        camera_TPS_z = les_voitures[VOITURE_DU_JOUEUR].position_z - (TPS_en_arriere * avancer_voiture_z(VOITURE_DU_JOUEUR));
+        camera_TPS_z = les_voitures[VOITURE_DU_JOUEUR].position_z - (TPS_en_arriere * (cos((les_voitures[VOITURE_DU_JOUEUR].orientation * M_PI) / 180)));
     }
 
     void updateCameraFPS()

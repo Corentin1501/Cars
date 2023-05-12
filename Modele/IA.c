@@ -88,7 +88,7 @@
         float dy = 85 * cos(-pas_IA_ellipse);   // Dérivée de y par rapport à t
         les_voitures[numero_voiture].orientation = atan2(dx, dy) * 180 / 3.14159265359 + 180;
 
-        pas_IA_ellipse += 0.005;
+        pas_IA_ellipse += 0.01;
     }
 
 
