@@ -36,35 +36,35 @@
     {
         switch (mouvement_actuel_IA_carre){
             case 1 :
-                if (les_voitures[numero_voiture].position_z >= -90)  avancer_voiture(1);
+                if (les_voitures[numero_voiture].position_z >= -90)  avancer_voiture(numero_voiture);
                 else {
                     les_voitures[numero_voiture].orientation += 90; 
                     mouvement_actuel_IA_carre++;
                 }
                 break;
             case 2 :
-                if (les_voitures[numero_voiture].position_x >= -38)  avancer_voiture(1);
+                if (les_voitures[numero_voiture].position_x >= -38)  avancer_voiture(numero_voiture);
                 else {
                     les_voitures[numero_voiture].orientation += 90; 
                     mouvement_actuel_IA_carre++;
                 }
                 break;
             case 3 :
-                if (les_voitures[numero_voiture].position_z <= 90)  avancer_voiture(1);
+                if (les_voitures[numero_voiture].position_z <= 90)  avancer_voiture(numero_voiture);
                 else {
                     les_voitures[numero_voiture].orientation += 90; 
                     mouvement_actuel_IA_carre++;
                 }
                 break;
             case 4 :
-                if (les_voitures[numero_voiture].position_x <= 38)  avancer_voiture(1);
+                if (les_voitures[numero_voiture].position_x <= 38)  avancer_voiture(numero_voiture);
                 else {
                     les_voitures[numero_voiture].orientation += 90; 
                     mouvement_actuel_IA_carre++;
                 }
                 break;
             case 5 :
-                if (les_voitures[numero_voiture].position_z >= -90)  avancer_voiture(1);
+                if (les_voitures[numero_voiture].position_z >= -90)  avancer_voiture(numero_voiture);
                 else {
                     les_voitures[numero_voiture].orientation += 90; 
                     mouvement_actuel_IA_carre = 2;

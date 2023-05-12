@@ -11,6 +11,7 @@
         "regex": "c",
         "init.h": "c",
         "modele.h": "c",
-        "physique.h": "c"
+        "physique.h": "c",
+        "car.h": "c"
     }
 }

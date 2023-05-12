@@ -18,6 +18,8 @@ struct car
     
     char * fichier_modele;    //chemin fichier voiture
     char * fichier_texture;    //chemin fichier tex
+
+    bool IsVoitureDuJoueur;
 };
 
 

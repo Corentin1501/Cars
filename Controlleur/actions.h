@@ -36,7 +36,16 @@ extern struct car les_voitures[10];
 
 void initialiser_voitures_et_touches();
 
+void acceleration(int numero_voiture);
+void deceleration(int numero_voiture);
+void freinage(int numero_voiture);
+
 void updateCameras();
+
+float avancer_voiture_x(int numero_voiture);
+float avancer_voiture_z(int numero_voiture);
+float reculer_voiture_x(int numero_voiture);
+float reculer_voiture_z(int numero_voiture);
 
 void avancer_voiture(int numero_voiture);
 void reculer_voiture(int numero_voiture);
@@ -52,7 +61,5 @@ void touche(int touche, int x, int y);
 
 void verif_dehors(int numero_voiture);
 
-void deceleration(int numero_voiture);
-void freinage(int numero_voiture);
 
 #endif
