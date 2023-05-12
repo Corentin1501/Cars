@@ -27,8 +27,8 @@
         float camera_TPS_y = 1.5;      
         float camera_TPS_z = 7.2;      
     // son orientation
-        float camera_orientation_x;   
-        float camera_orientation_z;   
+        float camera_orientation_x = 0;   
+        float camera_orientation_z = -5;   
     // la vue
         bool vue_FPS = false;
         bool vue_TPS = true;
