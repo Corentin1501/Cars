@@ -326,6 +326,9 @@ const int VOITURE_DU_JOUEUR = 0;
 
             les_voitures[numero_voiture].position_x = projection_x;
             les_voitures[numero_voiture].position_z = projection_z;
+            if(les_voitures[numero_voiture].vitesse-0.8>0)
+                 les_voitures[numero_voiture].vitesse-=0.8;
+            else les_voitures[numero_voiture].vitesse=0;
 
             if (les_voitures[numero_voiture].IsVoitureDuJoueur) updateCameras();
         }
