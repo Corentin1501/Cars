@@ -20,8 +20,3 @@ struct car initialiser_voiture(int numero_voiture)
 
     return une_voiture;
 }
-
-void accelerate_car(struct car une_voiture)
-{
-    une_voiture.vitesse += ACCELERATION * TIME_STEP;
-}

@@ -1,10 +1,5 @@
-#include "stdbool.h"
+#include "HUD.h"
 
-#include "../Modele/Regles.c" // pour le nombre de tours
-
-extern float vitesse;
-
-void glutBitmapString(void *font, const unsigned char *string);
 
 void drawHUD()
 {
@@ -56,7 +51,7 @@ void drawHUD()
             //####### Vitesse #######
 
                 glRasterPos2f(10,windowHeight-110);
-                sprintf(buffer,"Vitesse : %f", vitesse);
+                sprintf(buffer,"Vitesse : %.0f", (les_voitures[0].vitesse * 10));
                 glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)buffer);
             
         }

@@ -1,24 +1,4 @@
-#include <assimp/cimport.h>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-
-#include <stdio.h>
-
-GLuint textures[10];
-
-struct modele {
-    const struct aiScene* scene;  // Structure contenant la scène chargée
-};
-
-// Fonction pour créer un objet modèle à partir d'un fichier
-struct modele creerModele(const char* fichier);
-
-// Fonction pour afficher un modèle à l'écran
-void afficherModele(struct modele modele);
+#include "Modele.h"
 
 struct modele creerModele(const char* fichier){
     // Flags pour la fonction d'importation de la scène
@@ -36,8 +16,6 @@ struct modele creerModele(const char* fichier){
 
     return un_modele;  // Retourner l'objet modèle créé
 }
-
-
 
 void afficherModele(struct modele modele){
 
@@ -86,14 +64,14 @@ void afficherModele(struct modele modele){
     }
 }
 
-void afficherModeleAvecTextures(struct modele modele, int numero_texture)
+void afficherModeleAvecTextures(struct modele modele, GLuint texture)
 {
     float scale_texture = 15;   // pour baisser / augmenter la répétition des textures
 
     if (modele.scene)   // Vérifier que la structure de scène est valide
     { 
         // Activer l'utilisation des textures
-        glBindTexture(GL_TEXTURE_2D,textures[numero_texture]);
+        glBindTexture(GL_TEXTURE_2D,texture);
         glEnable(GL_TEXTURE_2D);
 
         for (unsigned int i = 0; i < modele.scene->mNumMeshes; ++i)

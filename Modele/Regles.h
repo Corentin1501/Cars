@@ -1,7 +1,9 @@
 #ifndef REGLES_H
 #define REGLES_H
 
-#include <stdbool.h>
+#include "../Vue/init.h"    // pour le start_time
+#include "stdbool.h"
+
 
 extern const int NOMBRE_TOURS_POUR_GAGNER;
 extern const int NOMBRE_CHECKPOINTS;
@@ -15,10 +17,9 @@ extern float chronometre;
 extern bool victoire;
 
 void updateChrono();
-bool tourcompleted();
+
 bool verifVictoire();
-bool checkpoint_dans_ordre(int numeroCP);
-void activateCheckPoints(int numeroCP);
-bool CP_passe(int numeroCP);
+
+void verifier_checkpoints();
 
 #endif // REGLES_H

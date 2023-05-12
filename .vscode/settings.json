@@ -8,6 +8,9 @@
         "glut.h": "c",
         "switch_light.h": "c",
         "switch_blend.h": "c",
-        "regex": "c"
+        "regex": "c",
+        "init.h": "c",
+        "modele.h": "c",
+        "physique.h": "c"
     }
 }

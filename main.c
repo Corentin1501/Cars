@@ -13,21 +13,8 @@
 
 
 #include "Vue/init.h"
-#include "Vue/axes.h"
 #include "Vue/VM_init.h"
-#include "Vue/HUD.c"
-#include "Vue/ppm.h"
-
-#include "Modele/Car.h"
-
-#include "stdbool.h"
-
-GLuint liste_affichage_voiture;
-GLuint liste_affichage_stade;
-GLuint liste_affichage_piste;
-
-
-extern float vitesse;
+#include "Vue/HUD.h"
 
 GLvoid Modelisation()
 {
@@ -56,8 +43,6 @@ GLvoid Modelisation()
         glCallList(liste_affichage_piste); // Afficher la piste
 
     //-----------------------------------
-
-    axes();
 
     drawHUD(); // Dessiner le HUD après la scène 3D
 

@@ -1,22 +1,17 @@
 #include "Regles.h"
 
-#include "../Vue/init.h"
-#include "../Vue/VM_init.h"
-
-#include "stdbool.h"
-
-const int NOMBRE_TOURS_POUR_GAGNER = 2 ;
-const int NOMBRE_CHECKPOINTS       = 8 ;
+const int NOMBRE_TOURS_POUR_GAGNER = 2;
+const int NOMBRE_CHECKPOINTS       = 8;
 
 int Current_Lap = 1;
-int Current_CP = 0;
+int Current_CP  = 0;
 bool liste_checkpoints[8] = {false, false, false, false, false, false, false, false};
 
-float chronometre;
-float start_time = 0;
+bool victoire = false;
 float victory_time = 0;
 bool victory_time_calculated = false;
-bool victoire = false;
+
+float chronometre;
 
 
 //#####################################################

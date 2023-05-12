@@ -1,39 +1,4 @@
-#include <stdio.h>
-#include "stdbool.h"
-
-#include "../Modele/opmat.h"
-#include "../Modele/Regles.h"
-#include "../Modele/IA.h"
-
-#include "../Controlleur/actions.h"
-
 #include "VM_init.h"
-#include "init.h"
-
-//########## CAMERA ##########
-
-    // angles de la caméra
-    float anglex = 0.0f;
-    float angley = 0.0f;
-
-    // coordonnées de la caméra
-        // vue FPS
-            float camera_FPS_x = 35;
-            float camera_FPS_y = 0.65; 
-            float camera_FPS_z = 0;
-
-        // vue TPS
-            float camera_TPS_x = 35;
-            float camera_TPS_y = 1.5;
-            float camera_TPS_z = 7.2;
-
-    float camera_orientation_x = 0;
-    float camera_orientation_z = -5;
-
-    bool vue_FPS = true;
-    bool vue_TPS = false;
-    bool vue_ARR = false;
-
 
 
 void lumieres()
@@ -156,9 +121,6 @@ void lumieres()
             glLightf(GL_LIGHT5, GL_SPOT_EXPONENT, spot_5_exponent);
 
 }
-
-
-
 
 void VM_init(){
 

@@ -1,24 +1,15 @@
 #include "init.h"
-#include "stdbool.h"
-#include "ppm.h"
-
-#include "../Modele/Modele.c"
 
 GLuint blend = 0;
 GLuint light = 0;
 
-extern float start_time;
-extern bool gameFinished;
+GLuint liste_affichage_voiture; // Créer la liste d'affichage pour la voiture
+GLuint liste_affichage_stade; // Créer la liste d'affichage pour le stade
+GLuint liste_affichage_piste; // Créer la liste d'affichage pour la piste avec les textures
 
-extern GLuint textures[10];
-
-void creer_toutes_les_voitures()
-{
-    for (int i = 0; i < 10; i++)
-    {
-        les_voitures[i] = initialiser_voiture(i);
-    }
-}
+float start_time = 0.0;
+GLuint textures[10];
+bool gameFinished = false;
 
 GLvoid Redimensionne(GLsizei Width, GLsizei Height)
 {
@@ -52,10 +43,6 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
     glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
 
-    //-------------- Détermination des variables globales --------------
-
-        bool gameFinished = false;
-
     //-------------- Création de la scène --------------
 
         struct modele voiture = creerModele("./Vue/modeles-blender/fichiers-objets/voiture_sans_fenetres.obj");
@@ -64,7 +51,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
 
         //=================== VOITURE ===================
 
-            creer_toutes_les_voitures();
+            initialiser_voitures_et_touches();
 
             liste_affichage_voiture = glGenLists(1); // Créer la liste d'affichage pour la voiture
             glNewList(liste_affichage_voiture, GL_COMPILE); // Début de l'enregistrement de la liste

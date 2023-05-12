@@ -4,6 +4,8 @@
 //                 DONNÉES                //
 //##########################################
 
+    extern struct car les_voitures[10];
+
     int mouvement_actuel_IA_carre = 1;
     float pas_IA_ellipse = 0;
 

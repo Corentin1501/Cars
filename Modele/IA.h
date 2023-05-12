@@ -5,11 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "Regles.h"
-#include "../Controlleur/actions.h"
-#include "../Vue/init.h"
-
-// struct IA {};
+#include "../Controlleur/actions.h" // pour avoir le tableau de voitures
 
 void jouer_IA_aleatoire(int numero_voiture);
 void jouer_IA_carre(int tempsEcoule);
