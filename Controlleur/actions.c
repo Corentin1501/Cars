@@ -90,8 +90,10 @@ const int VOITURE_DU_JOUEUR = 0;
     // Diminue fortement la vitesse de la voiture
     void freinage(int numero_voiture)
     {
-        if (les_voitures[numero_voiture].vitesse-1.0>0.0) 
-            les_voitures[numero_voiture].vitesse-=1.0;
+        float forceDeFreinage = 0.6;
+
+        if (les_voitures[numero_voiture].vitesse - forceDeFreinage > 0) 
+            les_voitures[numero_voiture].vitesse -= forceDeFreinage;
         else 
             les_voitures[numero_voiture].vitesse = 0;
     }
@@ -208,14 +210,22 @@ const int VOITURE_DU_JOUEUR = 0;
             accelerer(VOITURE_DU_JOUEUR);      // augmente la vitesse
             avancer_voiture(VOITURE_DU_JOUEUR);   // avance la voiture avec la nouvelle vitesse    
         }   
-        if (etatTouches[TOUCHE_Z]==false)
+        if ((etatTouches[TOUCHE_Z]==false) && (etatTouches[TOUCHE_S] == false))
         {
             deceleration(VOITURE_DU_JOUEUR);      // diminue la vitesse 
             avancer_voiture(VOITURE_DU_JOUEUR);   // avance la voiture avec la nouvelle vitesse    
         }
         if (etatTouches[TOUCHE_S])
         { 
-            reculer_voiture(VOITURE_DU_JOUEUR);          
+            if (les_voitures[VOITURE_DU_JOUEUR].vitesse >= 0)
+            {
+                freinage(VOITURE_DU_JOUEUR);          // diminue fortement la vitesse          
+                avancer_voiture(VOITURE_DU_JOUEUR);   // avance la voiture avec la nouvelle vitesse    
+            }
+            else 
+            {
+                reculer_voiture(VOITURE_DU_JOUEUR);
+            }
         } 
         if (etatTouches[ESPACE])  
         {
