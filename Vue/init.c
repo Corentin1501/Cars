@@ -6,6 +6,10 @@ GLuint light = 0;
 GLuint liste_affichage_voiture; // Créer la liste d'affichage pour la voiture
 GLuint liste_affichage_stade; // Créer la liste d'affichage pour le stade
 GLuint liste_affichage_piste; // Créer la liste d'affichage pour la piste avec les textures
+GLuint liste_affichage_ciel; // Créer la liste d'affichage pour le ciel avec les textures
+
+const int TEXTURE_BITUME = 0; 
+const int TEXTURE_CIEL = 1; 
 
 float start_time = 0.0;
 GLuint textures[10];
@@ -48,6 +52,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
         struct modele voiture = creerModele("./Vue/modeles-blender/fichiers-objets/voiture_sans_fenetres.obj");
         struct modele stade   = creerModele("./Vue/modeles-blender/fichiers-objets/decors_sans_piste.obj");
         struct modele piste   = creerModele("./Vue/modeles-blender/fichiers-objets/piste.obj");
+        struct modele ciel    = creerModele("./Vue/modeles-blender/fichiers-objets/ciel.obj");
 
         //=================== VOITURE ===================
 
@@ -83,7 +88,19 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
                 glPushMatrix(); // Piste
                 {
                     glColor3f(1,1,1); // couleur de la piste
-                    afficherModeleAvecTextures(piste,1);
+                    afficherModeleAvecTextures(piste,TEXTURE_BITUME);
+                }
+                glPopMatrix();
+            glEndList(); // Fin de l'enregistrement de la liste
+
+        //=================== CIEL ===================
+
+            liste_affichage_ciel = glGenLists(1); // Créer une nouvelle liste d'affichage
+            glNewList(liste_affichage_ciel, GL_COMPILE); // Début de l'enregistrement de la liste
+                glPushMatrix(); // Ciel
+                {
+                    glColor3f(1,1,1); // couleur du ciel
+                    afficherModeleAvecTextures(ciel,TEXTURE_CIEL);
                 }
                 glPopMatrix();
             glEndList(); // Fin de l'enregistrement de la liste
@@ -91,6 +108,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
         aiReleaseImport(voiture.scene);
         aiReleaseImport(stade.scene);
         aiReleaseImport(piste.scene);
+        aiReleaseImport(ciel.scene);
 
     //------------------ Chronomètre ------------------
 
@@ -99,23 +117,27 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
     //------------------- Textures -------------------
 
         /*
-            0 : texture de la voiture
-            1 : texture du bitume
-        
+            0 : texture du bitume
+            1 : texture du ciel
         */
 
-        glGenTextures(1,textures);
-        TEXTURE_STRUCT * bitume = readPpm("./Vue/textures/asphalt/asphalt.ppm");
-        glBindTexture(GL_TEXTURE_2D,textures[1]);
+        // Génération des noms de texture
+        glGenTextures(1, textures);
 
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitume->width, bitume->height, 0, GL_RGB, GL_UNSIGNED_BYTE,  bitume->data);
+        // Première texture
+        TEXTURE_STRUCT* bitume = readPpm("./Vue/textures/asphalt/asphalt.ppm");
+        glBindTexture(GL_TEXTURE_2D, textures[1]);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitume->width, bitume->height, 0, GL_RGB, GL_UNSIGNED_BYTE, bitume->data);
         free(bitume->data);
         free(bitume);
+
+        // Activation de l'utilisation des textures
         glEnable(GL_TEXTURE_2D);
+
 
     //------------------- Position Voiture -------------------
 

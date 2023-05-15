@@ -18,15 +18,19 @@
         // Initialiser le générateur de nombres aléatoires avec le temps actuel
         srand(time(NULL));
 
-        // Générer un nombre aléatoire entre 0 et 3
-        int mouvement_aleatoire = rand() % 4;
+        // Générer un nombre aléatoire entre 0 et 8
+        int mouvement_aleatoire = rand() % 8;
 
         switch (mouvement_aleatoire)
         {
-            case 0: avancer_voiture(numero_voiture);        break;
-            case 1: reculer_voiture(numero_voiture);        break;
-            case 2: tourner_voiture_droite(numero_voiture); break;
-            case 3: tourner_voiture_gauche(numero_voiture); break;
+            case 0: avancer_voiture(numero_voiture);                                                break;
+            case 1: avancer_voiture(numero_voiture);        tourner_voiture_droite(numero_voiture); break;
+            case 2: tourner_voiture_droite(numero_voiture);                                         break;
+            case 3: reculer_voiture(numero_voiture);        tourner_voiture_droite(numero_voiture); break;
+            case 4: reculer_voiture(numero_voiture);                                                break;
+            case 5: reculer_voiture(numero_voiture);        tourner_voiture_gauche(numero_voiture); break;
+            case 6: tourner_voiture_gauche(numero_voiture);                                         break;
+            case 7: avancer_voiture(numero_voiture);        tourner_voiture_gauche(numero_voiture); break;
         }
 
         verif_dehors(numero_voiture);

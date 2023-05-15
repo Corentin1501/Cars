@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 
+#include "../Vue/init.h"    // pour les textures
+
 struct modele {
     const struct aiScene* scene;  // Structure contenant la scène chargée
 };
@@ -19,6 +21,6 @@ struct modele {
 struct modele creerModele(const char* fichier); // Fonction pour créer un objet modèle à partir d'un fichier
 
 void afficherModele(struct modele modele); // Fonction pour afficher un modèle à l'écran
-void afficherModeleAvecTextures(struct modele modele, GLuint texture);
+void afficherModeleAvecTextures(struct modele modele, int numero_texture);
 
 #endif // MODELE_H

@@ -41,6 +41,7 @@ GLvoid Modelisation()
         }
 
         glCallList(liste_affichage_piste); // Afficher la piste
+        glCallList(liste_affichage_ciel); // Afficher le ciel
 
     //-----------------------------------
 

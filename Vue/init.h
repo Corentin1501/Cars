@@ -19,6 +19,7 @@
 extern GLuint liste_affichage_voiture; // Créer la liste d'affichage pour la voiture
 extern GLuint liste_affichage_stade; // Créer la liste d'affichage pour le stade
 extern GLuint liste_affichage_piste; // Créer la liste d'affichage pour la piste avec les textures
+extern GLuint liste_affichage_ciel; // Créer la liste d'affichage pour la piste avec les textures
 
 extern float start_time;
 extern GLuint textures[10];
