@@ -39,6 +39,7 @@ void initialiser_voitures_et_touches();
 void acceleration(int numero_voiture);
 void deceleration(int numero_voiture);
 void freinage(int numero_voiture);
+void reculer(int numero_voiture);
 
 void updateCameras();
 
