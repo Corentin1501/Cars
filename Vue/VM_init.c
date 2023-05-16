@@ -122,6 +122,15 @@ void lumieres()
 
 }
 
+float calculCamArriere_x()
+{
+    return camera_FPS_x;
+}
+float calculCamArriere_z()
+{
+    
+}
+
 void VM_init(){
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -137,10 +146,12 @@ void VM_init(){
     //#                      CAMERA                       #
     //#####################################################
 
+        float enArriere = calculCamArriere_x();
+
         if (vue_ARR)
         {
-            gluLookAt(  camera_FPS_x, camera_FPS_y, camera_FPS_z + 2,
-                        camera_TPS_x, camera_TPS_y, camera_TPS_z,
+            gluLookAt(  camera_FPS_x, camera_FPS_y, camera_FPS_z,
+                        camera_FPS_x - camera_orientation_x, camera_FPS_y, camera_FPS_z - camera_orientation_z,
                         0, 1, 0);
         }
         else
