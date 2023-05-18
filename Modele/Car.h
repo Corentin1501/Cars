@@ -20,6 +20,13 @@ struct car
     char * fichier_texture;    //chemin fichier tex
 
     bool IsVoitureDuJoueur;
+
+    bool checkpoints[8];
+
+    bool aGagne;
+    float temps_victoire;
+    int currentCP;
+    int currentLap;
 };
 
 

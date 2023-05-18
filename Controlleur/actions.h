@@ -8,7 +8,7 @@
 #include "../Vue/switch_blend.h"
 #include "../Vue/switch_light.h"
 #include "../Modele/opmat.h"
-#include "../Modele/Car.h"      // pour créer le tableau de voiture (avec la struct car)
+#include "../Modele/physique.h"      // pour créer le tableau de voiture (avec la struct car) et utiliser la physique
 
 #include <stdlib.h>
 #include <GL/glut.h>    
@@ -36,23 +36,7 @@ extern struct car les_voitures[10];
 
 void initialiser_voitures_et_touches();
 
-void acceleration(int numero_voiture);
-void deceleration(int numero_voiture);
-void freinage(int numero_voiture);
-void reculer(int numero_voiture);
-
 void updateCameras();
-
-float avancer_voiture_x(int numero_voiture);
-float avancer_voiture_z(int numero_voiture);
-float reculer_voiture_x(int numero_voiture);
-float reculer_voiture_z(int numero_voiture);
-
-void avancer_voiture(int numero_voiture);
-void reculer_voiture(int numero_voiture);
-
-void tourner_voiture_gauche(int numero_voiture);
-void tourner_voiture_droite(int numero_voiture);
 
 void mettre_a_jour_position_voiture();
 
@@ -60,7 +44,7 @@ void touche_relachee(unsigned char key, int x, int y);
 void touche_pressee(unsigned char key, int x, int y);
 void touche(int touche, int x, int y);
 
-void verif_dehors(int numero_voiture);
+// void verif_dehors(int numero_voiture);
 
 
 #endif

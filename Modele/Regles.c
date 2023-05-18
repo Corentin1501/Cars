@@ -32,32 +32,32 @@ float chronometre;
 //#####################################################
 
     /*
-        Vérifie si un tour a été fait (si tous les Checkpoints sont validés)
+        Vérifie si une voiture donnée dans un tableau donné a fait un tour (si tous les Checkpoints sont validés)
         @return vrai ou faux
     */
-    bool tourcompleted()
+    bool tourcompleted(int numVoiture, struct car* voitures)
     {
         for (int i = 0; i < NOMBRE_CHECKPOINTS; i++) 
         {
-            if(!liste_checkpoints[i]) return false;
+            if(!voitures[numVoiture].checkpoints[i]) return false;
         }
         return true;
     }
 
     /*
-        Vérifie si le nombre de tours nécessaire pour gagner a été atteint
+        Vérifie si une voiture donnée dans un tableau donné a fait le nombre de tours nécessaire pour gagner
         @return vrai ou faux
     */
-    bool verifVictoire()
+    bool verifVictoire(int numVoiture, struct car* voitures)
     {
-        victoire = Current_Lap > NOMBRE_TOURS_POUR_GAGNER;
+        bool victoireDeLaVoiture = voitures[numVoiture].currentLap > NOMBRE_TOURS_POUR_GAGNER;
 
-        if(victoire && !victory_time_calculated){
-            victory_time = chronometre;
-            victory_time_calculated = true;         // booléen necessaire sinon le temps de victoire afficher simplement le chrono qui tourne
+        if(victoireDeLaVoiture && !voitures[numVoiture].aGagne){
+            voitures[numVoiture].temps_victoire = chronometre;
+            voitures[numVoiture].aGagne = true;         // booléen necessaire sinon le temps de victoire afficher simplement le chrono qui tourne
         } 
 
-        return victoire;
+        return victoireDeLaVoiture;
     }
 
 //#####################################################
@@ -65,68 +65,76 @@ float chronometre;
 //#####################################################
 
     /*
-        Vérifie quand un Checkpoint est passé si le Checkpoint précédent a aussi été passé
+        Vérifie quand un Checkpoint est passé, par une voiture donnée dans un tableau donné, si le Checkpoint précédent a aussi été passé
+        @param numVoiture Numéro de la voiture
+        @param voitures Tableau contenant les voitures
         @param numeroCP Numéro du Checkpoint passé
         @return vrai ou faux
     */
-    bool checkpoint_dans_ordre(int numeroCP)
+    bool checkpoint_dans_ordre(int numVoiture, struct car* voitures, int numeroCP)
     {
         if(numeroCP == 0) 
             return true;
         else 
-            return !liste_checkpoints[numeroCP] && liste_checkpoints[numeroCP-1];
+            return !voitures[numVoiture].checkpoints[numeroCP] && voitures[numVoiture].checkpoints[numeroCP - 1];
     }
 
     /*
-        Active un certain Checkpoint et augmente le nombre de tours complété si tous les checkpoints ont été passés
+        Active un certain Checkpoint et augmente le nombre de tours complété si tous les checkpoints ont été passés pour une voiture donnée dans un tableau donné
+        @param numVoiture Numéro de la voiture
+        @param voitures Tableau contenant les voitures
         @param numeroCP Numéro du Checkpoint qu'on active
     */
-    void activateCheckPoints(int numeroCP)
+    void activateCheckPoints(int numVoiture, struct car* voitures, int numeroCP)
     {
-        liste_checkpoints[numeroCP] = true;
-        ++Current_CP;
+        voitures[numVoiture].checkpoints[numeroCP] = true;
+        voitures[numVoiture].currentCP ++;
 
         // verification si ça fait un tour
-        if(tourcompleted())
+        if(tourcompleted(numVoiture, voitures))
         {
-            ++Current_Lap;
-            for (int i = 0; i < NOMBRE_CHECKPOINTS; i++) liste_checkpoints[i] = false;
+            voitures[numVoiture].currentLap ++;
+            for (int i = 0; i < NOMBRE_CHECKPOINTS; i++) voitures[numVoiture].checkpoints[i] = false;
         }
     }
 
     /*
-        Verifie si les coordonnées de la voiture ont passées un checkpoint
+        Verifie si les coordonnées d'une une voiture donnée dans un tableau donné ont passées un checkpoint
+        @param numVoiture Numéro de la voiture
+        @param voitures Tableau contenant les voitures
         @param numeroCP Numéro du Checkpoint qu'on vérifie
         @return vrai ou faux
     */
-    bool CP_passe(int numeroCP)
+    bool CP_passe(int numVoiture, struct car* voitures, int numeroCP)
     {
         switch (numeroCP)
         {
-            case 0: return ((10 <= les_voitures[0].position_x)   && (les_voitures[0].position_x <= 60)    && (les_voitures[0].position_z <= -70)); break;
-            case 1: return ((les_voitures[0].position_x <= 0)    && (-125 <= les_voitures[0].position_z)  && (les_voitures[0].position_z <= -75)); break;
-            case 2: return ((-60 <= les_voitures[0].position_x)  && (les_voitures[0].position_x <= -10)   && (-70 <= les_voitures[0].position_z)); break;
-            case 3: return ((-75 <= les_voitures[0].position_x)  && (les_voitures[0].position_x <= -25)   && (0 <= les_voitures[0].position_z));   break;
-            case 4: return ((-60 <= les_voitures[0].position_x)  && (les_voitures[0].position_x <= -10)   && (70 <= les_voitures[0].position_z));  break;
-            case 5: return ((0 <= les_voitures[0].position_x)    && (75 <= les_voitures[0].position_z)    && (les_voitures[0].position_z <= 125)); break;
-            case 6: return ((10 <= les_voitures[0].position_x)   && (les_voitures[0].position_x <= 60)    && (les_voitures[0].position_z <= 70));  break;
-            case 7: return ((25 <= les_voitures[0].position_x)   && (les_voitures[0].position_x <= 75)    && (les_voitures[0].position_z <= 0));   break;
+            case 0: return ((10 <= voitures[numVoiture].position_x)   && (voitures[numVoiture].position_x <= 60)    && (voitures[numVoiture].position_z <= -70)); break;
+            case 1: return ((voitures[numVoiture].position_x <= 0)    && (-125 <= voitures[numVoiture].position_z)  && (voitures[numVoiture].position_z <= -75)); break;
+            case 2: return ((-60 <= voitures[numVoiture].position_x)  && (voitures[numVoiture].position_x <= -10)   && (-70 <= voitures[numVoiture].position_z)); break;
+            case 3: return ((-75 <= voitures[numVoiture].position_x)  && (voitures[numVoiture].position_x <= -25)   && (0 <= voitures[numVoiture].position_z));   break;
+            case 4: return ((-60 <= voitures[numVoiture].position_x)  && (voitures[numVoiture].position_x <= -10)   && (70 <= voitures[numVoiture].position_z));  break;
+            case 5: return ((0 <= voitures[numVoiture].position_x)    && (75 <= voitures[numVoiture].position_z)    && (voitures[numVoiture].position_z <= 125)); break;
+            case 6: return ((10 <= voitures[numVoiture].position_x)   && (voitures[numVoiture].position_x <= 60)    && (voitures[numVoiture].position_z <= 70));  break;
+            case 7: return ((25 <= voitures[numVoiture].position_x)   && (voitures[numVoiture].position_x <= 75)    && (voitures[numVoiture].position_z <= 0));   break;
             
             default:    return false;   break;
         }
     }
 
     /*
-        Effectue une vérification complète des Checkpoints
+        Effectue une vérification complète des Checkpoints pour une voiture donnée dans un tableau donné
         - Si un Checkpoint est passé
         - S'il est passé dans l'ordre
         - S'il n'était pas déjà activé
+        @param numVoiture Numéro de la voiture
+        @param voitures Tableau contenant les voitures
     */
-    void verifier_checkpoints()
+    void verifier_checkpoints(int numVoiture, struct car* voitures)
     {
         for (int i = 0; i < NOMBRE_CHECKPOINTS; i++){
-            if(CP_passe(i) && checkpoint_dans_ordre(i) && !liste_checkpoints[i]){
-                activateCheckPoints(i);
+            if(CP_passe(numVoiture, voitures, i) && checkpoint_dans_ordre(numVoiture, voitures, i) && !voitures[numVoiture].checkpoints[i]){
+                activateCheckPoints(numVoiture, voitures, i);
             }
         }
     }

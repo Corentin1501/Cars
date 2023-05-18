@@ -18,8 +18,17 @@ extern bool victoire;
 
 void updateChrono();
 
-bool verifVictoire();
+// TOURS
 
-void verifier_checkpoints();
+    bool tourcompleted(int numVoiture, struct car* voitures);
+    bool verifVictoire(int numVoiture, struct car* voitures);
+
+// CHECKPOINTS
+
+    bool checkpoint_dans_ordre(int numVoiture, struct car* voitures, int numeroCP);
+    void activateCheckPoints(int numVoiture, struct car* voitures, int numeroCP);
+    bool CP_passe(int numVoiture, struct car* voitures, int numeroCP);
+
+    void verifier_checkpoints(int numVoiture, struct car* voitures);
 
 #endif // REGLES_H

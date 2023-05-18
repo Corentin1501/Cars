@@ -13,7 +13,6 @@
         "modele.h": "c",
         "physique.h": "c",
         "car.h": "c",
-        "ia_entrainement.h": "c",
         "opmat.h": "c",
         "regles.h": "c"
     }

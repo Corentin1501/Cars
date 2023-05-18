@@ -5,8 +5,6 @@ struct car initialiser_voiture(int numero_voiture)
 {
     struct car une_voiture;
 
-    //===== POSITION =====
-
     if (numero_voiture == 0)    // la voiture du joueur est le la voiture n°0
     {
         une_voiture.position_x = 35;
@@ -24,6 +22,13 @@ struct car initialiser_voiture(int numero_voiture)
     une_voiture.position_z = 0.0;
 
     une_voiture.orientation = 180;
+
+    for (int g = 0; g < 8; g++) une_voiture.checkpoints[g] = false;
+
+    une_voiture.aGagne = false;
+    une_voiture.temps_victoire = 0.0;
+    une_voiture.currentCP = 0;
+    une_voiture.currentLap = 1;
     
 
     return une_voiture;

@@ -135,7 +135,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
         free(bitume->data);
         free(bitume);
 
-        // Première texture
+        // Deuxième texture
         TEXTURE_STRUCT* textciel = readPpm("./Vue/textures/ciel/ciel2.ppm");
         glBindTexture(GL_TEXTURE_2D, textures[1]);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -157,7 +157,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
 
     //------------------------------------------------
 
-        entrainerIAs();
+        // entrainerIAs();
 
     glutMainLoop();
     return 1;

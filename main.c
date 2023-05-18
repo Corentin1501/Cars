@@ -30,8 +30,8 @@ GLvoid Modelisation()
             {
                 if (num == 0)
                 {
-                    verifier_checkpoints();
-                    verifVictoire();
+                    verifier_checkpoints(num, les_voitures);
+                    verifVictoire(num, les_voitures);
                 }
                 glTranslatef(les_voitures[num].position_x, les_voitures[num].position_y, les_voitures[num].position_z);
                 glRotatef(les_voitures[num].orientation ,0,1,0);

@@ -4,16 +4,16 @@
 //#                 DONNÉES                #
 //##########################################
 
-    extern struct car les_voitures[10];
-
     int mouvement_actuel_IA_carre = 1;
     float pas_IA_ellipse = 0;
+
+    struct car lesIAs[20];
 
 //##########################################
 //#               IA SCRIPTÉES             #
 //##########################################
 
-    void jouer_IA_aleatoire(int numero_voiture)
+    void jouer_IA_aleatoire(int numero_voiture, struct car* voitures)
     {
         // Initialiser le générateur de nombres aléatoires avec le temps actuel
         srand(time(NULL));
@@ -23,52 +23,52 @@
 
         switch (mouvement_aleatoire)
         {
-            case 0: avancer_voiture(numero_voiture);                                                break;
-            case 1: avancer_voiture(numero_voiture);        tourner_voiture_droite(numero_voiture); break;
-            case 2: tourner_voiture_droite(numero_voiture);                                         break;
-            case 3: reculer_voiture(numero_voiture);        tourner_voiture_droite(numero_voiture); break;
-            case 4: reculer_voiture(numero_voiture);                                                break;
-            case 5: reculer_voiture(numero_voiture);        tourner_voiture_gauche(numero_voiture); break;
-            case 6: tourner_voiture_gauche(numero_voiture);                                         break;
-            case 7: avancer_voiture(numero_voiture);        tourner_voiture_gauche(numero_voiture); break;
+            case 0: avancer_voiture(numero_voiture, voitures);                                                break;
+            case 1: avancer_voiture(numero_voiture, voitures);        tourner_voiture_droite(numero_voiture, voitures); break;
+            case 2: tourner_voiture_droite(numero_voiture, voitures);                                         break;
+            case 3: reculer_voiture(numero_voiture, voitures);        tourner_voiture_droite(numero_voiture, voitures); break;
+            case 4: reculer_voiture(numero_voiture, voitures);                                                break;
+            case 5: reculer_voiture(numero_voiture, voitures);        tourner_voiture_gauche(numero_voiture, voitures); break;
+            case 6: tourner_voiture_gauche(numero_voiture, voitures);                                         break;
+            case 7: avancer_voiture(numero_voiture, voitures);        tourner_voiture_gauche(numero_voiture, voitures); break;
         }
 
-        verif_dehors(numero_voiture);
+        verif_dehors(numero_voiture, voitures);
     }
 
-    void jouer_IA_carre(int numero_voiture)
+    void jouer_IA_carre(int numero_voiture, struct car* voitures)
     {
         switch (mouvement_actuel_IA_carre){
             case 1 :
-                if (les_voitures[numero_voiture].position_z >= -90)  avancer_voiture(numero_voiture);
+                if (les_voitures[numero_voiture].position_z >= -90)  avancer_voiture(numero_voiture, voitures);
                 else {
                     les_voitures[numero_voiture].orientation += 90; 
                     mouvement_actuel_IA_carre++;
                 }
                 break;
             case 2 :
-                if (les_voitures[numero_voiture].position_x >= -38)  avancer_voiture(numero_voiture);
+                if (les_voitures[numero_voiture].position_x >= -38)  avancer_voiture(numero_voiture, voitures);
                 else {
                     les_voitures[numero_voiture].orientation += 90; 
                     mouvement_actuel_IA_carre++;
                 }
                 break;
             case 3 :
-                if (les_voitures[numero_voiture].position_z <= 90)  avancer_voiture(numero_voiture);
+                if (les_voitures[numero_voiture].position_z <= 90)  avancer_voiture(numero_voiture, voitures);
                 else {
                     les_voitures[numero_voiture].orientation += 90; 
                     mouvement_actuel_IA_carre++;
                 }
                 break;
             case 4 :
-                if (les_voitures[numero_voiture].position_x <= 38)  avancer_voiture(numero_voiture);
+                if (les_voitures[numero_voiture].position_x <= 38)  avancer_voiture(numero_voiture, voitures);
                 else {
                     les_voitures[numero_voiture].orientation += 90; 
                     mouvement_actuel_IA_carre++;
                 }
                 break;
             case 5 :
-                if (les_voitures[numero_voiture].position_z >= -90)  avancer_voiture(numero_voiture);
+                if (les_voitures[numero_voiture].position_z >= -90)  avancer_voiture(numero_voiture, voitures);
                 else {
                     les_voitures[numero_voiture].orientation += 90; 
                     mouvement_actuel_IA_carre = 2;
@@ -77,7 +77,7 @@
         }
     }
 
-    void jouer_IA_ellipse(int numero_voiture)
+    void jouer_IA_ellipse(int numero_voiture, struct car* voitures)
     {
         // Calcul des coordonnées de l'ellipse
         float x = 41 * cos(-pas_IA_ellipse);
@@ -99,7 +99,44 @@
 //#            IA INTELLIGENTES            #
 //##########################################
 
-    
+    /*
+        Choix possibles de l'IA :
+        - appuyer sur Z     accélerer
+        - appuyer sur S     freiner
+        - appuyer sur Q     tourner à gauche
+        - appuyer sur D     tourner à droite
+        - ne rien appuyer   décelerer
+    */
+
+    void entrainerIAs()
+    {
+        for (int ia = 0; ia < 20; ia++)     lesIAs[ia] = initialiser_voiture(1);    // tous comme une voiture n°1 
+        
+
+        // entrainement
+        
+
+            for (int indiv = 0; indiv < 20; indiv++)
+            {
+                while (!lesIAs[indiv].checkpoints[0])
+                {
+                    verifier_checkpoints(indiv, lesIAs);
+                    avancer_voiture(indiv, lesIAs);
+                }
+            }
+
+        // Afficher les résultats / données des IAs
+
+            for (int indiv = 0; indiv < 20; indiv++)
+            {
+                printf("individu n°%d :\t[", indiv);
+                for (int g = 0; g < 8; g++)
+                {
+                    if (g != 7) printf("%d,",   lesIAs[indiv].checkpoints[g]);
+                    if (g == 7) printf("%d]\t(%.1f , %.1f)\n", lesIAs[indiv].checkpoints[g], lesIAs[indiv].position_x, lesIAs[indiv].position_z);
+                }
+            }
+    }
 
 //##########################################
 //#          JOUER TOUTES LES IAS          #
@@ -107,7 +144,7 @@
 
     void jouer_les_IAs(int tempsEcoule)
     {
-        jouer_IA_carre(1);    
-        jouer_IA_ellipse(2);  
-        jouer_IA_aleatoire(3);  
+        jouer_IA_carre(1, les_voitures);    
+        jouer_IA_ellipse(2, les_voitures);  
+        jouer_IA_aleatoire(3, les_voitures);  
     }
