@@ -99,14 +99,7 @@
 //#            IA INTELLIGENTES            #
 //##########################################
 
-    /*
-        Choix possibles de l'IA :
-        - appuyer sur Z     accélerer
-        - appuyer sur S     freiner
-        - appuyer sur Q     tourner à gauche
-        - appuyer sur D     tourner à droite
-        - ne rien appuyer   décelerer
-    */
+
 
     void entrainerIAs()
     {
@@ -116,14 +109,31 @@
         // entrainement
         
 
-            for (int indiv = 0; indiv < 20; indiv++)
+            for (int indiv = 0; indiv < 20; indiv++)    // on entraine chaque individus
             {
-                while (!lesIAs[indiv].checkpoints[0])
+
+                while (!lesIAs[indiv].checkpoints[0])   // on entraine jusqu'a ce que l'individu atteigne le premier CP
                 {
+                    /*
+                        Choix possibles de l'IA :
+                        - appuyer sur Z     accélerer
+                        - appuyer sur S     freiner
+                        - appuyer sur Q     tourner à gauche
+                        - appuyer sur D     tourner à droite
+                        - ne rien appuyer   décelerer
+                    */
+
+
                     verifier_checkpoints(indiv, lesIAs);
                     avancer_voiture(indiv, lesIAs);
+
                 }
+
             }
+
+        // évaluation des résultats
+
+
 
         // Afficher les résultats / données des IAs
 

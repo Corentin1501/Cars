@@ -14,6 +14,8 @@
         "physique.h": "c",
         "car.h": "c",
         "opmat.h": "c",
-        "regles.h": "c"
+        "regles.h": "c",
+        "lumiere.h": "c",
+        "ia.h": "c"
     }
 }

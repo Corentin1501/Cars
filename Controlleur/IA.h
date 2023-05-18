@@ -13,5 +13,7 @@ void jouer_IA_carre(int numero_voiture, struct car* voitures);
 void jouer_IA_ellipse(int numero_voiture, struct car* voitures);
 void jouer_les_IAs(int tempsEcoule);
 
+void entrainerIAs();
+
 
 #endif // IA_H

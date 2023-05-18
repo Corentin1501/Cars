@@ -13,7 +13,7 @@
 #include "lumiere.h"
 #include "ppm.h"
 #include "../Controlleur/touches.h"
-#include "../Controlleur/actions.h"
+#include "../Controlleur/IA.h"
 #include "../Modele/Modele.h"
 
 extern GLuint liste_affichage_voiture; // Créer la liste d'affichage pour la voiture

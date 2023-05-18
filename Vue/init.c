@@ -157,7 +157,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
 
     //------------------------------------------------
 
-        // entrainerIAs();
+        entrainerIAs();
 
     glutMainLoop();
     return 1;
