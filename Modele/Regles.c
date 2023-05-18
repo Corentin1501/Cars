@@ -25,8 +25,6 @@ float chronometre;
     {
         chronometre = glutGet(GLUT_ELAPSED_TIME) - start_time;  // temps en millisecondes
         chronometre = chronometre / 1000.0;                     // temps en secondes
-
-        // printf("ECHELLE_STADE dans Regles.c : %.1f\n", ECHELLE_STADE);
     }
 
 //#####################################################

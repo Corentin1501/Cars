@@ -13,7 +13,7 @@
     const float VITESSE_MAX  = 25.0;
     const float VITESSE_MAX_ARRIERE  = 12.5;
     const float TIME_STEP    = 0.1;
-    float vitesse_arriere=0.0;
+    float vitesse_arriere    = 0.0;
 
 // tableau des touches (pour appuyer sur plusieurs touches en même temps)
 
@@ -251,11 +251,6 @@ const int VOITURE_DU_JOUEUR = 0;
                 reculer_voiture(VOITURE_DU_JOUEUR);
             }
         } 
-        if (etatTouches[ESPACE])  
-        {
-            freinage(VOITURE_DU_JOUEUR);          // diminue fortement la vitesse          
-            avancer_voiture(VOITURE_DU_JOUEUR);   // avance la voiture avec la nouvelle vitesse    
-        }
         if (etatTouches[TOUCHE_Q]){ tourner_voiture_gauche(VOITURE_DU_JOUEUR);   } 
         if (etatTouches[TOUCHE_D]){ tourner_voiture_droite(VOITURE_DU_JOUEUR);   } 
 

@@ -64,10 +64,10 @@ void afficherModele(struct modele modele){
     }
 }
 
-void afficherModeleAvecTextures(struct modele modele, int numero_texture)
+void afficherModeleAvecTextures(struct modele modele, GLuint texture)
 {
     float scale_texture;   // pour baisser / augmenter la répétition des textures
-    switch (numero_texture)
+    switch (texture)
     {
         case 0 :    scale_texture = 15; break;
         case 1 :    scale_texture = 60; break;
@@ -87,7 +87,7 @@ void afficherModeleAvecTextures(struct modele modele, int numero_texture)
             if(mesh->mTextureCoords[0] != NULL)
             {
                 // Activer la texture pour le maillage actuel
-                glBindTexture(GL_TEXTURE_2D,textures[numero_texture]);
+                glBindTexture(GL_TEXTURE_2D,texture);
 
                 for (unsigned int j = 0; j < mesh->mNumFaces; ++j)  // Boucler à travers les faces du maillage
                 {

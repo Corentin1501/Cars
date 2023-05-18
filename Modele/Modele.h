@@ -21,6 +21,6 @@ struct modele {
 struct modele creerModele(const char* fichier); // Fonction pour créer un objet modèle à partir d'un fichier
 
 void afficherModele(struct modele modele); // Fonction pour afficher un modèle à l'écran
-void afficherModeleAvecTextures(struct modele modele, int numero_texture);
+void afficherModeleAvecTextures(struct modele modele, GLuint texture);
 
 #endif // MODELE_H

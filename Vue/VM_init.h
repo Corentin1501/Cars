@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include "stdbool.h"
 
-#include "../Modele/IA.h"
+#include "../Controlleur/IA.h"
 
 void VM_init();
 

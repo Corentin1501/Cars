@@ -88,7 +88,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
                 glPushMatrix(); // Piste
                 {
                     glColor3f(1,1,1); // couleur de la piste
-                    afficherModeleAvecTextures(piste,TEXTURE_BITUME);
+                    afficherModeleAvecTextures(piste,textures[TEXTURE_BITUME]);
                 }
                 glPopMatrix();
             glEndList(); // Fin de l'enregistrement de la liste
@@ -100,7 +100,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
                 glPushMatrix(); // Ciel
                 {
                     glColor3f(1,1,1); // couleur du ciel
-                    afficherModeleAvecTextures(ciel,TEXTURE_CIEL);
+                    afficherModeleAvecTextures(ciel,textures[TEXTURE_CIEL]);
                 }
                 glPopMatrix();
             glEndList(); // Fin de l'enregistrement de la liste
@@ -122,11 +122,11 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
         */
 
         // Génération des noms de texture
-        glGenTextures(1, textures);
+        glGenTextures(2, textures);
 
         // Première texture
         TEXTURE_STRUCT* bitume = readPpm("./Vue/textures/asphalt/asphalt.ppm");
-        glBindTexture(GL_TEXTURE_2D, textures[1]);
+        glBindTexture(GL_TEXTURE_2D, textures[0]);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -135,6 +135,18 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
         free(bitume->data);
         free(bitume);
 
+        // Première texture
+        TEXTURE_STRUCT* textciel = readPpm("./Vue/textures/ciel/ciel2.ppm");
+        glBindTexture(GL_TEXTURE_2D, textures[1]);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textciel->width, textciel->height, 0, GL_RGB, GL_UNSIGNED_BYTE, textciel->data);
+        free(textciel->data);
+        free(textciel);
+
+    
         // Activation de l'utilisation des textures
         glEnable(GL_TEXTURE_2D);
 
@@ -144,6 +156,8 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
         glutTimerFunc(10, mettre_a_jour_position_voiture, 10); // commencer les maj de la position de la voiture
 
     //------------------------------------------------
+
+        entrainerIAs();
 
     glutMainLoop();
     return 1;
