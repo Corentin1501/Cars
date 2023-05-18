@@ -72,8 +72,8 @@ const float TIME_STEP    = 0.1;
     void reculer_voiture(int numVoiture, struct car* voitures)
     {
         // Reculer la voiture dans la direction de l'orientation
-        voitures[numVoiture].position_x -= reculer_voiture_x(numVoiture, voitures);
-        voitures[numVoiture].position_z -= reculer_voiture_z(numVoiture, voitures);
+        voitures[numVoiture].position_x += reculer_voiture_x(numVoiture, voitures);
+        voitures[numVoiture].position_z += reculer_voiture_z(numVoiture, voitures);
     }
 
     void tourner_voiture_gauche(int numVoiture, struct car* voitures)
