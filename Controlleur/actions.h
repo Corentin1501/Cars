@@ -34,6 +34,8 @@
 // tableau des voitures        
 extern struct car les_voitures[10];
 
+extern const int VOITURE_DU_JOUEUR;
+
 void initialiser_voitures_et_touches();
 
 void updateCameras();
@@ -43,8 +45,5 @@ void mettre_a_jour_position_voiture();
 void touche_relachee(unsigned char key, int x, int y);
 void touche_pressee(unsigned char key, int x, int y);
 void touche(int touche, int x, int y);
-
-// void verif_dehors(int numero_voiture);
-
 
 #endif

@@ -8,13 +8,7 @@
 extern const int NOMBRE_TOURS_POUR_GAGNER;
 extern const int NOMBRE_CHECKPOINTS;
 
-extern int Current_Lap;
-extern int Current_CP;
-
-extern float victory_time;
 extern float chronometre;
-
-extern bool victoire;
 
 void updateChrono();
 

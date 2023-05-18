@@ -102,7 +102,6 @@ const int VOITURE_DU_JOUEUR = 0;
             deceleration(VOITURE_DU_JOUEUR, les_voitures);      // diminue la vitesse 
             if (les_voitures[VOITURE_DU_JOUEUR].vitesse > 0)        avancer_voiture(VOITURE_DU_JOUEUR, les_voitures);   // avance la voiture avec la nouvelle vitesse    
             else if(les_voitures[VOITURE_DU_JOUEUR].vitesse < 0)    reculer_voiture(VOITURE_DU_JOUEUR, les_voitures);
-
         }
         if (etatTouches[TOUCHE_S])
         { 
