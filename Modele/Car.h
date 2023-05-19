@@ -6,6 +6,9 @@
 
 #include <math.h>
 #include <stdbool.h>
+#include <stdio.h>      // pour le printf
+
+extern const int NOMBRE_DE_GENES;
 
 struct car
 {
@@ -27,9 +30,24 @@ struct car
     float temps_victoire;
     int currentCP;
     int currentLap;
+
+    int mouvementEffectue;
+
+    /*
+        0 : accelere
+        1 : freine
+        2 : tourneADroite
+        3 : tourneAGauche
+        4 : neFaisRien
+    */
+    bool genes[32][5];
+
+
 };
 
 
 struct car initialiser_voiture(int numero_voiture);
+
+void afficherVoiture(struct car voiture);
 
 // #endif

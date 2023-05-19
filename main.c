@@ -24,7 +24,9 @@ GLvoid Modelisation()
 
         glCallList(liste_affichage_stade); // Afficher le stade
 
-        for (int num = 0; num < 10; num++)
+        int nombreDeVoitureAAfficher = 1;
+
+        for (int num = 0; num < nombreDeVoitureAAfficher; num++)
         {
             glPushMatrix();
             {
@@ -39,6 +41,21 @@ GLvoid Modelisation()
             }
             glPopMatrix();
         }
+        
+        for (int num = 0; num < NOMBRE_IA; num++)
+        {
+            glPushMatrix();
+            {
+                glColor3f(0,1,0);
+
+                glTranslatef(lesIAs[num].position_x, lesIAs[num].position_y, lesIAs[num].position_z);
+                glRotatef(lesIAs[num].orientation ,0,1,0);
+                glCallList(liste_affichage_voiture); // Afficher la voiture
+            }
+            glPopMatrix();
+        }
+
+        
 
         glCallList(liste_affichage_piste); // Afficher la piste
         glCallList(liste_affichage_ciel); // Afficher le ciel

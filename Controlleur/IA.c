@@ -7,9 +7,9 @@
     int mouvement_actuel_IA_carre = 1;
     float pas_IA_ellipse = 0;
 
-    const int NOMBRE_IA = 5;
+    const int NOMBRE_IA = 7;
 
-    struct car lesIAs[5];
+    struct car lesIAs[7];
 
 //##########################################
 //#               IA SCRIPTÉES             #
@@ -40,6 +40,8 @@
 
     void jouer_IA_carre(int numVoiture, struct car* voitures)
     {
+        voitures[numVoiture].vitesse = 5.0;
+
         switch (mouvement_actuel_IA_carre){
             case 1 :
                 if (voitures[numVoiture].position_z >= -90)  avancer_voiture(numVoiture, voitures);
@@ -101,12 +103,70 @@
 //#            IA INTELLIGENTES            #
 //##########################################
 
+    //=================================================
+    //=                     GÈNES                     =
+    //=================================================
+
+        /*
+            Définis les limites des zones des différents gènes.
+            @param numVoiture Numéro de la voiture
+            @param voitures Tableau contenant les voitures
+            @return le numéro du gène dans lequel se trouve la voiture donnée
+        */
+        int getCurrentGene(int numVoiture, struct car* tab)
+        {
+            if      ((0 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 75)   && (-17.5 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z <   0.0)) return 0;
+            else if ((0 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 75)   && (-35.0 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z < -17.5)) return 1;    
+            else if ((0 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 75)   && (-52.5 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z < -35.0)) return 2;    
+            else if ((0 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 75)   && (-70.0 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z < -52.5)) return 3;
+            else if (((-tab[numVoiture].position_x) / 2.5 - 70 < tab[numVoiture].position_z)    && (-70.0 >= tab[numVoiture].position_z)) return 4;     
+            else if (((-tab[numVoiture].position_x) / 2.5 - 70 > tab[numVoiture].position_z)    && (-tab[numVoiture].position_x)       - 70 < tab[numVoiture].position_z) return 5;     
+            else if (((-tab[numVoiture].position_x)       - 70 > tab[numVoiture].position_z)    && (-tab[numVoiture].position_x) * 2.5 - 70 < tab[numVoiture].position_z) return 6;     
+            else if (((-tab[numVoiture].position_x) * 2.5 - 70 > tab[numVoiture].position_z)    && (  0.0 <= tab[numVoiture].position_x)) return 7;    
+            else if ((( tab[numVoiture].position_x) * 2.5 - 70 > tab[numVoiture].position_z)    && (  0.0 >= tab[numVoiture].position_x)) return 8;    
+            else if ((( tab[numVoiture].position_x)       - 70 > tab[numVoiture].position_z)    && ( tab[numVoiture].position_x) * 2.5 - 70 < tab[numVoiture].position_z) return 9;     
+            else if ((( tab[numVoiture].position_x) / 2.5 - 70 > tab[numVoiture].position_z)    && ( tab[numVoiture].position_x)       - 70 < tab[numVoiture].position_z) return 10;     
+            else if ((( tab[numVoiture].position_x) / 2.5 - 70 < tab[numVoiture].position_z)    && (-70.0 >= tab[numVoiture].position_z)) return 11;     
+            else if ((-75 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 0)   && (-70.0 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z < -52.5)) return 12;
+            else if ((-75 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 0)   && (-52.5 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z < -35.0)) return 13;    
+            else if ((-75 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 0)   && (-35.0 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z < -17.5)) return 14;    
+            else if ((-75 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 0)   && (-17.5 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z <   0.0)) return 15;
+            else if ((-75 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 0)   && (  0.0 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z <  17.5)) return 16;
+            else if ((-75 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 0)   && ( 17.5 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z <  35.0)) return 17;    
+            else if ((-75 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 0)   && ( 35.0 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z <  52.5)) return 18;    
+            else if ((-75 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 0)   && ( 52.5 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z <  70.0)) return 19;
+            else if (((-tab[numVoiture].position_x) / 2.5 + 70 > tab[numVoiture].position_z)    && ( 70.0 <= tab[numVoiture].position_z)) return 20;    
+            else if (((-tab[numVoiture].position_x) / 2.5 + 70 < tab[numVoiture].position_z)    && (-tab[numVoiture].position_x)       + 70 > tab[numVoiture].position_z) return 21;
+            else if (((-tab[numVoiture].position_x)       + 70 < tab[numVoiture].position_z)    && (-tab[numVoiture].position_x) * 2.5 + 70 > tab[numVoiture].position_z) return 22;     
+            else if (((-tab[numVoiture].position_x) * 2.5 + 70 < tab[numVoiture].position_z)    && (  0.0 >= tab[numVoiture].position_x)) return 23;  
+            else if ((( tab[numVoiture].position_x) * 2.5 + 70 < tab[numVoiture].position_z)    && (  0.0 <= tab[numVoiture].position_x)) return 24;  
+            else if ((( tab[numVoiture].position_x)       + 70 < tab[numVoiture].position_z)    && ( tab[numVoiture].position_x) * 2.5 + 70 > tab[numVoiture].position_z) return 25;     
+            else if ((( tab[numVoiture].position_x) / 2.5 + 70 < tab[numVoiture].position_z)    && ( tab[numVoiture].position_x)       + 70 > tab[numVoiture].position_z) return 26;
+            else if ((( tab[numVoiture].position_x) / 2.5 + 70 > tab[numVoiture].position_z)    && ( 70.0 <= tab[numVoiture].position_z)) return 27;    
+            else if ((0 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 75)   && ( 52.5 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z < 70.0)) return 28;
+            else if ((0 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 75)   && ( 35.0 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z < 52.5)) return 29;    
+            else if ((0 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 75)   && ( 17.5 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z < 35.0)) return 30;    
+            else if ((0 <= tab[numVoiture].position_x)  && (tab[numVoiture].position_x <= 75)   && (  0.0 <= tab[numVoiture].position_z) && (tab[numVoiture].position_z < 17.5)) return 31;
+
+            else return 666;
+        }
+
+        // void verifier_genes(int numVoiture, struct car* voitures)
+        // {
+        //     for (int unGene = 0; unGene < NOMBRE_DE_GENES; unGene++){
+        //         if(genePasse(numVoiture, voitures, unGene)){
+        //             activateCheckPoints(numVoiture, voitures, unGene);
+        //         }
+        //     }
+        // }   
+
     void bougerIA(int numVoiture, struct car* voitures)
     {
-        srand(time(NULL));
-        int mouvement_aleatoire = rand() % 5;
+        int mouvement = 0;
 
-        switch (mouvement_aleatoire)
+        if (voitures[numVoiture].currentCP == 0) mouvement = 0;
+
+        switch (mouvement)
         {
             case 0:  // appuyer sur Z
 
@@ -146,54 +206,77 @@
 
                 break;
         }
+        verif_dehors(numVoiture, voitures);
     }
+
+    void initialiserIA()
+    {
+        // initialiser les paramètres des IAs
+
+            for (int ia = 0; ia < NOMBRE_IA; ia++) lesIAs[ia] = initialiser_voiture(ia + 3);    // les 3 premieres places des voitures sont deja prises     
+        
+        // changer les valeurs de départ des IAs
+
+
+
+
+            for (int ia = 0; ia < NOMBRE_IA; ia++)
+            {
+                lesIAs[ia].genes[0][0] = true;  // le premier gène va faire accélerer toutes les IAs
+            } 
+
+        // printf("\n");
+
+    }
+
 
     void entrainerIAs()
     {
-        for (int ia = 0; ia < NOMBRE_IA; ia++)     lesIAs[ia] = initialiser_voiture(1);    // tous comme une voiture n°1 
-        
+        initialiserIA();
 
         // entrainement
 
             float tempsEntrainementDeDepart = glutGet(GLUT_ELAPSED_TIME) - start_time;
 
-            for (int indiv = 0; indiv < NOMBRE_IA; indiv++)    // on entraine chaque individus
+            int nombreVoitureFinis = 0;
+
+            bool entrainerLesVoitures = true;
+
+            if (entrainerLesVoitures)
             {
-                float tempsDeDepart  = glutGet(GLUT_ELAPSED_TIME) - start_time;
-
-                printf("-------- Entrainement de l'individu n°%d --------\n", indiv);
-
-                int nombreDeMouvements = 0;
-
-                float departChronometre = chronometre;
-
-                while (!lesIAs[indiv].checkpoints[0] && (chronometre - departChronometre) <= 5)   // on entraine jusqu'a ce que l'individu atteigne le premier CP
+                for (int indiv = 0; indiv < NOMBRE_IA; indiv++)    // on entraine chaque individus
                 {
-                    updateChrono();
-                    /*
-                        Choix possibles de l'IA :
-                        - appuyer sur Z     accélerer
-                        - appuyer sur S     freiner
-                        - appuyer sur D     tourner à droite
-                        - appuyer sur Q     tourner à gauche
-                        - ne rien appuyer   décelerer
-                    */
-                   ++ nombreDeMouvements;
-                   
-                    verifier_checkpoints(indiv, lesIAs);
-                    bougerIA(indiv, lesIAs);
+                    float tempsDeDepart  = glutGet(GLUT_ELAPSED_TIME) - start_time;
+
+                    // printf("-------- Entrainement de l'individu n°%d --------\n", indiv);
+
+                    float departChronometre = chronometre;
+
+                    // printf("\ttemps de depart : %.2f\n", departChronometre);
+
+                    // on entraine jusqu'a ce que l'individu atteigne le premier CP avant 5 secondes découlées
+                    while (!lesIAs[indiv].checkpoints[0] && (chronometre - departChronometre) <= 1)   
+                    {
+                        updateChrono();
+
+                        ++ lesIAs[indiv].mouvementEffectue;
+                    
+                        verifier_checkpoints(indiv, lesIAs);
+                        bougerIA(indiv, lesIAs);
+                    }
+
+                    if(lesIAs[indiv].checkpoints[0]) ++ nombreVoitureFinis;
+
+                    lesIAs[indiv].temps_victoire = glutGet(GLUT_ELAPSED_TIME) - tempsDeDepart;
+
+                    // printf("\tNombre de mouvements effectués : %d\n\n", lesIAs[indiv].mouvementEffectue);
+
                 }
-
-                lesIAs[indiv].temps_victoire = glutGet(GLUT_ELAPSED_TIME) - tempsDeDepart;
-
-                printf("\tNombre de mouvements effectués : %d\n", nombreDeMouvements);
-
             }
-
-            printf("\ntemps d'entrainement : %f \n", (glutGet(GLUT_ELAPSED_TIME) - tempsEntrainementDeDepart));
 
         // évaluation des résultats
 
+            printf("\nNombre de voiture qui ont finis : %d\n", nombreVoitureFinis);
 
 
 
@@ -205,7 +288,12 @@
                 for (int g = 0; g < NOMBRE_CHECKPOINTS; g++)
                 {
                     if (g != 7) printf("%d,",   lesIAs[indiv].checkpoints[g]);
-                    if (g == 7) printf("%d]\t(%.1f , %.1f)\t temps : %f\n", lesIAs[indiv].checkpoints[g], lesIAs[indiv].position_x, lesIAs[indiv].position_z, lesIAs[indiv].temps_victoire);
+                    if (g == 7)
+                    {
+                        printf("%d]\t(%.1f , %.1f)", lesIAs[indiv].checkpoints[g], lesIAs[indiv].position_x, lesIAs[indiv].position_z);
+                        // printf("\t temps : %f\n", lesIAs[indiv].temps_victoire);
+                        printf("\t mouvements : %d\n", lesIAs[indiv].mouvementEffectue);
+                    } 
                 }
             }
     }
