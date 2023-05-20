@@ -12,6 +12,7 @@ const int TEXTURE_BITUME = 0;
 const int TEXTURE_CIEL = 1; 
 
 float start_time = 0.0;
+float start_time_des_IAs = 0.0;
 GLuint textures[10];
 bool gameFinished = false;
 
@@ -110,10 +111,6 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
         aiReleaseImport(piste.scene);
         aiReleaseImport(ciel.scene);
 
-    //------------------ Chronomètre ------------------
-
-        start_time = (float)glutGet(GLUT_ELAPSED_TIME);
-
     //------------------- Textures -------------------
 
         /*
@@ -157,7 +154,12 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
 
     //------------------------------------------------
 
-        entrainerIAs();
+        start_time_des_IAs = (float)glutGet(GLUT_ELAPSED_TIME);
+        jouer_IA_smart();
+
+    //------------------ Chronomètre ------------------
+
+        start_time = (float)glutGet(GLUT_ELAPSED_TIME);
 
     glutMainLoop();
     return 1;

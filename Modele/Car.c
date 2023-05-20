@@ -35,6 +35,7 @@ struct car initialiser_voiture(int numero_voiture)
     une_voiture.currentLap = 1;
     
     une_voiture.mouvementEffectue = 0;
+    une_voiture.note = 0;
 
     return une_voiture;
 }

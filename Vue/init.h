@@ -22,6 +22,7 @@ extern GLuint liste_affichage_piste; // Créer la liste d'affichage pour la pist
 extern GLuint liste_affichage_ciel; // Créer la liste d'affichage pour la piste avec les textures
 
 extern float start_time;
+extern float start_time_des_IAs;
 extern GLuint textures[10];
 extern bool gameFinished;
 

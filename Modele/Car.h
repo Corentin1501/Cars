@@ -32,17 +32,16 @@ struct car
     int currentLap;
 
     int mouvementEffectue;
+    int note;
 
     /*
         0 : accelere
-        1 : freine
+        1 : freine / recule
         2 : tourneADroite
         3 : tourneAGauche
         4 : neFaisRien
     */
     bool genes[32][5];
-
-
 };
 
 

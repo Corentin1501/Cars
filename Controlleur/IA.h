@@ -2,8 +2,8 @@
 #define IA_H
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include <stdlib.h> // Pour rand() et srand()
+#include <time.h>   // Pour time()
 
 #include "actions.h"
 #include "../Modele/Regles.h"
@@ -15,7 +15,7 @@ void jouer_les_IAs(int tempsEcoule);
 
 int getCurrentGene(int numVoiture, struct car* tab);
 
-void entrainerIAs();
+void jouer_IA_smart();
 
 extern const int NOMBRE_IA;
 extern struct car lesIAs[7];
