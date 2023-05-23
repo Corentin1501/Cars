@@ -154,8 +154,10 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
 
     //------------------------------------------------
 
-        start_time_des_IAs = (float)glutGet(GLUT_ELAPSED_TIME);
-        jouer_IA_smart();
+        // start_time_des_IAs = (float)glutGet(GLUT_ELAPSED_TIME);
+        // jouer_IA_smart();
+
+        loadDataInIA(4, les_voitures);
 
     //------------------ Chronomètre ------------------
 

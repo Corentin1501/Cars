@@ -33,20 +33,22 @@ struct car
 
     int mouvementEffectue;
     int note;
+    bool aToucheLeMur;
 
     /*
         0 : accelere
-        1 : freine / recule
-        2 : tourneADroite
-        3 : tourneAGauche
-        4 : neFaisRien
+        1 : ne fais rien
+        2 : freine / recule
+        3 : tourne à gauche 
+        4 : tourne à droite
     */
     bool genes[32][5];
 };
 
 
 struct car initialiser_voiture(int numero_voiture);
+void resetVoiture(int numero_voiture, struct car* voitures);
 
-void afficherVoiture(struct car voiture);
+void afficherVoiture(int numero_voiture, struct car* voitures, int maxGenes);
 
 // #endif

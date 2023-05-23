@@ -15,10 +15,15 @@ void jouer_les_IAs(int tempsEcoule);
 
 int getCurrentGene(int numVoiture, struct car* tab);
 
+void loadDataInIA(int numVoiture, struct car* voitures);
+
+
 void jouer_IA_smart();
 
+void bougerIA(int numVoiture, struct car* voitures);
+
 extern const int NOMBRE_IA;
-extern struct car lesIAs[7];
+extern struct car lesIAs[1];
 
 
 #endif // IA_H
