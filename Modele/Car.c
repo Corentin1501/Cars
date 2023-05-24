@@ -36,7 +36,6 @@ struct car initialiser_voiture(int numero_voiture)
     
     une_voiture.mouvementEffectue = 0;
     une_voiture.note = 0;
-    une_voiture.aToucheLeMur = false;
 
     return une_voiture;
 }

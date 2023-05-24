@@ -106,8 +106,6 @@ const float TIME_STEP    = 0.1;
 
         if (Ellipse_exterieure > 1 || Ellipse_interieure < 1) {
 
-            voitures[numVoiture].aToucheLeMur = true;
-            
             float projection_x, projection_z;
             float min_distance_exterieure = 1000000000;
             float min_distance_interieure = 1000000000;

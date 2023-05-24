@@ -89,7 +89,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
                 glPushMatrix(); // Piste
                 {
                     glColor3f(1,1,1); // couleur de la piste
-                    afficherModeleAvecTextures(piste,textures[TEXTURE_BITUME]);
+                    afficherModeleAvecTextures(piste,TEXTURE_CIEL); // la texture du bitume a été chargé en 0 mais ne focntionne que si on utilise la texture 1 ?????
                 }
                 glPopMatrix();
             glEndList(); // Fin de l'enregistrement de la liste
@@ -101,7 +101,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
                 glPushMatrix(); // Ciel
                 {
                     glColor3f(1,1,1); // couleur du ciel
-                    afficherModeleAvecTextures(ciel,textures[TEXTURE_CIEL]);
+                    afficherModele(ciel);
                 }
                 glPopMatrix();
             glEndList(); // Fin de l'enregistrement de la liste
@@ -119,7 +119,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
         */
 
         // Génération des noms de texture
-        glGenTextures(2, textures);
+        glGenTextures(1, textures);
 
         // Première texture
         TEXTURE_STRUCT* bitume = readPpm("./Vue/textures/asphalt/asphalt.ppm");
@@ -133,15 +133,15 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
         free(bitume);
 
         // Deuxième texture
-        TEXTURE_STRUCT* textciel = readPpm("./Vue/textures/ciel/ciel2.ppm");
-        glBindTexture(GL_TEXTURE_2D, textures[1]);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textciel->width, textciel->height, 0, GL_RGB, GL_UNSIGNED_BYTE, textciel->data);
-        free(textciel->data);
-        free(textciel);
+        // TEXTURE_STRUCT* textciel = readPpm("./Vue/textures/ciel/ciel2.ppm");
+        // glBindTexture(GL_TEXTURE_2D, textures[1]);
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textciel->width, textciel->height, 0, GL_RGB, GL_UNSIGNED_BYTE, textciel->data);
+        // free(textciel->data);
+        // free(textciel);
 
     
         // Activation de l'utilisation des textures
@@ -152,13 +152,22 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
 
         glutTimerFunc(10, mettre_a_jour_position_voiture, 10); // commencer les maj de la position de la voiture
 
-    //------------------------------------------------
+    //------------------------- IAs -------------------------
 
-        // start_time_des_IAs = (float)glutGet(GLUT_ELAPSED_TIME);
-        // jouer_IA_smart();
+        bool entrainerLesIAs = !false;
+        int nombreIATrained = 4 + 1;    // les 4 premières voitures déjà prises + le nombre d'IA à charger avec les gènes
 
-        loadDataInIA(4, les_voitures);
+        if (entrainerLesIAs)
+        {
+            start_time_des_IAs = (float)glutGet(GLUT_ELAPSED_TIME);
+            jouer_IA_smart();
+        }
 
+        for (int agent = 4; agent < nombreIATrained; agent++)
+        {
+            loadDataInIA("bestGenes.txt", agent, les_voitures);
+        }
+        
     //------------------ Chronomètre ------------------
 
         start_time = (float)glutGet(GLUT_ELAPSED_TIME);

@@ -16,19 +16,9 @@
 #include "Vue/VM_init.h"
 #include "Vue/HUD.h"
 
-bool IAtrained = false;
-
 GLvoid Modelisation()
 {
     VM_init();
-
-    if (!IAtrained)
-    {
-        start_time_des_IAs = (float)glutGet(GLUT_ELAPSED_TIME);
-        jouer_IA_smart();
-
-        IAtrained = true;
-    }
 
     //------ Affichage de la scène ------
 

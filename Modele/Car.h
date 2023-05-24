@@ -33,7 +33,6 @@ struct car
 
     int mouvementEffectue;
     int note;
-    bool aToucheLeMur;
 
     /*
         0 : accelere

@@ -7,9 +7,9 @@
     int mouvement_actuel_IA_carre = 1;
     float pas_IA_ellipse = 0;
 
-    const int NOMBRE_IA = 1;
+    const int NOMBRE_IA = 7;
 
-    struct car lesIAs[1];
+    struct car lesIAs[7];
 
 //##########################################
 //#               IA SCRIPTÉES             #
@@ -151,6 +151,10 @@
             else return 666;
         }
 
+        /*
+            @param move le numéro du mouvement
+            @return la chaine de caractère correspondant
+        */
         char* afficherMove(int move)
         {
             switch (move)
@@ -164,14 +168,20 @@
             }
         }
 
+        /*
+            Affiche les infos d'une voiture :
+            - sa position
+            - le gène dans lequel elle est
+            - le mouvement choisi dans son dernier gène
+            @param numVoiture Numéro de la voiture
+            @param voitures Tableau contenant les voitures
+            @geneAAtteindre le gène à atteindre
+        */
         void afficherStatsIA(int numeroIA, struct car* tableauIA, int geneAAtteindre)
         {
             printf("individu n°%d :", numeroIA);
                 printf("\t(%.1f , %.1f)", tableauIA[numeroIA].position_x, tableauIA[numeroIA].position_z);
                 printf("\t current gene : %d", getCurrentGene(numeroIA, tableauIA));
-                // printf("\t note : %d", tableauIA[numeroIA].note);
-                // printf("\n");
-
                     printf("\t gene n°%d [", geneAAtteindre - 1);
                     for (int move = 0; move < 5; move++)
                     {
@@ -181,7 +191,67 @@
 
         }
 
-        void saveDatasIA(char * filePath, int individu, struct car * tab)
+        /*
+            Met à jour le chronomètre dédié à l'entrainement des IAs
+        */
+        void updateChronoDesIAs() 
+        {
+            chronometre = glutGet(GLUT_ELAPSED_TIME) - start_time_des_IAs;  // temps en millisecondes
+            chronometre = chronometre / 1000.0;                             // temps en secondes
+        }
+
+        /*
+            Vérifie si un mouvement a été choisi dans le gène en cours
+        */
+        void verifierMouvementDansGene(int numVoiture, struct car* voitures)
+        {
+            // On récupère le gène / position à laquelle est la voiture
+            int currentGene = getCurrentGene(numVoiture, voitures);
+
+            // On va vérifier s'il y a au moins un mouvement de choisis
+            bool aucunMouvementInitialise = true;
+            for (int move = 0; move < 5; move++) if(voitures[numVoiture].genes[currentGene][move]) aucunMouvementInitialise = false; 
+
+            if(aucunMouvementInitialise)
+            {
+                srand((unsigned int)time(NULL));
+
+                int mouvement_aleatoire;
+
+                // Si on est dans une ligne droite, l'IA ne pourra que accélérer, freiner ou ne rien faire
+                if((29 <= currentGene && currentGene <= 1) || (13 <= currentGene && currentGene <= 18)) 
+                {
+                    // Générer un nombre aléatoire entre 0 et 2
+                    mouvement_aleatoire = rand() % 2;
+                }
+                else 
+                {
+                    // Générer un nombre aléatoire entre 0 et 4
+                    mouvement_aleatoire = rand() % 4;
+                }
+
+                // si la vitesse n'est pas suffisante pour freiner et passer au prochain gène, on ne va pas freiner
+                while (voitures[numVoiture].vitesse < 15 && mouvement_aleatoire == 2) mouvement_aleatoire = rand() % 5;
+
+                // le mouvement choisis aléatoirement est choisis et on le met dans le gène
+                voitures[numVoiture].genes[currentGene][mouvement_aleatoire] = true;
+
+                // si le mouvement choisis est de tourner on fais aussi accélerer
+                if (mouvement_aleatoire == 3 || mouvement_aleatoire == 4) voitures[numVoiture].genes[currentGene][0] = true;
+            }
+        }
+
+    //=================================================
+    //=             SAVE / LOAD LES GENES             =
+    //=================================================
+
+        /*
+            Sauvegarde dans un fichier les gènes d'une voiture
+            @param filePath chemin du fichier dans lequel sauvegarder
+            @param numVoiture Numéro de la voiture
+            @param voitures Tableau contenant les voitures
+        */
+        void saveDatasIA(char * filePath, int numVoiture, struct car * voitures)
         {
             FILE *fichier;
             fichier = fopen(filePath, "w");
@@ -201,7 +271,7 @@
 
                 for (int move = 0; move < 5; move++)
                 {
-                    fprintf(fichier, "%d ", tab[individu].genes[g][move]);
+                    fprintf(fichier, "%d ", voitures[numVoiture].genes[g][move]);
                 }
                 fprintf(fichier, "\n");
             }
@@ -210,99 +280,131 @@
             fclose(fichier);
         }
 
-        void updateChronoDesIAs() 
+        /*
+            Charge dans une voiture les gènes sauvegarder dans un fichier
+            @param filePath chemin du fichier duquel charger les gènes
+            @param numVoiture Numéro de la voiture
+            @param voitures Tableau contenant les voitures
+        */
+        void loadDataInIA(char * filePath, int numVoiture, struct car* voitures)
         {
-            chronometre = glutGet(GLUT_ELAPSED_TIME) - start_time_des_IAs;  // temps en millisecondes
-            chronometre = chronometre / 1000.0;                             // temps en secondes
+            FILE *fichier;
+            fichier = fopen(filePath, "r");
+
+            if (fichier == NULL) {
+                printf("Erreur lors de l'ouverture du fichier.\n");
+                exit(1);
+            }
+
+            const int MAXIMUM_DE_LIGNES = 32;
+            char ligne[MAXIMUM_DE_LIGNES];
+
+            int currentLine = 0;
+            int currentMove = 0;
+            char * currentChar;
+
+            while (fgets(ligne, sizeof(ligne), fichier) != NULL) 
+            {
+                currentChar = strtok(ligne, ":");  // Découper la ligne en utilisant ":"
+
+                if (currentChar != NULL) 
+                {
+                    currentChar = strtok(NULL, " ");  // Découper la partie après ":" en utilisant l'espace
+
+                    while (currentChar != NULL) 
+                    {
+                        int move = atoi(currentChar);  // Convertir la sous-chaîne en entier
+
+                        voitures[numVoiture].genes[currentLine][currentMove] = move;
+
+                        currentChar = strtok(NULL, " ");  // Passer à la sous-chaîne suivante
+                        
+                        currentMove++;
+                    }
+                }
+
+                currentMove = 0;
+                currentLine++;
+            }
+            fclose(fichier);
         }
 
-        void verifierMouvementDansGene(int numVoiture, struct car* voitures)
+    //=================================================
+    //=               MOUVEMENT DE L'IA               =
+    //=================================================
+
+        /*
+            Va bouger la voiture de l'IA en fonction des mouvements définis dans ses gènes
+            @param numVoiture Numéro de la voiture
+            @param voitures Tableau contenant les voitures
+        */
+        void bougerIA(int numVoiture, struct car* voitures)
         {
             // On récupère le gène / position à laquelle est la voiture
             int currentGene = getCurrentGene(numVoiture, voitures);
 
             // On va vérifier s'il y a au moins un mouvement de choisis
-            bool aucunMouvementInitialise = true;
-            for (int move = 0; move < 5; move++) if(voitures[numVoiture].genes[currentGene][move]) aucunMouvementInitialise = false; 
+            verifierMouvementDansGene(numVoiture, voitures);
 
-            if(aucunMouvementInitialise)
-            {
-                srand((unsigned int)time(NULL));
+            // Pour ce gène, on va regarder chaque mouvement / touches activé et choisis
 
-                int mouvement_aleatoire;
+            //----------------- appuie sur Z - accélère -----------------
 
-                // Si on est dans une ligne droite, l'IA ne pourra que accélérer, freiner ou ne rien faire
-                // if((29 <= currentGene && currentGene <= 1) || (13 <= currentGene && currentGene <= 18)) 
-                // {
-                    // Générer un nombre aléatoire entre 0 et 3
-                    // mouvement_aleatoire = rand() % 2;
-                // }
-                // else 
-                // {
-                    // Générer un nombre aléatoire entre 0 et 4
-                    mouvement_aleatoire = rand() % 4;
-                // }
+                if (voitures[numVoiture].genes[currentGene][0])
+                {
+                    accelerer(numVoiture, voitures);  
+                    avancer_voiture(numVoiture, voitures);
+                }
 
-                // printf("indiv %d , gene n°%d , move choisis : %s\n", numVoiture, currentGene, afficherMove(mouvement_aleatoire));
+            //----------------- appuie sur rien - décélère -----------------
+            
 
-                // si la vitesse n'est pas suffisante pour freiner et passer au prochain gène, on ne va pas freiner
-                while (voitures[numVoiture].vitesse < 15 && mouvement_aleatoire == 2) mouvement_aleatoire = rand() % 5;
+                if (voitures[numVoiture].genes[currentGene][1])
+                {
+                    deceleration(numVoiture, voitures);      // diminue la vitesse 
+                    if (voitures[numVoiture].vitesse > 0)        avancer_voiture(numVoiture, voitures);   // avance la voiture avec la nouvelle vitesse    
+                    else if(voitures[numVoiture].vitesse < 0)    reculer_voiture(numVoiture, voitures);
+                }
 
-                // le mouvement choisis aléatoirement est choisis et on le met dans le gène
-                voitures[numVoiture].genes[currentGene][mouvement_aleatoire] = true;
+            //----------------- // appuie sur S - freine -----------------
 
-                // si le mouvement choisis est de tourner on fais aussi accélerer
-                if (mouvement_aleatoire == 3 || mouvement_aleatoire == 4) voitures[numVoiture].genes[currentGene][0] = true;
-            }
+                if (voitures[numVoiture].genes[currentGene][2])
+                {
+                    if (voitures[numVoiture].vitesse > 0)
+                    {
+                        freinage(numVoiture, voitures);        // diminue fortement la vitesse          
+                        avancer_voiture(numVoiture, voitures); // avance la voiture avec la nouvelle vitesse    
+                    }
+                    else    // si la voiture est à l'arrêt ou recule on augmente la vitesse en marche arrière
+                    {
+                        marcheArriere(numVoiture, voitures);       // augmente la vitesse en arrière (vitesse négativement)
+                        reculer_voiture(numVoiture, voitures);     // fait reculer la voiture avec la nouvelle vitesse
+                    }
+                }
+
+            //----------------- appuie sur Q - tourne à gauche -----------------
+
+                if (voitures[numVoiture].genes[currentGene][3])
+                {
+                    tourner_voiture_gauche(numVoiture, voitures); 
+                }
+
+            //----------------- appuie sur D - tourne à droite -----------------
+
+                if (voitures[numVoiture].genes[currentGene][4])
+                {
+                    tourner_voiture_droite(numVoiture, voitures);
+                }
+
+            //------------------------------------------------------------------
+
+            verif_dehors(numVoiture, voitures);
         }
 
 
-    void bougerIA(int numVoiture, struct car* voitures)
-    {
-        // On récupère le gène / position à laquelle est la voiture
-        int currentGene = getCurrentGene(numVoiture, voitures);
-
-        // On va vérifier s'il y a au moins un mouvement de choisis
-        verifierMouvementDansGene(numVoiture, voitures);
-
-        // Pour ce gène, on va regarder chaque mouvement / touches activé et choisis
-
-        if (voitures[numVoiture].genes[currentGene][0])   // appuie sur Z - accélère
-        {
-            accelerer(numVoiture, voitures);  
-            avancer_voiture(numVoiture, voitures);
-        }
-        if (voitures[numVoiture].genes[currentGene][1])   // appuie sur rien - décélère 
-        {
-            deceleration(numVoiture, voitures);      // diminue la vitesse 
-            if (voitures[numVoiture].vitesse > 0)        avancer_voiture(numVoiture, voitures);   // avance la voiture avec la nouvelle vitesse    
-            else if(voitures[numVoiture].vitesse < 0)    reculer_voiture(numVoiture, voitures);
-        }
-        if (voitures[numVoiture].genes[currentGene][2])   // appuie sur S - accélère
-        {
-            if (voitures[numVoiture].vitesse > 0)
-            {
-                freinage(numVoiture, voitures);        // diminue fortement la vitesse          
-                avancer_voiture(numVoiture, voitures); // avance la voiture avec la nouvelle vitesse    
-            }
-            else    // si la voiture est à l'arrêt ou recule on augmente la vitesse en marche arrière
-            {
-                marcheArriere(numVoiture, voitures);       // augmente la vitesse en arrière (vitesse négativement)
-                reculer_voiture(numVoiture, voitures);     // fait reculer la voiture avec la nouvelle vitesse
-            }
-        }
-        if (voitures[numVoiture].genes[currentGene][3])   // appuie sur Q - tourne à gauche
-        {
-            tourner_voiture_gauche(numVoiture, voitures); 
-        }
-        if (voitures[numVoiture].genes[currentGene][4])   // appuie sur D - tourne à droite
-        {
-            tourner_voiture_droite(numVoiture, voitures);
-        }
-
-        verif_dehors(numVoiture, voitures);
-    }
-
+    /*
+        Va initialiser toutes les valeurs des voitures et faire accélrer dans le premier gène
+    */
     void initialiserIA()
     {
         // initialiser les paramètres des IAs
@@ -317,25 +419,29 @@
             } 
     }
 
-    int entrainerIAs(int geneAAtteindre)
-    {
-        float tempsEntrainementDeDepart = glutGet(GLUT_ELAPSED_TIME) - start_time_des_IAs;
+    //=================================================
+    //=              ENTRAINEMENT DE L'IA             =
+    //=================================================
 
-        int nombreVoitureFinis = 0;
-        bool entrainerLesVoitures = true;
-
-        if (entrainerLesVoitures)
+        /*
+            Entraîne les IAs à atteindre un gène donné
+            @param geneAAtteindre gène que les IAs doivent atteindre
+            @return le nombre de voiture qui ont réussi à atteindre ce gène
+        */
+        int entrainerIAsSurUnGene(int geneAAtteindre)
         {
+            float tempsEntrainementDeDepart = glutGet(GLUT_ELAPSED_TIME) - start_time_des_IAs;
+            int nombreVoitureFinis = 0;
+
             for (int indiv = 0; indiv < NOMBRE_IA; indiv++)    // on entraine chaque individus
             {
                 int   currentGene   = getCurrentGene(indiv, lesIAs);
                 float tempsDeDepart = glutGet(GLUT_ELAPSED_TIME) - start_time_des_IAs;
                 float departChronometre = chronometre;
 
-                // printf("\tEntrainement individu %d\n", indiv);
 
-                // on entraine jusqu'a ce que l'individu atteigne le gene donné dans le temps donné et sans toucher le mur
-                // (notre tour le plus rapide est en 6.5s, donc une moyenne de 0.20 par gène, si l'IA met plus d'1 seconde par gène c'est mauvais)
+                // on entraine jusqu'a ce que l'individu atteigne le gene donné dans le temps donné
+                // (notre tour le plus rapide est en 6.5s, donc une moyenne de 0.20 par gène, si l'IA met plus d'0.5 secondes par gène on arrête)
                 while ((currentGene != geneAAtteindre) && ((chronometre - departChronometre) <= (0.5 * geneAAtteindre)))   
                 {
                     currentGene = getCurrentGene(indiv, lesIAs);
@@ -352,73 +458,149 @@
                 lesIAs[indiv].temps_victoire = glutGet(GLUT_ELAPSED_TIME) - tempsDeDepart;
 
                 afficherStatsIA(indiv, lesIAs, geneAAtteindre);
-
-
-                // printf("\tNombre de mouvements effectués : %d\n\n", lesIAs[indiv].mouvementEffectue);
-
             }
-        }
-        printf("\tNombre de voiture qui ont réussis : %d\n\n", nombreVoitureFinis);
-        return nombreVoitureFinis;
-    }
 
-    void evaluerIAs(int geneAAtteindre)
-    {
-        int minMouvements = 10000000;
-        int maxMouvements = 0;
-
-        for (int indiv = 0; indiv < NOMBRE_IA; indiv++)
-        {
-            if (getCurrentGene(indiv, lesIAs) == geneAAtteindre)
-            {
-                if (lesIAs[indiv].mouvementEffectue > maxMouvements) maxMouvements = lesIAs[indiv].mouvementEffectue;
-                if (lesIAs[indiv].mouvementEffectue < minMouvements) minMouvements = lesIAs[indiv].mouvementEffectue;
-            }
+            printf("\tNombre de voiture qui ont réussis : %d\n\n", nombreVoitureFinis);
+            return nombreVoitureFinis;
         }
 
-        // printf("meilleur : %d\n", minMouvements);
-        // printf("pire : %d\n", maxMouvements);
-        
-        for (int indiv = 0; indiv < NOMBRE_IA; indiv++)
-        {
-            int note = 10.0;
-            float moves = lesIAs[indiv].mouvementEffectue;
+    //=================================================
+    //=               EVALUATION DE L'IA              =
+    //=================================================
 
-            if (getCurrentGene(indiv, lesIAs) == geneAAtteindre)
+        /*
+            Va donner une note à chaque IAs en fonction du nombre de mouvements effectué
+        */
+        void evaluerLesIAs(int geneAAtteindre)
+        {
+            int minMouvements = 10000000;
+            int maxMouvements = 0;
+
+            for (int indiv = 0; indiv < NOMBRE_IA; indiv++)
             {
-                while (moves > minMouvements)
+                if (getCurrentGene(indiv, lesIAs) == geneAAtteindre)
                 {
-                    note--;
-                    moves -= 5;
+                    if (lesIAs[indiv].mouvementEffectue > maxMouvements) maxMouvements = lesIAs[indiv].mouvementEffectue;
+                    if (lesIAs[indiv].mouvementEffectue < minMouvements) minMouvements = lesIAs[indiv].mouvementEffectue;
                 }
-                lesIAs[indiv].note = note;
             }
-            else lesIAs[indiv].note = 0;
 
-            // printf("indiv n°%d : note = %d\n", indiv, lesIAs[indiv].note);
+            for (int indiv = 0; indiv < NOMBRE_IA; indiv++)
+            {
+                int note = 10.0;
+                float moves = lesIAs[indiv].mouvementEffectue;
+
+                if (getCurrentGene(indiv, lesIAs) == geneAAtteindre)
+                {
+                    while (moves > minMouvements)
+                    {
+                        note--;
+                        moves -= 5;
+                    }
+                    lesIAs[indiv].note = note;
+                }
+                else lesIAs[indiv].note = 0;
+            }
         }
-    }
 
-    void jouer_IA_smart()
-    {
-        initialiserIA();
+    //=================================================
+    //=                  CLONER L'IA                  =
+    //=================================================
 
-        int geneAAtteindre = 31;
-        int nombreVoitureFinis = 0;
-        float tauxDeReussite = 1;
-        float nombreDIAQuiDoiventReussir = NOMBRE_IA * tauxDeReussite;
-        int nombreDEssais = 3;
-        int dernierGeneEntraine = 666;
-
-        bool entrainerLesIAs = true;
-
-        if(entrainerLesIAs) printf("\nNombre D'IA qui doivent réussir : %.0f\n\n", nombreDIAQuiDoiventReussir);
-
-        if (entrainerLesIAs)
+        /*
+            Clone les gènes des 2 meilleurs IAs
+            @param geneEtape gène qui est actuellement en entrainement
+            @param nombreVoitureFinis nombre de voiture qui ont atteint le gène à atteindre
+            @param nombreDIAQuiDoiventReussir nombre de voiture qui doivent réussir pour passer au prochain gène
+            @param nombreDEssais nombre d'essais autorisé avant de passer au prochain gène
+            @return le gène suivant à entrainer
+        */
+        int clonerLesIAs(int geneEtape, int nombreVoitureFinis, int nombreDIAQuiDoiventReussir, int nombreDEssais)
         {
+            int individu_1er = 666;
+            int individu_2e = 666;
+
+            bool gene_du_1er[NOMBRE_DE_GENES][5];
+            bool gene_du_2e[NOMBRE_DE_GENES][5];
+
+            // On récupère les meileurs individus
+            for (int indiv = 0; indiv < NOMBRE_IA; indiv++)
+            {
+                if (lesIAs[indiv].note == 10) individu_1er = indiv;
+                if (lesIAs[indiv].note == 9 || lesIAs[indiv].note == 8) individu_2e = indiv;
+            }
+            
+            
+            // Si on a au moins un individu qui a réussi
+            if(individu_1er != 666 && nombreVoitureFinis >= nombreDIAQuiDoiventReussir)
+            {
+                // si on a pas de 2e alors le 2e sera le même que le 1er
+                if (individu_2e == 666) individu_2e = individu_1er;
+
+                // On sauvegarde temporairement les gènes des deux meilleurs
+                for (int g = 0; g < NOMBRE_DE_GENES; g++) 
+                {
+                    for (int move = 0; move < 5; move++)
+                    {
+                        gene_du_1er[g][move] = lesIAs[individu_1er].genes[g][move];
+                        gene_du_2e[g][move] = lesIAs[individu_2e].genes[g][move];
+                    }
+                }
+
+                // On copie les gènes des meilleurs individus dans les autres individus
+                for (int indiv = 0; indiv < NOMBRE_IA; indiv++)
+                {
+                    for (int g = 0; g < geneEtape; g++)
+                    {
+                        for (int move = 0; move < 5; move++)
+                        {   
+                            // les 3 premiers individus seront comme le meilleur individu
+                            if(indiv < 3)   lesIAs[indiv].genes[g][move] = gene_du_1er[g][move];
+                            // le reste des individus seront comme le deuxième meilleur individu
+                            else            lesIAs[indiv].genes[g][move] = gene_du_2e[g][move];
+                        }
+                    }
+                }
+                return geneEtape;
+            }
+            else // si aucun ou pas assez d'individus n'ont pas réussi alors on recommence le gène en cours
+            {
+                if (nombreDEssais > 0)
+                {
+                    for (int indiv = 0; indiv < NOMBRE_IA; indiv++)
+                    {
+                        if (getCurrentGene(indiv, lesIAs) != geneEtape)
+                        {
+                            for (int move = 0; move < 5; move++)
+                            {
+                                lesIAs[indiv].genes[geneEtape-1][move] = false;
+                            }
+                        }
+                    }
+                    return geneEtape - 1;
+                }
+            }
+        }
+
+    //=================================================
+    //=      ENTRAINER, EVALUER ET CLONER LES IAS     =
+    //=================================================
+
+        void jouer_IA_smart()
+        {
+            initialiserIA();
+
+            int geneAAtteindre = 8;
+            int nombreVoitureFinis = 0;
+            float tauxDeReussite = 0.5;
+            float nombreDIAQuiDoiventReussir = NOMBRE_IA * tauxDeReussite;
+            int nombreDEssais = 3;
+            int dernierGeneEntraine = 666;
+
+            printf("\nNombre D'IA qui doivent réussir : %.0f\n\n", nombreDIAQuiDoiventReussir);
+
             for (int geneEtape = 1; geneEtape < geneAAtteindre; geneEtape++)
             {
-                // printf("dernier gene : %d\t gene en cours : %d\n\n", dernierGeneEntraine, geneEtape);
                 if (geneEtape == dernierGeneEntraine)   nombreDEssais--;
                 else                                    nombreDEssais = 3;
 
@@ -432,155 +614,55 @@
 
                 // entrainement 
                 
-                    nombreVoitureFinis = entrainerIAs(geneEtape);
+                    nombreVoitureFinis = entrainerIAsSurUnGene(geneEtape);
                 
                 // évaluation des résultats
                 
-                    evaluerIAs(geneEtape);
+                    evaluerLesIAs(geneEtape);
 
                 // Clonage des meilleurs individu
 
-                    int individu_1er = 666;
-                    int individu_2e = 666;
+                    geneEtape = clonerLesIAs(geneEtape, nombreVoitureFinis, nombreDIAQuiDoiventReussir, nombreDEssais);
+            }
 
-                    // On récupère les meileurs individus
+            // Afficher les résultats / données des IAs
+
+                bool afficherLesResultats = !true;
+
+                int meilleurIndividu = 0;
+
+                if (afficherLesResultats)
+                {
                     for (int indiv = 0; indiv < NOMBRE_IA; indiv++)
                     {
-                        if (lesIAs[indiv].note == 10) individu_1er = indiv;
-                        if (lesIAs[indiv].note == 9 || lesIAs[indiv].note == 8) individu_2e = indiv;
-                    }
-
-                    
-                    // Si on a au moins un individu qui a réussi
-                    if(individu_1er != 666 && nombreVoitureFinis >= nombreDIAQuiDoiventReussir)
-                    {
-                        // si on a pas de 2e alors ce sera comme le 1er
-                        if (individu_2e == 666) individu_2e = individu_1er;
-
-                    // printf("indiv 1er : %d              indiv 2e : %d\n", individu_1er, individu_2e);
-                    
-                        // On copie les gènes des meilleurs individus dans les autres individus
-                        for (int indiv = 0; indiv < NOMBRE_IA; indiv++)
-                        {
-                            for (int g = 0; g < geneEtape; g++)
+                        if(lesIAs[indiv].note > lesIAs[meilleurIndividu].note) meilleurIndividu = indiv;    // on garde en mémoire le meilleur individu pour sauvegarder ses gènes plus tard
+                        printf("individu n°%d :", indiv);
+                            printf("\t(%.1f , %.1f)", lesIAs[indiv].position_x, lesIAs[indiv].position_z);
+                            printf("\t current gene : %d", getCurrentGene(indiv, lesIAs));
+                            printf("\t mouvements : %d", lesIAs[indiv].mouvementEffectue);
+                            printf("\t note : %d", lesIAs[indiv].note);
+                            printf("\t temps : %.2f", lesIAs[indiv].temps_victoire);
+                            printf("\n");
+                            for (int g = 0; g < geneAAtteindre; g++)
                             {
+                                printf("\t\t gene n°%d [", g);
                                 for (int move = 0; move < 5; move++)
-                                {   
-                                    // les 3 premiers individus seront comme le meilleur individu
-                                    if(indiv < 3)   lesIAs[indiv].genes[g][move] = lesIAs[individu_1er].genes[g][move];
-                                    // le reste des individus seront comme le deuxième meilleur individu
-                                    else            lesIAs[indiv].genes[g][move] = lesIAs[individu_2e].genes[g][move];
-                                }
-                            }
-                        }
-                    }
-                    else // si aucun ou pas assez d'individus n'ont pas réussi alors on recommence le gène en cours
-                    {
-                        // printf("nombre d'essais : %d\n\n", nombreDEssais+1);
-                        // if (nombreDEssais > 0)
-                        // {
-                            for (int indiv = 0; indiv < NOMBRE_IA; indiv++)
-                            {
-                                // afficherStatsIA(indiv, lesIAs, geneEtape);
-
-                                if (getCurrentGene(indiv, lesIAs) != geneEtape)
                                 {
-                                    for (int move = 0; move < 5; move++)
-                                    {
-                                        lesIAs[indiv].genes[geneEtape-1][move] = false;
-                                    }
+                                    if (lesIAs[indiv].genes[g][move]) printf("%s ; ", afficherMove(move));
                                 }
+                                printf("]\n");
                             }
-                            geneEtape--;
-                        // }
+                            
                     }
-            }
-        }
-
-        // Afficher les résultats / données des IAs
-
-            bool afficherLesResultats = true;
-
-            int meilleurIndividu = 0;
-
-            if (afficherLesResultats)
-            {
-                for (int indiv = 0; indiv < NOMBRE_IA; indiv++)
-                {
-                    if(lesIAs[indiv].note > lesIAs[meilleurIndividu].note) meilleurIndividu = indiv;
-                    printf("individu n°%d :", indiv);
-                        printf("\t(%.1f , %.1f)", lesIAs[indiv].position_x, lesIAs[indiv].position_z);
-                        printf("\t current gene : %d", getCurrentGene(indiv, lesIAs));
-                        printf("\t mouvements : %d", lesIAs[indiv].mouvementEffectue);
-                        printf("\t note : %d", lesIAs[indiv].note);
-                        printf("\t temps : %.2f", lesIAs[indiv].temps_victoire);
-                        printf("\n");
-                        for (int g = 0; g < geneAAtteindre; g++)
-                        {
-                            printf("\t\t gene n°%d [", g);
-                            for (int move = 0; move < 5; move++)
-                            {
-                                if (lesIAs[indiv].genes[g][move]) printf("%s ; ", afficherMove(move));
-                                // printf("%d ", lesIAs[indiv].genes[g][move]);
-                            }
-                            printf("]\n");
-                        }
-                        
                 }
-            }
 
-            // sauvegarde des meilleurs gènes dans le fichier "bestGenes.txt"
+                // sauvegarde des meilleurs gènes dans le fichier "bestGenes.txt"
 
-                if(entrainerLesIAs) saveDatasIA("bestGenes.txt", meilleurIndividu, lesIAs);
+                    saveDatasIA("bestGenes.txt", meilleurIndividu, lesIAs);
 
-    }
-
-    void loadDataInIA(int numVoiture, struct car* voitures)
-    {
-        FILE *fichier;
-        fichier = fopen("bestGenes.txt", "r");
-
-        if (fichier == NULL) {
-            printf("Erreur lors de l'ouverture du fichier.\n");
-            exit(1);
         }
 
-        const int MAXIMUM_DE_LIGNES = 32;
-        char ligne[MAXIMUM_DE_LIGNES];
 
-        int currentLine = 0;
-        int currentMove = 0;
-        char * currentChar;
-
-
-        while (fgets(ligne, sizeof(ligne), fichier) != NULL) 
-        {
-            currentChar = strtok(ligne, ":");  // Découper la ligne en utilisant ":"
-
-            if (currentChar != NULL) 
-            {
-                currentChar = strtok(NULL, " ");  // Découper la partie après ":" en utilisant l'espace
-
-                while (currentChar != NULL) 
-                {
-                    int move = atoi(currentChar);  // Convertir la sous-chaîne en entier
-
-                    voitures[numVoiture].genes[currentLine][currentMove] = move;
-
-                    currentChar = strtok(NULL, " ");  // Passer à la sous-chaîne suivante
-                    
-                    currentMove++;
-                }
-            }
-
-            currentMove = 0;
-            currentLine++;
-        }
-
-        // afficherVoiture(numVoiture, voitures, 11);
-
-        fclose(fichier);
-    }
 
 //##########################################
 //#          JOUER TOUTES LES IAS          #
