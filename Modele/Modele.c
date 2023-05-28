@@ -6,6 +6,7 @@ struct modele creerModele(const char* fichier){
 
     // Chargement de la scène à partir du fichier avec les flags spécifiés
     const struct aiScene* scene = aiImportFile(fichier, flags);
+    
     if (!scene) {  // Si le chargement échoue, afficher un message d'erreur
         printf("Erreur lors du chargement du modèle : %s\n", aiGetErrorString());
     }

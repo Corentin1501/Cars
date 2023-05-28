@@ -154,7 +154,7 @@ int notre_init(int argc, char** argv, void (*Modelisation)())
 
     //------------------------- IAs -------------------------
 
-        bool entrainerLesIAs = !false;
+        bool entrainerLesIAs = false;
         int nombreIATrained = 4 + 1;    // les 4 premières voitures déjà prises + le nombre d'IA à charger avec les gènes
 
         if (entrainerLesIAs)

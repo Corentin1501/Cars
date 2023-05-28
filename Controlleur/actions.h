@@ -7,7 +7,6 @@
 
 #include "../Vue/switch_blend.h"
 #include "../Vue/switch_light.h"
-#include "../Modele/opmat.h"
 #include "../Modele/physique.h"      // pour créer le tableau de voiture (avec la struct car) et utiliser la physique
 
 #include <stdlib.h>
