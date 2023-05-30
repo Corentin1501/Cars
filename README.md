@@ -11,5 +11,11 @@ L'accent en OpenGL sera mis sur la découverte de la compilation et de nouvelles
 
 ### Commandes à effectuer pour utiliser les IAs :
 
-* `pip install tensorflow`
-*
+* `sudo apt-get update`
+* `sudo apt-get install libassimp-dev`
+
+### Pour compilier le projet :
+* `make clean; make`
+
+### Pour éxecuter le projet :
+* `./Cars`  
