@@ -17,5 +17,5 @@ L'accent en OpenGL sera mis sur la découverte de la compilation et de nouvelles
 ### Pour compilier le projet :
 * `make clean; make`
 
-### Pour éxecuter le projet :
+### Pour exécuter le projet :
 * `./Cars`  
