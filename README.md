@@ -14,7 +14,7 @@ L'accent en OpenGL sera mis sur la découverte de la compilation et de nouvelles
 * `sudo apt-get update`
 * `sudo apt-get install libassimp-dev`
 
-### Pour compilier le projet :
+### Pour compiler le projet :
 * `make clean; make`
 
 ### Pour exécuter le projet :
